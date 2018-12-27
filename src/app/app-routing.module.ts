@@ -4,11 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 // importacion de los componentes para establecerlo en las rutas
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'ingresar', component: LoginComponent},
-  {path: 'registrar', component: SignupComponent}
+  {path: 'registrar', component: SignupComponent},
+  {path: 'plataforma', component: SeleccionarPlataformaComponent},
 ];
 
 @NgModule({

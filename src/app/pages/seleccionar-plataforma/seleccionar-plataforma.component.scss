@@ -1,11 +1,9 @@
-body{
-	overflow-y: hidden;
-}
 div.jumbotron.hero-technology {
-    text-align:center;
-    background:url('../../../assets//Login/mainBackgroundLogin.jpg');
+    background:url('../../../assets/SeleccionarPlataforma/mainBacgroundSeleccionarPlataforma.jpg');
     background-size:cover;
     background-position:center;
+    padding-top:10vh;
+    
 }
   
 .full-screen-hero {
@@ -23,4 +21,11 @@ div.jumbotron.hero-technology {
     -moz-transform: translate3d(-50%, -50%, 0);
 	transform: translate3d(-50%, -50%, 0);
 	overflow: hidden;
+}
+.card{
+  display: inline-block;
+  position: relative;
+}
+.elevated{
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }

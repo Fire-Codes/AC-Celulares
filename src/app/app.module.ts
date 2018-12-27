@@ -1,5 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+
+// importacion de todos los modulos de @angular/material
+import { AngularMaterialModule } from './modulos/angular-material/angular-material.module';
 
 // importacion de las variables de produccion
 import { environment } from './../environments/environment';
@@ -20,23 +24,28 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
+import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    NavigationComponent
+    NavigationComponent,
+    SeleccionarPlataformaComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+
+    AngularMaterialModule
   ],
   providers: [ServicioService, NavigationComponent],
   bootstrap: [AppComponent]

@@ -1,54 +1,56 @@
 <div class="jumbotron hero-technology full-screen-hero" style="width: auto; height: auto;">
     <div class="box">
-        <div id="form_login">
-            <div class="display-4 text-center text-primary mb-4">
-                Agregar Usuario
+        <mat-card id="form_login">
+            <div>
+                <h4 class=" text-center mb-4">
+                    Agregar Usuario
+                </h4>
+                <form>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-warning">Nombre y Apellido</span>
+                        </div>
+                        <input type="text" aria-label="First name" class="form-control" placeholder="Nombres">
+                        <input type="text" aria-label="Last name" class="form-control" placeholder="Apellidos">
+                        <input type="text" aria-label="Username" class="form-control" disabled placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="text-warning">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Correo Electrónico">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1" class="text-warning">Contraseña</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text bg-warning" for="inputGroupSelect01">Tipo de Usuario</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Estandar">Estándar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="text-warning">Cargo</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Cargo">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="text-warning">Documento de Identificación</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Documento de Identifiación">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="text-warning">Teléfono Móvil</label>
+                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Celular">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Registrar Usuario</button>
+                </form>
             </div>
-            <form>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text bg-warning">Nombre y Apellido</span>
-                    </div>
-                    <input type="text" aria-label="First name" class="form-control" placeholder="Nombres">
-                    <input type="text" aria-label="Last name" class="form-control" placeholder="Apellidos">
-                    <input type="text" aria-label="Username" class="form-control" disabled placeholder="Username">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-warning">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Correo Electrónico">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1" class="text-warning">Contraseña</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text bg-warning" for="inputGroupSelect01">Tipo de Usuario</label>
-                    </div>
-                    <select class="custom-select" id="inputGroupSelect01">
-                        <option selected>Choose...</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Estandar">Estándar</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-warning">Cargo</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Cargo">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-warning">Documento de Identificación</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Documento de Identifiación">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-warning">Teléfono Móvil</label>
-                    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Celular">
-                </div>
-                <button type="submit" class="btn btn-warning">Registrar Usuario</button>
-            </form>
-        </div>
+        </mat-card>
     </div>
 </div>
