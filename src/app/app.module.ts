@@ -23,18 +23,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
-import { NavigationComponent } from './pages/navigation/navigation.component';
 import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { NavsideComponent } from './pages/navside/navside.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    NavigationComponent,
     SeleccionarPlataformaComponent,
-    DashboardComponent
+    DashboardComponent,
+    NavsideComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
     AngularMaterialModule
   ],
-  providers: [ServicioService, NavigationComponent],
+  providers: [ServicioService, NavsideComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
