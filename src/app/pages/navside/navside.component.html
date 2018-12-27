@@ -1,3 +1,8 @@
-<p>
-  navside works!
-</p>
+<mat-drawer-container class="example-container">
+  <mat-drawer class="sidePanel" mode="side" [opened]='mostrarNav'>
+    <div class="text-light p-2">Drawer content</div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

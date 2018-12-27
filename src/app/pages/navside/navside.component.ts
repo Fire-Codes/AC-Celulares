@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navside',
@@ -6,8 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navside.component.scss']
 })
 export class NavsideComponent implements OnInit {
-
-  constructor() { }
+  mostrarNav: boolean;
+  constructor(
+    public router: Router
+  ) {
+    console.log(this.router.url);
+    if ((this.router.url === '/') || (this.router.url === '/ingresar') || this.router.url === '/plataforma') {
+      this.mostrarNav = false;
+    } else {
+      this.mostrarNav = true;
+    }
+  }
 
   ngOnInit() {
   }
