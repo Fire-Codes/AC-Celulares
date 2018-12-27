@@ -25,6 +25,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
 import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/s
     LoginComponent,
     SignupComponent,
     NavigationComponent,
-    SeleccionarPlataformaComponent
+    SeleccionarPlataformaComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
