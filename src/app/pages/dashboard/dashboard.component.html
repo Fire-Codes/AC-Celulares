@@ -1,3 +1,102 @@
-<p>
-  dashboard works!
-</p>
+<nav class="navbar navbar-dark bg-dark elevated">
+  <div class="container">
+    <a class="navbar-brand text-light">Dashboard</a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Buscar...">
+      <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+      <a href="#" class="text-light my-2 my-sm-0"><i class="fas fa-search"></i></a>
+    </form>
+  </div>
+</nav>
+
+<body>
+  <div class="container pt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="card bg-danger text-white text-center p-3 mt-3 elevated">
+            <div class="card-header text-center">
+              <div class="card-icon elevated text-center text-dark card bg-warning p-1">
+                <i style="font-size: 2rem;" class="fas fa-calendar-day m-3"></i>
+              </div>
+            </div>
+            <blockquote class="blockquote mb-0">
+              <p>Ventas del Día.</p>
+              <footer class="blockquote-footer text-white">
+                <small>
+                  Someone famous in <cite title="Source Title">Source Title</cite>
+                </small>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card bg-primary text-white text-center p-3 mt-3 elevated">
+            <div class="card-header text-center">
+              <div class="card-icon elevated text-center text-light card bg-secondary p-1">
+                <i style="font-size: 2rem;" class="fas fa-calendar-week m-3"></i>
+              </div>
+            </div>
+            <blockquote class="blockquote mb-0">
+              <p>Ventas Semanales.</p>
+              <footer class="blockquote-footer text-white">
+                <small>
+                  Someone famous in <cite title="Source Title">Source Title</cite>
+                </small>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class=" text-dark card bg-warning text-center p-3 mt-3 elevated">
+            <div class="card-header text-center">
+              <div class="card-icon elevated text-center text-light card bg-dark p-1">
+                <i style="font-size: 2rem;" class="fas fa-calendar m-3"></i>
+              </div>
+            </div>
+            <blockquote class="blockquote mb-0">
+              <p>Ventas Mensuales.</p>
+              <footer class="blockquote-footer text-white">
+                <small class="text-dark">
+                  Someone famous in <cite title="Source Title">Source Title</cite>
+                </small>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-sm mb-4">
+          <mat-card class="elevated">
+            <mat-card-title>
+              <div class="text-dark">
+                Porcentajes del total de ventas del Día.
+              </div>
+            </mat-card-title>
+            <canvas #graficoPastelCanvas></canvas>
+          </mat-card>
+        </div>
+        <div class="col-sm mb-4">
+          <mat-card class="elevated">
+            <mat-card-title>
+              <div class="text-dark">
+                Totales de Ventas en la Semana.
+              </div>
+              <canvas #graficoBarraCanvas></canvas>
+            </mat-card-title>
+          </mat-card>
+        </div>
+        <div class="col-sm mb-4">
+          <mat-card class="elevated">
+            <mat-card-title>
+              <div class="text-dark">
+                Totales de Ventas en el Año.
+              </div>
+              <canvas #graficoLineaCanvas></canvas>
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

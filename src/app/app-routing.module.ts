@@ -5,12 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'ingresar', component: LoginComponent},
   {path: 'registrar', component: SignupComponent},
   {path: 'plataforma', component: SeleccionarPlataformaComponent},
+  {path: 'dashboard', component: DashboardComponent}
 ];
 
 @NgModule({

@@ -23,6 +23,7 @@ import {
   MatTableModule,
   MatToolbarModule,
   MatTooltipModule,
+  MatGridListModule,
   MAT_NATIVE_DATE_FORMATS,
   MAT_DATE_LOCALE
 } from '@angular/material';
@@ -53,6 +54,7 @@ import {
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatGridListModule
   ],
   exports: [
     MatButtonModule,
@@ -77,6 +79,7 @@ import {
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatGridListModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
