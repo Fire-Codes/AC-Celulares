@@ -1,15 +1,37 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+// importacion del componente del NavSide
+import { NavsideComponent } from '../navside/navside.component';
+
 // importacion del Chart.js
 import { Chart } from 'chart.js';
+
+// importacion de los componentes para las tablas
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+
+export interface UserData {
+  id: string;
+  Nombre: string;
+  Telefono: string;
+  Tipo: string;
+}
+/** Constants used to fill up our data base. */
+const TIPO: string[] = ['Estándar', 'Premium'];
+const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
+  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
+  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
+
 export class DashboardComponent implements OnInit {
 
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild('graficoPastelCanvas') graficoPastelCanvas;
   @ViewChild('graficoBarraCanvas') graficoBarraCanvas;
   @ViewChild('graficoLineaCanvas') graficoLineaCanvas;
@@ -18,9 +40,27 @@ export class DashboardComponent implements OnInit {
   graficoBarraChart: any;
   graficoLineaChart: any;
 
-  constructor() { }
+  displayedColumns: string[] = ['id', 'Nombre', 'Telefono', 'Tipo'];
+  dataSource: MatTableDataSource<UserData>;
+
+
+  constructor(
+    public nav: NavsideComponent
+  ) {
+    // mostrar el navside
+    this.nav.mostrarNav = true;
+
+    // Create 100 users
+    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
+
+    // Assign the data to the data source for the table to render
+    this.dataSource = new MatTableDataSource(users);
+  }
 
   ngOnInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+
     this.graficoPastelChart = new Chart(this.graficoPastelCanvas.nativeElement, {
 
       type: 'doughnut',
@@ -158,4 +198,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+}
+
+/** Builds and returns a new User. */
+function createNewUser(id: number): UserData {
+  const name =
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
+
+  return {
+    id: id.toString(),
+    Nombre: name,
+    Telefono: '8' + Math.round(Math.random() * 99999999).toString(),
+    Tipo: TIPO[Math.round(Math.random() * (TIPO.length - 1))]
+  };
 }
