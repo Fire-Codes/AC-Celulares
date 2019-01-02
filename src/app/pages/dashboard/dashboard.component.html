@@ -22,10 +22,10 @@
             </div>
             <blockquote class="blockquote mb-0">
               <p>Ventas del Día.</p>
-              <footer class="blockquote-footer text-white">
-                <small>
+              <footer class="text-white">
+                <b>
                   C$1,200
-                </small>
+                </b>
               </footer>
             </blockquote>
           </div>
@@ -39,10 +39,10 @@
             </div>
             <blockquote class="blockquote mb-0">
               <p>Ventas Semanales.</p>
-              <footer class="blockquote-footer text-white">
-                <small>
+              <footer class="text-white">
+                <b>
                   C$10,300
-                </small>
+                </b>
               </footer>
             </blockquote>
           </div>
@@ -56,53 +56,52 @@
             </div>
             <blockquote class="blockquote mb-0">
               <p>Ventas Mensuales.</p>
-              <footer class="blockquote-footer text-white">
-                <small class="text-dark">
+              <footer>
+                <b class="text-dark fixe-bottom">
                   C$80,000
-                </small>
+                </b>
               </footer>
             </blockquote>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-sm mb-4">
-          <mat-card class="elevated bounceIn">
-            <mat-card-title>
-              <div class="text-dark">
-                Porcentajes del total de ventas del Día.
-              </div>
-            </mat-card-title>
-            <canvas #graficoPastelCanvas></canvas>
-          </mat-card>
-        </div>
-        <div class="col-sm mb-4">
-          <mat-card class="elevated bounceIn">
-            <mat-card-title>
-              <div class="text-dark">
-                Totales de Ventas en la Semana.
-              </div>
-              <canvas #graficoBarraCanvas></canvas>
-            </mat-card-title>
-          </mat-card>
-        </div>
-        <div class="col-sm mb-4">
-          <mat-card class="elevated bounceIn">
-            <mat-card-title>
-              <div class="text-dark">
-                Totales de Ventas en el Año.
-              </div>
-              <canvas #graficoLineaCanvas></canvas>
-            </mat-card-title>
-          </mat-card>
-        </div>
+      <div class="mt-4 mb-4">
+        <mat-card class="elevated bounceIn">
+          <mat-card-title>
+            <div class="text-dark">
+              Porcentajes del total de ventas del Día.
+            </div>
+          </mat-card-title>
+          <canvas #graficoPastelCanvas></canvas>
+        </mat-card>
+      </div>
+      <div class=" mb-4">
+        <mat-card class="elevated bounceIn">
+          <mat-card-title>
+            <div class="text-dark">
+              Totales de Ventas en la Semana.
+            </div>
+            <canvas #graficoBarraCanvas></canvas>
+          </mat-card-title>
+        </mat-card>
+      </div>
+      <div class=" mb-4">
+        <mat-card class="elevated bounceIn">
+          <mat-card-title>
+            <div class="text-dark">
+              Totales de Ventas en el Año.
+            </div>
+            <canvas #graficoLineaCanvas></canvas>
+          </mat-card-title>
+        </mat-card>
       </div>
     </div>
 
     <div class="mb-4 slideInLeft">
       <div class="container-fluid bg-warning rounded-top p-4">
+        <div class="float-right"><button class="elevated text-center" mat-fab color="accent"><i matListIcon class="fas fa-user-plus text-dark"></i></button></div>
         <mat-card-title class="ml-4 mt-4">
-          Tabla de Usuarios
+          Clientes
         </mat-card-title>
         <mat-form-field class="ml-4">
           <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">

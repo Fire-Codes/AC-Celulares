@@ -26,6 +26,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/seleccionar-plataforma.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NavsideComponent } from './pages/navside/navside.component';
+import { InventarioComponent } from './pages/inventario/inventario.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NavsideComponent } from './pages/navside/navside.component';
     SignupComponent,
     SeleccionarPlataformaComponent,
     DashboardComponent,
-    NavsideComponent
+    NavsideComponent,
+    InventarioComponent
   ],
   imports: [
     BrowserModule,

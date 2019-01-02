@@ -22,4 +22,8 @@ export class NavsideComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  imprimir() {
+    // window.print();
+  }
 }
