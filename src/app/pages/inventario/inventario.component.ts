@@ -3,21 +3,25 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // importacion del componente navside
 import { NavsideComponent } from '../navside/navside.component';
 
+// importacion de los componentes de @angular/material
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
+// importacion de los componentes de ng-bootstrap
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-export interface UserData {
-  id: string;
+
+export interface Producto {
+  Clave: string;
   Nombre: string;
   Marca: string;
-  Tipo: string;
+  Categoria: string;
   Modelo: string;
   Existencia: number;
   pCompra: number;
   pVenta: number;
 }
 /** Constants used to fill up our data base. */
-const TIPO: string[] = ['Accesorio', 'Repuesto', 'Celular', 'Herramienta', 'Otro'];
+const Categoria: string[] = ['Accesorio', 'Repuesto', 'Celular', 'Herramienta', 'Otro'];
 const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
   'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
   'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
@@ -34,11 +38,12 @@ export class InventarioComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['id', 'Nombre', 'Marca', 'Modelo', 'Tipo', 'Existencia', 'pCompra', 'pVenta'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['Clave', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'pCompra', 'pVenta', 'Acciones'];
+  dataSource: MatTableDataSource<Producto>;
 
   constructor(
-    public nav: NavsideComponent
+    public nav: NavsideComponent,
+    public ngbModal: NgbModal
   ) {
     // se muestra el navside
     this.nav.mostrarNav = true;
@@ -51,9 +56,13 @@ export class InventarioComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // se inicializan las variables para el mattable de sort y paginator
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+
+  // funcion para buscar en las tablas
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -61,18 +70,26 @@ export class InventarioComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  // funcion para abrir los modales de manera centrada
+  openVerticallyCentered(content: string, producto: Producto) {
+    this.ngbModal.open(content, { centered: true });
+  }
+
 }
+
+
 /** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
+function createNewUser(Clave: number): Producto {
   const name =
     NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
     NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
 
   return {
-    id: id.toString(),
+    Clave: Clave.toString(),
     Nombre: name,
     Marca: MARCA[Math.round(Math.random() * (MARCA.length - 1))],
-    Tipo: TIPO[Math.round(Math.random() * (TIPO.length - 1))],
+    Categoria: Categoria[Math.round(Math.random() * (Categoria.length - 1))],
     Modelo: MODELO[Math.round(Math.random() * (MODELO.length - 1))],
     Existencia: Math.round(Math.random() * 100),
     pCompra: Math.round(Math.random() * 1000),

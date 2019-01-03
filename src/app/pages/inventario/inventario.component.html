@@ -5,21 +5,95 @@
 </nav>
 
 <body>
+  <!--Comienzan los Modals-->
+  <!--Agregar Existencias Modal-->
+  <ng-template #agregarExistencias let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Agregar Existencias de Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!--Ver Producto Modal-->
+  <ng-template #verProducto let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Ver Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!--Eliminar Producto Modal-->
+  <ng-template #eliminarProducto let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Eliminar Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!--Editar Producto Modal-->
+  <ng-template #editarProducto let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Editar Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!--Main Content-->
   <div class="container pt-4">
     <div class="mb-4 slideInLeft">
       <div class="container-fluid bg-info rounded-top p-4">
-        <div class="float-right"><button class="elevated text-center bg-info" matTooltip="Agregar Producto" mat-fab><i
-              matListIcon class="fas fa-plus text-dark"></i></button></div>
+        <div class="float-right">
+          <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
+          </button>
+          <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+          </button>
+          <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+          </button>
+        </div>
         <mat-form-field class="ml-4">
           <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
         </mat-form-field>
       </div>
       <table mat-table [dataSource]="dataSource" matSort class="table-hover">
 
-        <!-- ID Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        <!-- Clave Column -->
+        <ng-container matColumnDef="Clave">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
+          <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
         </ng-container>
 
         <!-- Marca Column -->
@@ -58,10 +132,35 @@
           <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
         </ng-container>
 
-        <!-- Tipo Column -->
-        <ng-container matColumnDef="Tipo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
-          <td mat-cell *matCellDef="let row"> {{row.Tipo}} </td>
+        <!-- Categoria Column -->
+        <ng-container matColumnDef="Categoria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
+          <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
+        </ng-container>
+
+        <!-- Acciones Column -->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="example-button-row">
+              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+              </button>
+              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(verProducto)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+              </button>
+            </div>
+
+          </td>
         </ng-container>
 
         <!--Aqui comienzan los TH-->

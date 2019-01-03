@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
+// importacion de los modulos de ng-bootstrap
+import { NgBootstrapModule } from './modulos/ng-bootstrap/ng-bootstrap.module';
+
 // importacion de todos los modulos de @angular/material
 import { AngularMaterialModule } from './modulos/angular-material/angular-material.module';
 
@@ -49,7 +52,9 @@ import { InventarioComponent } from './pages/inventario/inventario.component';
     AngularFireDatabaseModule,
     AngularFireStorageModule,
 
-    AngularMaterialModule
+    AngularMaterialModule,
+
+    NgBootstrapModule
   ],
   providers: [ServicioService, NavsideComponent],
   bootstrap: [AppComponent]
