@@ -30,6 +30,7 @@ import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/s
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NavsideComponent } from './pages/navside/navside.component';
 import { InventarioComponent } from './pages/inventario/inventario.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { InventarioComponent } from './pages/inventario/inventario.component';
     SeleccionarPlataformaComponent,
     DashboardComponent,
     NavsideComponent,
-    InventarioComponent
+    InventarioComponent,
+    UsuariosComponent
   ],
   imports: [
     BrowserModule,
