@@ -27,6 +27,7 @@ import {
   MAT_NATIVE_DATE_FORMATS,
   MAT_DATE_LOCALE
 } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -54,7 +55,8 @@ import {
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTabsModule
   ],
   exports: [
     MatButtonModule,
@@ -79,7 +81,8 @@ import {
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTabsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
