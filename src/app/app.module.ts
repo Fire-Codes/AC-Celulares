@@ -31,6 +31,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NavsideComponent } from './pages/navside/navside.component';
 import { InventarioComponent } from './pages/inventario/inventario.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
     DashboardComponent,
     NavsideComponent,
     InventarioComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    ClientesComponent
   ],
   imports: [
     BrowserModule,
