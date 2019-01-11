@@ -8,6 +8,7 @@ import { SeleccionarPlataformaComponent } from './pages/seleccionar-plataforma/s
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { InventarioComponent } from './pages/inventario/inventario.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'plataforma', component: SeleccionarPlataformaComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'inventario', component: InventarioComponent},
-  {path: 'usuarios', component: UsuariosComponent}
+  {path: 'usuarios', component: UsuariosComponent},
+  {path: 'clientes', component: ClientesComponent}
 ];
 
 @NgModule({
