@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+// importacion del servicio
+import { ServicioService } from '../../servicios/servicio.service';
+
 @Component({
   selector: 'app-page-not-found',
   templateUrl: './page-not-found.component.html',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public servicio: ServicioService
+  ) { }
 
   ngOnInit() {
   }
 
+  navegar(ruta: string) {
+    this.servicio.navegar(ruta);
+  }
 }
