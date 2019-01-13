@@ -14,7 +14,6 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: '**', component: PageNotFoundComponent },
   { path: 'ingresar', component: LoginComponent },
   { path: 'registrar', component: SignupComponent },
   { path: 'plataforma', component: SeleccionarPlataformaComponent },
@@ -22,7 +21,8 @@ const routes: Routes = [
   { path: 'inventario', component: InventarioComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'clientes', component: ClientesComponent },
-  { path: 'facturar', component: FacturarComponent }
+  { path: 'facturar', component: FacturarComponent },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
