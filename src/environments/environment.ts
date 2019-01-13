@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebaseConfig:{
+  firebaseConfig: {
     apiKey: 'AIzaSyCGgz6bfMUOUsI1nM4aTXZNOXtfcfLiYyI',
     authDomain: 'grupo-ac.firebaseapp.com',
     databaseURL: 'https://grupo-ac.firebaseio.com',
