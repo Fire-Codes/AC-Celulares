@@ -36,6 +36,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { FacturarComponent } from './pages/facturar/facturar.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { CreditosComponent } from './pages/creditos/creditos.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     UsuariosComponent,
     ClientesComponent,
     FacturarComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    CreditosComponent
   ],
   imports: [
     BrowserModule,
