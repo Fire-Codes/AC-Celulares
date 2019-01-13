@@ -35,6 +35,7 @@ import { InventarioComponent } from './pages/inventario/inventario.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { FacturarComponent } from './pages/facturar/facturar.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { FacturarComponent } from './pages/facturar/facturar.component';
     InventarioComponent,
     UsuariosComponent,
     ClientesComponent,
-    FacturarComponent
+    FacturarComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
