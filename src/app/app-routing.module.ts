@@ -9,16 +9,18 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { InventarioComponent } from './pages/inventario/inventario.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
+import { FacturarComponent } from './pages/facturar/facturar.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
-  {path: 'ingresar', component: LoginComponent},
-  {path: 'registrar', component: SignupComponent},
-  {path: 'plataforma', component: SeleccionarPlataformaComponent},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'inventario', component: InventarioComponent},
-  {path: 'usuarios', component: UsuariosComponent},
-  {path: 'clientes', component: ClientesComponent}
+  { path: '', component: LoginComponent },
+  { path: 'ingresar', component: LoginComponent },
+  { path: 'registrar', component: SignupComponent },
+  { path: 'plataforma', component: SeleccionarPlataformaComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'inventario', component: InventarioComponent },
+  { path: 'usuarios', component: UsuariosComponent },
+  { path: 'clientes', component: ClientesComponent },
+  { path: 'facturar', component: FacturarComponent }
 ];
 
 @NgModule({

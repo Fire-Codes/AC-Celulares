@@ -107,7 +107,7 @@
           <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
         </mat-form-field>
       </div>
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
 
         <!-- ID Column -->
         <ng-container matColumnDef="id">

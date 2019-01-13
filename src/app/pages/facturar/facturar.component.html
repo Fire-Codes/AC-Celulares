@@ -1,3 +1,332 @@
-<p>
-  facturar works!
-</p>
+<body>
+  <!--Comienzan los Modals-->
+  <!--Editar un Producto Modal-->
+  <ng-template #editarProducto let-modal>
+    <div class="modal-header bg-warning">
+      <h4 class="modal-title">Editar Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput placeholder="Cédula" value="084-100899-1000J" disabled="true">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombres" required value="Edycar Jesus">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellidos" required value="Reyes Jimenez">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dirección" placeholder="Gas. UNO San Martin 1/2 C. al Sur"></textarea>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input type="number" placeholder="Numero Telefónico" matInput required value="85601622">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <input type="text" matInput value="Masculino" disabled="true">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="Premium">Premium</option>
+                  <option value="Estandard">Estandard</option>
+                </select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="example-full-width">
+          <input matInput type="email" placeholder="Correo Electrónico" value="edycarreyes@gmail.com">
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Actualizar</button>
+    </div>
+  </ng-template>
+
+  <!--Eliminar Producto Modal-->
+  <ng-template #eliminarProducto let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Eliminar Venta</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-danger">
+      <p class="text-light">¿Estás seguro que deseas la venta VENT00001?</p>
+    </div>
+    <div class="modal-footer bg-danger">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+  <nav class="navbar navbar-dark bg-dark elevated shake">
+    <div class="container slideInLeft">
+      <a class="navbar-brand text-light">Facturar</a>
+      <form class="form-inline">
+        <span class="text-light">
+          Tasa de Cambio: $1 = C$32.5043 |
+        </span>
+        <button mat-icon-button disabled="true" class="text-secondary text-light my-2 my-sm-0" matTooltip="Historial de Ventas">
+          <mat-icon aria-label="Example icon-button with a heart icon">history</mat-icon>
+        </button>
+      </form>
+    </div>
+  </nav>
+  <div class="container mt-4">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
+        <mat-card class="elevated widthFullCard">
+          <mat-card-title>
+            Cliente
+          </mat-card-title>
+          <mat-card-content>
+            <form class="example-form">
+              <mat-form-field class="fullWidth">
+                <input matInput placeholder="Seleccionar Cliente" aria-label="State" [matAutocomplete]="auto"
+                  [formControl]="stateCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+                    <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
+                    <span>{{state.name}}</span> |
+                    <small>Population: {{state.population}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
+        <mat-card class="elevated widthFullCard">
+          <mat-card-title>
+            Vendedor
+          </mat-card-title>
+          <mat-card-content>
+            <form class="example-form">
+              <mat-form-field class="fullWidth">
+                <input matInput placeholder="Seleccionar Vendedor" aria-label="State" [matAutocomplete]="auto"
+                  [formControl]="stateCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+                    <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
+                    <span>{{state.name}}</span> |
+                    <small>Population: {{state.population}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
+        <mat-card class="elevated widthFullCard">
+          <mat-card-title>
+            Calcular Descuento
+          </mat-card-title>
+          <mat-card-content>
+            <form class="example-form">
+              <mat-form-field class="fullWidth">
+                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto"
+                  [formControl]="stateCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+                    <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
+                    <span>{{state.name}}</span> |
+                    <small>Population: {{state.population}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <input type="number" matInput placeholder="Precio Neto" value="500" disabled="true">
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <mat-select placeholder="Tipo de Descuento">
+                  <mat-option value="porcentaje">
+                    % | En Porcentaje
+                  </mat-option>
+                  <mat-option value="cantidad">
+                    C$ | En Cantidad
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <input type="number" matInput placeholder="Cantidad de Descuento" value="100">
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <span matPrefix>C$ &nbsp;</span>
+                <input type="number" matInput placeholder="Precio Final" value="400" disabled="true">
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
+        <mat-card class="elevated widthFullCard">
+          <mat-card-title>
+            Producto
+          </mat-card-title>
+          <mat-card-content>
+            <form class="example-form">
+              <mat-form-field class="fullWidth">
+                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto"
+                  [formControl]="stateCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+                    <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
+                    <span>{{state.name}}</span> |
+                    <small>Population: {{state.population}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <input matInput type="number" placeholder="Cantidad a Vender">
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <span matPrefix>C$ &nbsp;</span>
+                <input type="number" matInput placeholder="Descuento por Unidad">
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+          <mat-card-footer class="p-4">
+            <button mat-raised-button color="accent" class="elevated">Agregar Producto</button>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-4">
+    <div class="mb-4 slideInLeft">
+      <div class="container-fluid rounded-top p-4" style="background-color: #009688;">
+        <div class="float-right">
+          <button class="elevated text-center" matTooltip="Vender Productos" mat-fab style="background-color: #02756a;">
+            <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">attach_money</mat-icon>
+          </button>
+        </div>
+        <mat-card-title class="ml-4 mt-4 text-light">
+          Factura
+        </mat-card-title>
+      </div>
+      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> ID </th>
+          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Modelo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Modelo </th>
+          <td mat-cell *matCellDef="let row"> {{row.Producto}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Producto Column -->
+        <ng-container matColumnDef="Producto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Producto </th>
+          <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Precio Column -->
+        <ng-container matColumnDef="Precio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Precio </th>
+          <td mat-cell *matCellDef="let row"> C${{row.Precio}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Descuento Column -->
+        <ng-container matColumnDef="Descuento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Descuento </th>
+          <td mat-cell *matCellDef="let row">C${{row.Descuento}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Cantidad Column -->
+        <ng-container matColumnDef="Cantidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Cantidad </th>
+          <td mat-cell *matCellDef="let row"> {{row.Cantidad}} </td>
+          <td mat-footer-cell *matFooterCellDef class="text-light text-center"> Total </td>
+        </ng-container>
+
+        <!-- TotalCordoba Column -->
+        <ng-container matColumnDef="TotalCordoba">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total C$ </th>
+          <td mat-cell *matCellDef="let row"> C${{row.ValorCordoba}} </td>
+          <td mat-footer-cell *matFooterCellDef class="bg-secondary text-light text-center">C${{totalCordoba()}}</td>
+        </ng-container>
+
+        <!-- TotalDolar Column -->
+        <ng-container matColumnDef="TotalDolar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total $ </th>
+          <td mat-cell *matCellDef="let row"> ${{row.ValorDolar}} </td>
+          <td mat-footer-cell *matFooterCellDef class="bg-primary text-light text-center">${{totalDolar()}}</td>
+        </ng-container>
+
+        <!--Acciones Column-->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-light"> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="example-button-row">
+              <button mat-icon-button color="accent" matTooltip="Editar Venta" (click)='openVerticallyCentered(editarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Venta" (click)='openVerticallyCentered(eliminarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+              </button>
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!--Aqui comienzan los TH-->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="text-center text-light" style="background-color: #009688;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" style="background-color: #009688;"></tr>
+      </table>
+
+      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</body>
