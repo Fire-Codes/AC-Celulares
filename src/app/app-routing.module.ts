@@ -10,9 +10,11 @@ import { InventarioComponent } from './pages/inventario/inventario.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { FacturarComponent } from './pages/facturar/facturar.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
+  { path: '**', component: PageNotFoundComponent },
   { path: 'ingresar', component: LoginComponent },
   { path: 'registrar', component: SignupComponent },
   { path: 'plataforma', component: SeleccionarPlataformaComponent },
