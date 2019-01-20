@@ -37,6 +37,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { FacturarComponent } from './pages/facturar/facturar.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { CreditosComponent } from './pages/creditos/creditos.component';
+import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-credito.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { CreditosComponent } from './pages/creditos/creditos.component';
     ClientesComponent,
     FacturarComponent,
     PageNotFoundComponent,
-    CreditosComponent
+    CreditosComponent,
+    DetallesCreditoComponent
   ],
   imports: [
     BrowserModule,

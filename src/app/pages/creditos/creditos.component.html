@@ -1,3 +1,182 @@
-<p>
-  creditos works!
-</p>
+<body>
+
+  <!--comienzan los modals-->
+  <!--Agregar un Nuevo Credito Modal-->
+  <ng-template #nuevoCredito let-modal>
+    <div class="modal-header bg-warning">
+      <h4 class="modal-title">Editar Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput placeholder="Cédula" value="084-100899-1000J" disabled="true">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombres" required value="Edycar Jesus">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellidos" required value="Reyes Jimenez">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dirección" placeholder="Gas. UNO San Martin 1/2 C. al Sur"></textarea>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input type="number" placeholder="Numero Telefónico" matInput required value="85601622">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <input type="text" matInput value="Masculino" disabled="true">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="Premium">Premium</option>
+                  <option value="Estandard">Estandard</option>
+                </select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="example-full-width">
+          <input matInput type="email" placeholder="Correo Electrónico" value="edycarreyes@gmail.com">
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Actualizar</button>
+    </div>
+  </ng-template>
+  <!--Eliminar CreditoCliente Modal-->
+  <ng-template #eliminarCreditoCliente let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Eliminar Crédito de Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-danger">
+      <p class="text-light">¿Estás seguro que deseas eliminar el Crédito del Cliente CLI00001?</p>
+    </div>
+    <div class="modal-footer bg-danger">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+  <nav class="navbar navbar-dark bg-dark elevated shake">
+    <div class="container slideInLeft">
+      <a class="navbar-brand text-light">Créditos</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="slideInLeft">
+      <div class="container-fluid bg-success rounded-top p-4">
+        <div matTooltip="Realizar Nuevo Crédito" class="float-right"><button (click)='openVerticallyCentered(nuevoCredito)'
+            class="elevated text-center bg-success" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">attach_money</mat-icon>
+          </button>
+        </div>
+        <mat-card-title class="ml-4 mt-4 text-dark">
+          Créditos
+        </mat-card-title>
+        <mat-form-field class="ml-4">
+          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        </mat-form-field>
+      </div>
+      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        </ng-container>
+
+        <!-- Telefono Column -->
+        <ng-container matColumnDef="Telefono">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+          <td mat-cell *matCellDef="let row"> {{row.Telefono}} </td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+        </ng-container>
+
+        <!-- Tipo Column -->
+        <ng-container matColumnDef="Tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+          <td mat-cell *matCellDef="let row"> {{row.Tipo}} </td>
+        </ng-container>
+
+        <!-- Cedula Column -->
+        <ng-container matColumnDef="Cedula">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cedula </th>
+          <td mat-cell *matCellDef="let row"> {{row.Cedula}} </td>
+        </ng-container>
+
+        <!--Acciones Column-->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="example-button-row">
+              <button mat-icon-button class="text-primary" matTooltip="Ver Cliente">
+                <!--(click)='openVerticallyCentered(verCliente, row)'-->
+                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button class="text-secondary" matTooltip="Abonar Cuota" (click)='verDetallesCredito(row)'>
+                <i class="fas fa-piggy-bank text-secondary" style="font-size: 1.3rem;"></i>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)='openVerticallyCentered(eliminarCreditoCliente, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--Aqui comienzan los TH-->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</body>
