@@ -12,6 +12,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { FacturarComponent } from './pages/facturar/facturar.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { CreditosComponent } from './pages/creditos/creditos.component';
+import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-credito.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'clientes', component: ClientesComponent },
   { path: 'facturar', component: FacturarComponent },
   { path: 'creditos', component: CreditosComponent },
+  { path: 'detallesCredito', component: DetallesCreditoComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
