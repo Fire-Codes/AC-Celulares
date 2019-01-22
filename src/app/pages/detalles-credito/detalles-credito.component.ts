@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ServicioService } from '../../servicios/servicio.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 // importacion del componente para los modals
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { type } from 'os';
 
 // declaracion de la interfaz del cliente
 export interface UserData {
@@ -21,8 +20,14 @@ export interface UserData {
   styleUrls: ['./detalles-credito.component.scss']
 })
 export class DetallesCreditoComponent implements OnInit {
+  // variables de input, output y eventemitter
   // variable que contendra los datos del cliente que se pasaron desde el router
-  cliente: any;
+  @Input() cliente: UserData = null;
+  @Input() mostrarDetallesCliente: boolean = false;
+  @Output() cerrarDetalles = new EventEmitter();
+
+  // variable que contendra los datos del cliente que se pasaron desde el router
+  //cliente: any;
 
   constructor(
     public servicio: ServicioService,
@@ -31,10 +36,10 @@ export class DetallesCreditoComponent implements OnInit {
     public route: ActivatedRoute
   ) {
     // inyeccion del cliente llamado desde el router
-    this.route.queryParams.subscribe((parametro: any) => {
+    /*this.route.queryParams.subscribe((parametro: any) => {
       // se asigna el valor del parametro a la variable cliente
       this.cliente = parametro;
-    });
+    });*/
   }
 
   ngOnInit() {
@@ -52,4 +57,8 @@ export class DetallesCreditoComponent implements OnInit {
     this.ngbModal.open(content, { centered: true });
   }
 
+  //onCerrarDetalles fn
+  onCerrarDetalles() {
+    this.cerrarDetalles.emit();
+  }
 }
