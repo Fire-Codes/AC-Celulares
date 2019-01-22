@@ -1,3 +1,30 @@
-<p>
-  detalles-credito works!
-</p>
+<body>
+  <!--Comienzan los Modals-->
+  <!--Eliminar CreditoCliente Modal-->
+  <ng-template #eliminarCreditoCliente let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Eliminar Crédito de Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-danger">
+      <p class="text-light">¿Estás seguro que deseas eliminar el Crédito del Cliente CLI00001?</p>
+    </div>
+    <div class="modal-footer bg-danger">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+  <nav class="navbar navbar-light bg-info">
+    <a class="navbar-brand text-dark hoverable" (click)="navegar('creditos')">
+      <mat-icon aria-label="regresar">arrow_back</mat-icon>
+    </a>
+    <span class="text-center text-dark">Crédito CRED{{cliente.id}}</span>
+    <form class="form-inline">
+      <button mat-icon-button color="warn" matTooltip="Eliminar Crédito" (click)='openVerticallyCentered(eliminarCreditoCliente)'>
+        <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+      </button>
+    </form>
+  </nav>
+</body>
