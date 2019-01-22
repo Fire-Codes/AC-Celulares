@@ -113,7 +113,7 @@ export class CreditosComponent implements OnInit {
 
   // se abre la pagina para ver los detalles del credito de las persones
   verDetallesCredito(cliente: UserData) {
-    this.router.navigate(['/detallesCredito'], { queryParams: { cliente: cliente } });
+    this.router.navigate(['/detallesCredito'], { queryParams: { cliente: JSON.stringify(cliente) } });
   }
 
 }

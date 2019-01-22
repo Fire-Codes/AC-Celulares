@@ -157,11 +157,10 @@
           <th mat-header-cell *matHeaderCellDef> Acciones </th>
           <td mat-cell *matCellDef="let row">
             <div class="example-button-row">
-              <button mat-icon-button class="text-primary" matTooltip="Ver Cliente">
-                <!--(click)='openVerticallyCentered(verCliente, row)'-->
+              <button mat-icon-button class="text-primary" matTooltip="Ver Crédito de Cliente" (click)='verDetallesCredito(row)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
               </button>
-              <button mat-icon-button class="text-secondary" matTooltip="Abonar Cuota" (click)='verDetallesCredito(row)'>
+              <button mat-icon-button class="text-secondary" matTooltip="Abonar Cuota">
                 <i class="fas fa-piggy-bank text-secondary" style="font-size: 1.3rem;"></i>
               </button>
               <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)='openVerticallyCentered(eliminarCreditoCliente, row)'>
