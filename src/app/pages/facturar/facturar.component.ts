@@ -84,7 +84,7 @@ export class FacturarComponent implements OnInit {
         map(state => state ? this._filterStates(state) : this.states.slice())
       );
     // Create 100 users
-    const productos = Array.from({ length: 100 }, (_, k) => crearProductos(k + 1));
+    const productos = Array.from({ length: 10 }, (_, k) => crearProductos(k + 1));
     this.productos = productos;
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(productos);

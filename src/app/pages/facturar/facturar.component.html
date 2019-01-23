@@ -122,8 +122,7 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Cliente" aria-label="State" [matAutocomplete]="auto"
-                  [formControl]="stateCtrl">
+                <input matInput placeholder="Seleccionar Cliente" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
                     <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
@@ -144,8 +143,7 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Vendedor" aria-label="State" [matAutocomplete]="auto"
-                  [formControl]="stateCtrl">
+                <input matInput placeholder="Seleccionar Vendedor" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
                     <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
@@ -166,8 +164,7 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto"
-                  [formControl]="stateCtrl">
+                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
                     <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
@@ -208,8 +205,7 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto"
-                  [formControl]="stateCtrl">
+                <input matInput placeholder="Seleccionar Producto" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
                     <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
@@ -309,9 +305,6 @@
           <th mat-header-cell *matHeaderCellDef class="text-light"> Acciones </th>
           <td mat-cell *matCellDef="let row">
             <div class="example-button-row">
-              <button mat-icon-button color="accent" matTooltip="Editar Venta" (click)='openVerticallyCentered(editarProducto, row)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-              </button>
               <button mat-icon-button color="warn" matTooltip="Eliminar Venta" (click)='openVerticallyCentered(eliminarProducto, row)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
               </button>
