@@ -45,7 +45,6 @@ export class FacturarComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'Producto', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
   dataSource: MatTableDataSource<Producto>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   states: State[] = [
@@ -93,7 +92,6 @@ export class FacturarComponent implements OnInit {
   ngOnInit() {
     // Sort table components init
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   _filterStates(value: string): State[] {

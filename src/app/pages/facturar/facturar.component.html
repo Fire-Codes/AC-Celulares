@@ -298,7 +298,18 @@
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
         <mat-card class="elevated widthFullCard">
           <mat-card-title>
-            Producto
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                Producto
+              </div>
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="float-right">
+                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab (click)="openVerticallyCentered(agregarCliente)">
+                    <mat-icon aria-label="Example icon-button with a heart icon" class="text-light justify-content-center align-items-center">format_list_bulleted</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
           </mat-card-title>
           <mat-card-content>
             <form class="example-form">
@@ -325,7 +336,7 @@
             </form>
           </mat-card-content>
           <mat-card-footer class="mt-2 mb-2 ml-2">
-            <button mat-raised-button color="accent" class="elevated">Agregar Producto</button>
+            <button mat-raised-button class="bg-info text-light elevated">Agregar Producto</button>
           </mat-card-footer>
         </mat-card>
       </div>
@@ -419,8 +430,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" style="background-color: #009688;"></tr>
       </table>
-
-      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </body>
