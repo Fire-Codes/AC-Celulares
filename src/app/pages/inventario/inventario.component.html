@@ -232,207 +232,101 @@
 
   <!--Main Content-->
   <div class="container pt-4">
+    <div class="mb-4 slideInLeft">
+      <div class="container-fluid bg-info rounded-top p-4">
+        <div class="float-right">
+          <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
+          </button>
+          <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+          </button>
+          <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+          </button>
+        </div>
+        <mat-form-field class="ml-4">
+          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        </mat-form-field>
+      </div>
+      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
 
-    <!--Comienzan las Tabs-->
-    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4 bg-info" color="accent">
-      <mat-tab label="Todos los Productos">
-        <div class="mb-4 slideInLeft">
-          <div class="container-fluid bg-info rounded-top p-4">
-            <div class="float-right">
-              <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon
-                  class="fas fa-plus text-dark"></i>
+        <!-- Clave Column -->
+        <ng-container matColumnDef="Clave">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
+          <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
+        </ng-container>
+
+        <!-- Marca Column -->
+        <ng-container matColumnDef="Marca">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+          <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
+        </ng-container>
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Modelo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+          <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
+        </ng-container>
+
+        <!-- Existencia Column -->
+        <ng-container matColumnDef="Existencia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
+          <td mat-cell *matCellDef="let row"> {{row.Existencia}} </td>
+        </ng-container>
+
+        <!-- Precio de Compra Column -->
+        <ng-container matColumnDef="pCompra">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
+          <td mat-cell *matCellDef="let row" class="text-primary"> {{row.pCompra}} </td>
+        </ng-container>
+
+        <!-- Precio de Venta Column -->
+        <ng-container matColumnDef="pVenta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
+          <td mat-cell *matCellDef="let row" class="text-success"> {{row.pVenta}} </td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+        </ng-container>
+
+        <!-- Categoria Column -->
+        <ng-container matColumnDef="Categoria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
+          <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
+        </ng-container>
+
+        <!-- Acciones Column -->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="example-button-row">
+              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
               </button>
-              <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+              </button>
+              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, row)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
               </button>
-              <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
-                <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
-              </button>
             </div>
-            <mat-form-field class="ml-4">
-              <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-            </mat-form-field>
-          </div>
-          <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+          </td>
+        </ng-container>
 
-            <!-- Clave Column -->
-            <ng-container matColumnDef="Clave">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
-              <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
-            </ng-container>
-
-            <!-- Marca Column -->
-            <ng-container matColumnDef="Marca">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-              <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
-            </ng-container>
-
-            <!-- Modelo Column -->
-            <ng-container matColumnDef="Modelo">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-              <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
-            </ng-container>
-
-            <!-- Existencia Column -->
-            <ng-container matColumnDef="Existencia">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
-              <td mat-cell *matCellDef="let row"> {{row.Existencia}} </td>
-            </ng-container>
-
-            <!-- Precio de Compra Column -->
-            <ng-container matColumnDef="pCompra">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
-              <td mat-cell *matCellDef="let row" class="text-primary"> {{row.pCompra}} </td>
-            </ng-container>
-
-            <!-- Precio de Venta Column -->
-            <ng-container matColumnDef="pVenta">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
-              <td mat-cell *matCellDef="let row" class="text-success"> {{row.pVenta}} </td>
-            </ng-container>
-
-            <!-- Nombre Column -->
-            <ng-container matColumnDef="Nombre">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-              <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
-            </ng-container>
-
-            <!-- Categoria Column -->
-            <ng-container matColumnDef="Categoria">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
-              <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
-            </ng-container>
-
-            <!-- Acciones Column -->
-            <ng-container matColumnDef="Acciones">
-              <th mat-header-cell *matHeaderCellDef> Acciones </th>
-              <td mat-cell *matCellDef="let row">
-                <div class="example-button-row">
-                  <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
-                  </button>
-                  <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                  </button>
-                  <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
-                  </button>
-                  <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
-
-            <!--Aqui comienzan los TH-->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
-        </div>
-      </mat-tab>
-      <mat-tab label="Productos Reservados">
-        <div class="mb-4 slideInLeft">
-          <div class="container-fluid bg-secondary rounded-top p-4">
-            <div class="float-right">
-              <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon
-                  class="fas fa-plus text-dark"></i>
-              </button>
-              <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
-                <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
-              </button>
-              <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
-                <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
-              </button>
-            </div>
-            <mat-form-field class="ml-4">
-              <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-            </mat-form-field>
-          </div>
-          <table mat-table [dataSource]="dataSource" matSort class="table-hover">
-
-            <!-- Clave Column -->
-            <ng-container matColumnDef="Clave">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
-              <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
-            </ng-container>
-
-            <!-- Marca Column -->
-            <ng-container matColumnDef="Marca">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-              <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
-            </ng-container>
-
-            <!-- Modelo Column -->
-            <ng-container matColumnDef="Modelo">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-              <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
-            </ng-container>
-
-            <!-- Existencia Column -->
-            <ng-container matColumnDef="Existencia">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
-              <td mat-cell *matCellDef="let row"> {{row.Existencia}} </td>
-            </ng-container>
-
-            <!-- Precio de Compra Column -->
-            <ng-container matColumnDef="pCompra">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
-              <td mat-cell *matCellDef="let row" class="text-primary"> {{row.pCompra}} </td>
-            </ng-container>
-
-            <!-- Precio de Venta Column -->
-            <ng-container matColumnDef="pVenta">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
-              <td mat-cell *matCellDef="let row" class="text-success"> {{row.pVenta}} </td>
-            </ng-container>
-
-            <!-- Nombre Column -->
-            <ng-container matColumnDef="Nombre">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-              <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
-            </ng-container>
-
-            <!-- Categoria Column -->
-            <ng-container matColumnDef="Categoria">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
-              <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
-            </ng-container>
-
-            <!-- Acciones Column -->
-            <ng-container matColumnDef="Acciones">
-              <th mat-header-cell *matHeaderCellDef> Acciones </th>
-              <td mat-cell *matCellDef="let row">
-                <div class="example-button-row">
-                  <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
-                  </button>
-                  <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                  </button>
-                  <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
-                  </button>
-                  <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, row)'>
-                    <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
-
-            <!--Aqui comienzan los TH-->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+        <!--Aqui comienzan los TH-->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </body>
