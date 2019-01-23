@@ -1,5 +1,92 @@
 <body>
   <!--Comienzan los Modals-->
+  <!--Agregar nuevo cliente modal-->
+  <ng-template #agregarCliente let-modal>
+    <div class="modal-header bg-warning">
+      <h4 class="modal-title">Agregar Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput placeholder="Cédula">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombres" required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellidos" required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dirección"></textarea>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input type="number" placeholder="Numero Telefónico" matInput required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Sexo</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                </select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Tipo de Cliente</option>
+                  <option value="Estandard">Estandard</option>
+                  <option value="Premium">Premium</option>
+                </select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="example-full-width">
+          <input matInput type="email" placeholder="Correo Electrónico">
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+    </div>
+  </ng-template>
   <!--Editar un Producto Modal-->
   <ng-template #editarProducto let-modal>
     <div class="modal-header bg-warning">
@@ -117,7 +204,18 @@
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
         <mat-card class="elevated widthFullCard">
           <mat-card-title>
-            Cliente
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                Cliente
+              </div>
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="float-right">
+                  <button class="elevated text-center bg-warning" matTooltip="Agregar Nuevo Cliente" mat-fab (click)="openVerticallyCentered(agregarCliente)">
+                    <mat-icon aria-label="Example icon-button with a heart icon" class="text-dark justify-content-center align-items-center">person_add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
           </mat-card-title>
           <mat-card-content>
             <form class="example-form">
@@ -174,7 +272,7 @@
                 </mat-autocomplete>
               </mat-form-field>
               <mat-form-field class="fullWidth">
-                <input type="number" matInput placeholder="Precio Neto" value="500" disabled="true">
+                <input type="number" matInput placeholder="Precio C/U" value="500" disabled="true">
               </mat-form-field>
               <mat-form-field class="fullWidth">
                 <mat-select placeholder="Tipo de Descuento">
@@ -187,7 +285,7 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="fullWidth">
-                <input type="number" matInput placeholder="Cantidad de Descuento" value="100">
+                <input type="number" matInput placeholder="Cantidad o Porcentaje de Descuento" value="100">
               </mat-form-field>
               <mat-form-field class="fullWidth">
                 <span matPrefix>C$ &nbsp;</span>
@@ -215,6 +313,9 @@
                 </mat-autocomplete>
               </mat-form-field>
               <mat-form-field class="fullWidth">
+                <input matInput type="number" placeholder="Stock" disabled>
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
                 <input matInput type="number" placeholder="Cantidad a Vender">
               </mat-form-field>
               <mat-form-field class="fullWidth">
@@ -223,7 +324,7 @@
               </mat-form-field>
             </form>
           </mat-card-content>
-          <mat-card-footer class="p-4">
+          <mat-card-footer class="mt-2 mb-2 ml-2">
             <button mat-raised-button color="accent" class="elevated">Agregar Producto</button>
           </mat-card-footer>
         </mat-card>
