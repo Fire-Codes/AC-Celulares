@@ -13,6 +13,11 @@ export interface UserData {
   Cedula: String;
 }
 
+export interface Section {
+  name: string;
+  updated: Date;
+}
+
 
 @Component({
   selector: 'app-detalles-credito',
@@ -25,6 +30,35 @@ export class DetallesCreditoComponent implements OnInit {
   @Input() cliente: UserData = null;
   @Input() mostrarDetallesCliente: boolean = false;
   @Output() cerrarDetalles = new EventEmitter();
+
+  // variable que establece el tipo de cliente ingresado 'Premium' || 'Estándar'
+  esClientePremium: boolean = false;
+
+  // variable que almacena los tipos de zapatos en el caso para el historial de abonos
+  folders: Section[] = [
+    {
+      name: 'Photos',
+      updated: new Date('1/1/16'),
+    },
+    {
+      name: 'Recipes',
+      updated: new Date('1/17/16'),
+    },
+    {
+      name: 'Work',
+      updated: new Date('1/28/16'),
+    }
+  ];
+  notes: Section[] = [
+    {
+      name: 'Vacation Itinerary',
+      updated: new Date('2/20/16'),
+    },
+    {
+      name: 'Kitchen Remodel',
+      updated: new Date('1/18/16'),
+    }
+  ];
 
   // variable que contendra los datos del cliente que se pasaron desde el router
   //cliente: any;
@@ -46,6 +80,11 @@ export class DetallesCreditoComponent implements OnInit {
     console.log(this.cliente);
     console.log(typeof (this.cliente));
     console.log(this.cliente.Cedula.toString());
+    if (this.cliente.Tipo == 'Premium') {
+      this.esClientePremium = true;
+    } else {
+      this.esClientePremium = false;
+    }
   }
 
   navegar(ruta: string) {
