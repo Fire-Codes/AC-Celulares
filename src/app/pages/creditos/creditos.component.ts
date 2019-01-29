@@ -83,7 +83,7 @@ export class CreditosComponent implements OnInit {
   displayedColumns: string[] = ['id', 'Nombre', 'Telefono', 'Tipo', 'Cedula', 'Acciones'];
   dataSource: MatTableDataSource<UserData>;
   detallesCliente: UserData = null;
-  mostrarDetallesCliente: boolean = false;
+  mostrarDetallesCliente: Boolean = false;
 
   constructor(
     public ngbModal: NgbModal,
@@ -116,9 +116,9 @@ export class CreditosComponent implements OnInit {
 
   // se abre la pagina para ver los detalles del credito de las persones
   verDetallesCredito(content: string, cliente: UserData) {
-    //this.router.navigate(['/detallesCredito'], { queryParams: { cliente: JSON.stringify(cliente) } });
+    // this.router.navigate(['/detallesCredito'], { queryParams: { cliente: JSON.stringify(cliente) } });
     this.ngbModal.open(content, { centered: true });
-    console.log("Mostrando detalles del credito" + cliente.id);
+    console.log('Mostrando detalles del credito' + cliente.id);
     this.detallesCliente = cliente;
     this.mostrarDetallesCliente = true;
   }
