@@ -40,6 +40,7 @@ import { CreditosComponent } from './pages/creditos/creditos.component';
 import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-credito.component';
 import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.co
     CreditosComponent,
     DetallesCreditoComponent,
     ServiciosComponent,
-    PagoServiciosComponent
+    PagoServiciosComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
