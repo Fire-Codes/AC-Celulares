@@ -14,6 +14,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { CreditosComponent } from './pages/creditos/creditos.component';
 import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-credito.component';
 import { ServiciosComponent } from './pages/servicios/servicios.component';
+import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'creditos', component: CreditosComponent },
   { path: 'detallesCredito', component: DetallesCreditoComponent },
   { path: 'servicios', component: ServiciosComponent },
+  { path: 'pagoservicios', component: PagoServiciosComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
