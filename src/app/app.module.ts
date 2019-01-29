@@ -39,6 +39,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { CreditosComponent } from './pages/creditos/creditos.component';
 import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-credito.component';
 import { ServiciosComponent } from './pages/servicios/servicios.component';
+import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ServiciosComponent } from './pages/servicios/servicios.component';
     PageNotFoundComponent,
     CreditosComponent,
     DetallesCreditoComponent,
-    ServiciosComponent
+    ServiciosComponent,
+    PagoServiciosComponent
   ],
   imports: [
     BrowserModule,
