@@ -1,12 +1,20 @@
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="sidePanelAbierto bounceIn" id="sidenavPanel" mode="side" [opened]='mostrarNav'>
-    <div class="container text-center d-block" *ngIf="abierto">
+  <mat-drawer #drawer class="sidePanelCerrado bounceIn" id="sidenavPanel" mode="side" [opened]='mostrarNav'>
+    <div class="container text-center d-block" *ngIf="abierto; else avatar2">
       <img src="../../../assets/ProfilePictures/edycarreyes99.jpg" alt="Avatar" class="avatar mt-4">
       <div class="text-light mt-2">
         Edycar Reyes
       </div>
     </div>
-    <mat-list class="pt-2 text-center">
+    <ng-template #avatar2>
+      <div class="container-fluid mx-auto">
+        <img src="../../../assets/ProfilePictures/edycarreyes99.jpg" alt="Avatar" class="avatar2 mt-4">
+        <div class="text-light mt-2">
+          &nbsp;
+        </div>
+      </div>
+    </ng-template>
+    <mat-list class="pt-2 text-center align-middle">
       <a class="onHover" mat-list-item style="text-decoration: none;" (click)="navegar('dashboard')">
         <i matListIcon class="fas fa-home text-light"></i>
         <h3 matLine class="text-light" *ngIf="abierto"> Inicio </h3>
@@ -48,16 +56,37 @@
         <i matListIcon class="fas fa-user-circle text-light"></i>
         <h3 matLine class="text-light" *ngIf="abierto"> Mi Perfil </h3>
       </a>
-      <div class="container mt-4 text-center mb-4" *ngIf="abierto">
+      <div class="container mt-4 text-center mb-4" *ngIf="abierto; else salirCerrado">
         <button mat-raised-button color="warn" class="elevated" (click)="navegar('')"><i matListIcon class="fas fa-sign-out-alt text-light"></i>
-          Cerrar Sesion</button>
+          Cerrar Sesion
+        </button>
       </div>
+      <ng-template #salirCerrado>
+        <div class="container mt-4 text-center mb-4">
+          <button mat-mini-fab (click)="navegar('')" matTooltip="Cerrar Sesión" class="bg-danger">
+            <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">exit_to_app</mat-icon>
+          </button>
+        </div>
+      </ng-template>
     </mat-list>
-    <div class="container-flui text-center">
-      <button mat-icon-button (click)="abrirCerrar()">
-        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">arrow_back_ios</mat-icon>
+    <div class="text-center position-sticky fixed-bottom" *ngIf="abierto; else cerrado">
+      <button mat-icon-button class="mx-auto" (click)="abrirCerrar()" matTooltip="Contraer">
+        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light mx-auto">arrow_back_ios</mat-icon>
       </button>
+      <!--<button mat-icon-button (click)="abrirCerrar()" matTooltip="Contraer">
+        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">arrow_back_ios</mat-icon>
+      </button>-->
     </div>
+    <ng-template #cerrado>
+      <div class="text-center position-sticky fixed-bottom">
+        <button mat-icon-button class="mx-auto" (click)="abrirCerrar()" matTooltip="Expandir">
+          <mat-icon aria-label="Example icon-button with a heart icon" class="rotated text-light mx-auto">arrow_back_ios</mat-icon>
+        </button>
+      </div>
+      <!--<button mat-icon-button (click)="abrirCerrar()" matTooltip="Expandir">
+        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light rotated">arrow_back_ios</mat-icon>
+      </button>-->
+    </ng-template>
   </mat-drawer>
   <mat-drawer-content class="example-sidenav-content">
     <router-outlet></router-outlet>

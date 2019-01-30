@@ -4,12 +4,14 @@
   margin: 0px;
 }
 .sidePanelAbierto {
-  /*width: 70px;*/
+  width: 195px;
   background-color: darkslategray;
+  transition: width 0.3s !important;
 }
 .sidePanelCerrado {
-  width: 100;
+  width: 70px;
   background-color: darkslategray;
+  transition: width 0.3s !important;
 }
 .elevated {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 10px 7px rgba(0, 0, 0, 0.22);
@@ -20,6 +22,12 @@
   height: 100px;
   border-radius: 50%;
 }
+.avatar2 {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
 .onHover:hover {
   cursor: pointer;
   background-color: #00000031;
@@ -28,4 +36,19 @@
 hr {
   color: white;
   background-color: white;
+}
+
+.rotated {
+  -webkit-transform: rotate(180deg); /* Chrome and other webkit browsers */
+  -moz-transform: rotate(180deg); /* FF */
+  -o-transform: rotate(180deg); /* Opera */
+  -ms-transform: rotate(180deg); /* IE9 */
+  transform: rotate(180deg); /* W3C compliant browsers */
+
+  /* IE8 and below */
+  filter: progid:DXImageTransform.Microsoft.Matrix(M11=-1, M12=0, M21=0, M22=-1, DX=0, DY=0, SizingMethod='auto expand');
+}
+
+mat-drawer {
+  transition: transition 0.3s !important;
 }

@@ -15,8 +15,7 @@ import { ServicioService } from '../../servicios/servicio.service';
 export class NavsideComponent implements OnInit {
   mostrarNav = true;
   abierto = false;
-  panel = document.getElementById('sidenavPanel');
-
+  panel: any;
   constructor(
     public router: Router,
     private servicio: ServicioService
@@ -30,6 +29,7 @@ export class NavsideComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.panel = document.getElementById('sidenavPanel');
   }
 
   navegar(ruta: string) {
@@ -42,10 +42,14 @@ export class NavsideComponent implements OnInit {
     if (this.abierto) {
       /*$('#sidenavPanel').removeClass('sidePanelAbierto');
       $('#sidenavPanel').addClass('sidePanelCerrado');*/
+      this.panel.classList.remove('sidePanelAbierto');
+      this.panel.classList.add('sidePanelCerrado');
       this.abierto = false;
     } else {
       /*$('#sidenavPanel').removeClass('sidePanelCerrado');
       $('#sidenavPanel').addClass('sidePanelAbierto');*/
+      this.panel.classList.remove('sidePanelCerrado');
+      this.panel.classList.add('sidePanelAbierto');
       this.abierto = true;
     }
   }
