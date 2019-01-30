@@ -1,14 +1,18 @@
 .example-container {
-    width: 100vw;
-    height: 100vh;
-    margin: 0px;
-  }
-.sidePanel{
-  width: 195px;
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+}
+.sidePanelAbierto {
+  /*width: 70px;*/
   background-color: darkslategray;
 }
-.elevated{
-  box-shadow: 0 5px 10px rgba(0,0,0,0.30), 0 10px 7px rgba(0,0,0,0.22);
+.sidePanelCerrado {
+  width: 100;
+  background-color: darkslategray;
+}
+.elevated {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 10px 7px rgba(0, 0, 0, 0.22);
 }
 .avatar {
   vertical-align: middle;
@@ -16,6 +20,12 @@
   height: 100px;
   border-radius: 50%;
 }
-.onHover:hover{
+.onHover:hover {
   cursor: pointer;
+  background-color: #00000031;
+}
+
+hr {
+  color: white;
+  background-color: white;
 }

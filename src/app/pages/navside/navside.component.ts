@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import * as $ from 'jquery';
 
 // importacion del servicio
 import { ServicioService } from '../../servicios/servicio.service';
+
+
 @Component({
   selector: 'app-navside',
   templateUrl: './navside.component.html',
@@ -11,6 +14,9 @@ import { ServicioService } from '../../servicios/servicio.service';
 })
 export class NavsideComponent implements OnInit {
   mostrarNav = true;
+  abierto = false;
+  panel = document.getElementById('sidenavPanel');
+
   constructor(
     public router: Router,
     private servicio: ServicioService
@@ -31,5 +37,16 @@ export class NavsideComponent implements OnInit {
   }
   imprimir() {
     // window.print();
+  }
+  abrirCerrar() {
+    if (this.abierto) {
+      /*$('#sidenavPanel').removeClass('sidePanelAbierto');
+      $('#sidenavPanel').addClass('sidePanelCerrado');*/
+      this.abierto = false;
+    } else {
+      /*$('#sidenavPanel').removeClass('sidePanelCerrado');
+      $('#sidenavPanel').addClass('sidePanelAbierto');*/
+      this.abierto = true;
+    }
   }
 }
