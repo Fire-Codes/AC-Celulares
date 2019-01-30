@@ -1,0 +1,303 @@
+<body>
+    <!--Seleccionar Cliente Modal-->
+    <ng-template #seleccionarCliente let-modal>
+        <div class="modal-header bg-dark">
+            <h4 class="modal-title text-light">Seleccionar Cliente</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <mat-list>
+                <h3 mat-subheader>Folders</h3>
+                <mat-list-item *ngFor="let folder of folders">
+                    <mat-icon mat-list-icon>folder</mat-icon>
+                    <h4 mat-line>{{folder.name}}</h4>
+                    <p mat-line> {{folder.updated | date}} </p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <h3 mat-subheader>Notes</h3>
+                <mat-list-item *ngFor="let note of notes">
+                    <mat-icon mat-list-icon>note</mat-icon>
+                    <h4 mat-line>{{note.name}}</h4>
+                    <p mat-line> {{note.updated | date}} </p>
+                </mat-list-item>
+            </mat-list>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+            <button type="button" class="btn btn-dark text-light" (click)="modal.close('Close click')">Agregar</button>
+        </div>
+    </ng-template>
+    <!--Agregar un Nuevo Servicio Modal-->
+    <ng-template #agregarServicio let-modal>
+        <div class="modal-header bg-dark">
+            <h4 class="modal-title text-light">Agregar Nuevo Servicio</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="example-form">
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="ID de Servicio" disabled value="SERV00001">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Nombre" required value="Cambio de Pantalla">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="number" placeholder="Precio" required value="300">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <select matNativeControl required>
+                                <option value="-1">Tipo de Servicio</option>
+                                <option value="Reparacion">Reparacion</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field style="width: 100%;">
+                            <textarea matInput placeholder="Descripcion"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+            <button type="button" class="btn btn-dark text-light" (click)="modal.close('Close click')">Agregar</button>
+        </div>
+    </ng-template>
+    <!--Facturar un Servicio Modal-->
+    <ng-template #facturarServicio let-modal>
+        <div class="modal-header bg-secondary">
+            <h4 class="modal-title text-light">Facturar Servicio</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="example-form">
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="ID de Servicio" disabled value="SERV00001">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Nombre" required value="Cambio de Pantalla" disabled="">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button mat-stroked-button color="primary" (click)="mostrarModal(seleccionarCliente)">Seleccionar
+                            Vendedor</button>
+                    </div>
+                    <div class="col-6">
+                        <button mat-stroked-button color="primary" (click)="mostrarModal(seleccionarCliente)">Seleccionar
+                            Cliente</button>
+                    </div>
+
+                    <div class="col-6 mt-2">
+                        <mat-form-field>
+                            <select matNativeControl required>
+                                <option value="-1">Tipo de Servicio</option>
+                                <option value="Reparacion">Reparacion</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <mat-form-field>
+                            <span matPrefix>C$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio" value="300" disabled="true">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field style="width: 100%;">
+                            <textarea matInput placeholder="Descripcion"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+            <button type="button" class="btn btn-secondary text-light" (click)="modal.close('Close click')">Facturar</button>
+        </div>
+    </ng-template>
+    <nav class="navbar navbar-dark bg-dark elevated shake">
+        <div class="container slideInLeft">
+            <a class="navbar-brand text-light">Servicios Técnicos</a>
+            <form class="form-inline">
+                <button mat-icon-button class="col" matTooltip="Agregar Nuevo Servicio Técnico" (click)="mostrarModal(agregarServicio)">
+                    <mat-icon aria-label="Example icon-button with a heart icon" class="text-white">add</mat-icon>
+                </button>
+            </form>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <div class="row mt-5">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button type="button" mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio"
+                                data-toggle="modal" data-target="#exampleModalLong">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
+                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
+                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
+                    <div class="card-body text-secondary">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
+                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
+                        quidem numquam recusandae neque? Molestiae, dolorem!
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary">
+                        <div class="row">
+                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
+                                <mat-icon aria-label="Example icon-button with a heart icon" class="text-secondary">shopping_cart</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
+                                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

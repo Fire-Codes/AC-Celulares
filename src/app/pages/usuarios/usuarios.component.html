@@ -1,0 +1,283 @@
+<body>
+  <!--Comienzan los Modals-->
+  <!--DatePicker Modal-->
+  <ng-template #datePicker let-modal>
+    <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+  </ng-template>
+  <!--Agregar Nuevo Usuario Modal-->
+  <ng-template #agregarUsuario let-modal>
+    <div class="modal-header bg-warning">
+      <h4 class="modal-title">Agregar Usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID de Usuario" disabled value="USR00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput placeholder="Cédula" required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombres" required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellidos" required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dirección" required></textarea>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input type="number" placeholder="Numero Telefónico" matInput required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Sexo</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                </select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Tipo de Usuario</option>
+                  <option value="Estandard">Estandard</option>
+                  <option value="Premium">Administrador</option>
+                </select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <input type="email" placeholder="Correo Electrónico" matInput required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput required (click)="d.toggle()" placeholder="Fecha de Nacimiento" name="dp" [(ngModel)]="model" ngbDatepicker
+                  #d="ngbDatepicker">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+    </div>
+  </ng-template>
+  <nav class="navbar navbar-dark bg-dark elevated shake">
+    <div class="container slideInLeft">
+      <a class="navbar-brand text-light">Usuarios</a>
+      <form class="form-inline">
+        <button class="elevated text-center" matTooltip="Agregar Nuevo Usuario" mat-fab color="accent" (click)="openVerticallyCentered(agregarUsuario)"><i
+            matListIcon class="fas fa-user-plus text-dark"></i></button>
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    <h1 class="title text-center mt-4">
+      Este es nuestro equipo
+      <br>
+      <small>Tu equipo presentado de una manera detallada.</small>
+    </h1>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-md-4 col-sm-6">
+        <div class="card-container elevated">
+          <div class="card">
+            <div class="front">
+              <div class="cover">
+                <img src="../../../assets/Usuarios/images/rotating_card_thumb2.png" />
+              </div>
+              <div class="user">
+                <img class="img-circle" src="../../../assets/Usuarios/images/rotating_card_profile3.png" />
+              </div>
+              <div class="content">
+                <div class="main">
+                  <h3 class="name">Kevin Aguilar</h3>
+                  <p class="profession">CEO AC Team</p>
+                  <p class="text-center">"I'm the new Sinatra, and since I made it here I can make it anywhere, yeah, they
+                    love me everywhere"</p>
+                </div>
+              </div>
+            </div> <!-- end front panel -->
+            <div class="back">
+              <div class="content">
+                <div class="main">
+                  <h4 class="text-center">Job Description</h4>
+                  <p class="text-center">Web design, Adobe Photoshop, HTML5, CSS3, Corel and many others...</p>
+
+                  <div class="stats-container">
+                    <div class="stats">
+                      <h4>235</h4>
+                      <p>
+                        Followers
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>114</h4>
+                      <p>
+                        Following
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>35</h4>
+                      <p>
+                        Projects
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div> <!-- end back panel -->
+          </div> <!-- end card -->
+        </div> <!-- end card-container -->
+      </div> <!-- end col sm 3 -->
+      <!--         <div class="col-sm-1"></div> -->
+      <div class="col-md-4 col-sm-6">
+        <div class="card-container elevated">
+          <div class="card">
+            <div class="front">
+              <div class="cover">
+                <img src="../../../assets/Usuarios/images/rotating_card_thumb.png" />
+              </div>
+              <div class="user">
+                <img class="img-circle" src="../../../assets/Usuarios/images/rotating_card_profile2.png" />
+              </div>
+              <div class="content">
+                <div class="main">
+                  <h3 class="name">Edycar Reyes</h3>
+                  <p class="profession">Desarrollador Multi-Plataforma</p>
+
+                  <p class="text-center">"I'm the new Sinatra, and since I made it here I can make it anywhere, yeah, they
+                    love me everywhere"</p>
+                </div>
+              </div>
+            </div> <!-- end front panel -->
+            <div class="back">
+              <div class="content">
+                <div class="main">
+                  <h4 class="text-center">Job Description</h4>
+                  <p class="text-center">Web design, Adobe Photoshop, HTML5, CSS3, Corel and many others...</p>
+
+                  <div class="stats-container">
+                    <div class="stats">
+                      <h4>235</h4>
+                      <p>
+                        Followers
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>114</h4>
+                      <p>
+                        Following
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>35</h4>
+                      <p>
+                        Projects
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div> <!-- end back panel -->
+          </div> <!-- end card -->
+        </div> <!-- end card-container -->
+      </div> <!-- end col-md-4 col-sm-6 -->
+      <div class="col-md-4 col-sm-6">
+        <div class="card-container elevated">
+          <div class="card">
+            <div class="front">
+              <div class="cover">
+                <img src="../../../assets/Usuarios/images/rotating_card_thumb3.png" />
+              </div>
+              <div class="user">
+                <img class="img-circle" src="../../../assets/Usuarios/images/rotating_card_profile.png" />
+              </div>
+              <div class="content">
+                <div class="main">
+                  <h3 class="name">Diego Coronado</h3>
+                  <p class="profession">Gerente de Ventas</p>
+
+                  <p class="text-center">"I'm the new Sinatra, and since I made it here I can make it anywhere, yeah, they
+                    love me everywhere"</p>
+                </div>
+              </div>
+            </div> <!-- end front panel -->
+            <div class="back">
+              <div class="content">
+                <div class="main">
+                  <h4 class="text-center">Job Description</h4>
+                  <p class="text-center">Web design, Adobe Photoshop, HTML5, CSS3, Corel and many others...</p>
+
+                  <div class="stats-container">
+                    <div class="stats">
+                      <h4>235</h4>
+                      <p>
+                        Followers
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>114</h4>
+                      <p>
+                        Following
+                      </p>
+                    </div>
+                    <div class="stats">
+                      <h4>35</h4>
+                      <p>
+                        Projects
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div> <!-- end back panel -->
+          </div> <!-- end card -->
+        </div> <!-- end card-container -->
+      </div> <!-- end col-md-4 col-sm-6 -->
+    </div>
+  </div>
+</body>

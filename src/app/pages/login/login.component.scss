@@ -1,0 +1,26 @@
+body{
+	overflow-y: hidden;
+}
+div.jumbotron.hero-technology {
+    text-align:center;
+    background:url('../../../assets//Login/mainBackgroundLogin.jpg');
+    background-size:cover;
+    background-position:center;
+}
+  
+.full-screen-hero {
+    min-height:100vh;
+}
+
+.box{
+    width: 100%;
+}
+#form_login {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+	transform: translate3d(-50%, -50%, 0);
+	overflow: hidden;
+}

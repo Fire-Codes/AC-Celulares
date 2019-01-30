@@ -1,0 +1,31 @@
+div.jumbotron.hero-technology {
+    background:url('../../../assets/SeleccionarPlataforma/mainBacgroundSeleccionarPlataforma.jpg');
+    background-size:cover;
+    background-position:center;
+    padding-top:10vh;
+    
+}
+  
+.full-screen-hero {
+    min-height:100vh;
+}
+
+.box{
+    width: 100%;
+}
+#form_login {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+	transform: translate3d(-50%, -50%, 0);
+	overflow: hidden;
+}
+.card{
+  display: inline-block;
+  position: relative;
+}
+.elevated{
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}

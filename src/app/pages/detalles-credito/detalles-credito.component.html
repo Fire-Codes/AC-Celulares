@@ -1,0 +1,116 @@
+<body>
+  <!--Comienzan los Modals-->
+  <!--Eliminar CreditoCliente Modal-->
+  <ng-template #eliminarCreditoCliente let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Eliminar Crédito de Cliente</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-danger">
+      <p class="text-light">¿Estás seguro que deseas eliminar el Crédito del Cliente CLI00001?</p>
+    </div>
+    <div class="modal-footer bg-danger">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+
+  <!--Main Content-->
+  <mat-card class="example-card">
+    <mat-card-title>
+      Detalles del Cliente
+    </mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="card-subtitle">
+            <div class="text-secondary">
+              Nombres:
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="text-dark">
+              {{cliente.Nombre}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="card-subtitle">
+            <div class="text-secondary">
+              Apellidos:
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="text-dark">
+              {{cliente.Nombre}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="card-subtitle">
+            <div class="text-secondary">
+              Cédula:
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="text-dark">
+              {{cliente.Cedula}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="card-subtitle">
+            <div class="text-secondary">
+              Tipo de Cliente:
+            </div>
+          </div>
+          <div class="card-body">
+            <div *ngIf="esClientePremium; else noEsClientePremium" class="text-warning">
+              {{cliente.Tipo}}
+            </div>
+            <ng-template class="text-dark" #noEsClientePremium>
+              {{cliente.Tipo}}
+            </ng-template>
+          </div>
+        </div>
+        <mat-card-title class="ml-3">
+          Detalles del Crédito
+        </mat-card-title>
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="card-subtitle">
+            Historial de Abonos
+          </div>
+          <div class="card-body">
+            <mat-list>
+              <h3 mat-subheader>Folders</h3>
+              <mat-list-item *ngFor="let folder of folders">
+                <mat-icon mat-list-icon>folder</mat-icon>
+                <h4 mat-line>{{folder.name}}</h4>
+                <p mat-line> {{folder.updated | date}} </p>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Notes</h3>
+              <mat-list-item *ngFor="let note of notes">
+                <mat-icon mat-list-icon>note</mat-icon>
+                <h4 mat-line>{{note.name}}</h4>
+                <p mat-line> {{note.updated | date}} </p>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <mat-card-title>
+            Saldo Pendiente:
+          </mat-card-title>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <h3 class="text-dark">
+            C$400
+          </h3>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</body>

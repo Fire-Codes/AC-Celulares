@@ -1,0 +1,332 @@
+<nav class="navbar navbar-dark bg-dark elevated shake">
+  <div class="container slideInLeft">
+    <a class="navbar-brand text-light">Inventario de Productos</a>
+  </div>
+</nav>
+
+<body>
+  <!--Comienzan los Modals-->
+  <!--Agregar Existencias Modal-->
+  <ng-template #agregarExistencias let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Agregar Existencias de Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Clave de Producto" disabled value="PROD00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="number" matInput placeholder="Nueva Cantidad">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+    </div>
+  </ng-template>
+
+  <!--Ver Producto Modal-->
+  <ng-template #verProducto let-modal>
+    <div class="modal-header bg-primary">
+      <h4 class="modal-title text-light">Ver Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-primary">
+      <table class="example-full-width text-light" cellspacing="0">
+        <tr>
+          <td>
+            Clave:
+          </td>
+          <td>
+            PROD00001
+          </td>
+        </tr>
+        <tr>
+          <td>Nombre:</td>
+          <td>Audifonos Genéricos</td>
+        </tr>
+        <tr>
+          <td>Marca:</td>
+          <td>Apple</td>
+        </tr>
+        <tr>
+          <td>Modelo:</td>
+          <td>AirPods</td>
+        </tr>
+        <tr>
+          <td>Categoria:</td>
+          <td>Accesorios</td>
+        </tr>
+        <tr>
+          <td>Existencia:</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Precio de Compra:</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td>Precio de Venta:</td>
+          <td>300</td>
+        </tr>
+        <tr>
+          <td>Descripción:</td>
+          <td>Audifonos genéricos marca apple modelo airpods color azul.</td>
+        </tr>
+      </table>
+    </div>
+    <div class="modal-footer bg-primary">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+    </div>
+  </ng-template>
+
+  <!--Eliminar Producto Modal-->
+  <ng-template #eliminarProducto let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Eliminar Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-danger">
+      <p class="text-light">¿Estás seguro que deseas eliminar el producto PROD00001?</p>
+    </div>
+    <div class="modal-footer bg-danger">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+
+  <!--Editar Producto Modal-->
+  <ng-template #editarProducto let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Editar Producto PROD00001</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Clave" disabled value="PROD00001">
+        </mat-form-field>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombre">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Marca">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Modelo">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Categoria">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <p>
+          <mat-form-field class="example-full-width">
+            <textarea matInput placeholder="Descripción"></textarea>
+          </mat-form-field>
+        </p>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Precio de Compra">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Precio de Venta">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Actualizar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+    </div>
+  </ng-template>
+
+  <!--Reservar Producto Modal-->
+  <ng-template #reservarProducto let-modal>
+    <div class="modal-header bg-secondary">
+      <h4 class="modal-title text-light">Reservar Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-secondary">
+      <form class="example-form">
+        <table class="example-full-width text-light" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width m-2">
+                <input matInput placeholder="Clave de Producto" disabled value="PROD00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width m-2">
+                <input type="number" matInput placeholder="Cantidad de productos a reservar">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width m-2">
+                <input type="text" matInput placeholder="Buscar Cliente">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width m-2">
+                <span matPrefix>C$ &nbsp;</span>
+                <input type="text" matInput placeholder="Cuota de reserva">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="modal-footer bg-secondary">
+      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Agregar Nuevo Cliente</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="modal.close('Close click')">Reservar</button>
+    </div>
+  </ng-template>
+
+  <!--Main Content-->
+  <div class="container pt-4">
+    <div class="mb-4 slideInLeft">
+      <div class="container-fluid bg-info rounded-top p-4">
+        <div class="float-right">
+          <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
+          </button>
+          <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+          </button>
+          <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+          </button>
+        </div>
+        <mat-form-field class="ml-4">
+          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        </mat-form-field>
+      </div>
+      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+        <!-- Clave Column -->
+        <ng-container matColumnDef="Clave">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
+          <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
+        </ng-container>
+
+        <!-- Marca Column -->
+        <ng-container matColumnDef="Marca">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+          <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
+        </ng-container>
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Modelo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+          <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
+        </ng-container>
+
+        <!-- Existencia Column -->
+        <ng-container matColumnDef="Existencia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
+          <td mat-cell *matCellDef="let row"> {{row.Existencia}} </td>
+        </ng-container>
+
+        <!-- Precio de Compra Column -->
+        <ng-container matColumnDef="pCompra">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
+          <td mat-cell *matCellDef="let row" class="text-primary"> {{row.pCompra}} </td>
+        </ng-container>
+
+        <!-- Precio de Venta Column -->
+        <ng-container matColumnDef="pVenta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
+          <td mat-cell *matCellDef="let row" class="text-success"> {{row.pVenta}} </td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+        </ng-container>
+
+        <!-- Categoria Column -->
+        <ng-container matColumnDef="Categoria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
+          <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
+        </ng-container>
+
+        <!-- Acciones Column -->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="example-button-row">
+              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+              </button>
+              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, row)'>
+                <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--Aqui comienzan los TH-->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</body>
