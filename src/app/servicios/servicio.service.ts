@@ -49,4 +49,14 @@ export class ServicioService {
         });
     });
   }
+
+  // funcion para cerrar sesion y redireccionar a la pagina principal
+  public logout() {
+    return this.auth.auth.signOut().then((response) => {
+      console.warn('Se ha cerrado Sesion');
+      this.navegar('');
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
 }
