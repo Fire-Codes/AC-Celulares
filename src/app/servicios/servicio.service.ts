@@ -11,6 +11,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +62,7 @@ export class ServicioService {
   }
 
   // funcion para enviar un correo de verificacion al usuario
-  public verificarUsuario() {
+  public enviarEmailVerificacion() {
     const usuario = this.auth.auth.currentUser;
 
     usuario.sendEmailVerification().then((response) => {
@@ -70,4 +71,10 @@ export class ServicioService {
       console.error(err);
     });
   }
+
+  // funcion que verifica el estado actual del auth de un usuario
+  public verificarEstadoUsuario() {
+    return this.auth.authState;
+  }
+
 }
