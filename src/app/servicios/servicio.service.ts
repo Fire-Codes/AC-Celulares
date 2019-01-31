@@ -59,4 +59,15 @@ export class ServicioService {
       console.error(err);
     });
   }
+
+  // funcion para enviar un correo de verificacion al usuario
+  public verificarUsuario() {
+    const usuario = this.auth.auth.currentUser;
+
+    usuario.sendEmailVerification().then((response) => {
+      console.log('Mensaje de Verificacion de nuevo usuario enviado correctamente');
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
 }
