@@ -37,4 +37,16 @@ export class ServicioService {
         });
     });
   }
+
+  // funcion para iniciar sesion con los usuarios ya registrados
+  public login(email: string, contraseña: string) {
+    // tslint:disable-next-line:no-shadowed-variable
+    return new Promise((resolve, reject) => {
+      this.auth.auth.signInWithEmailAndPassword(email, contraseña)
+        .then(datosUsuario => resolve(datosUsuario), err => reject(err))
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  }
 }
