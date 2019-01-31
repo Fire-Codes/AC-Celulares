@@ -23,6 +23,9 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 
+// importacion para el modulo de los toast
+import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
+
 // imprtaciones de los componentes de cada pagina
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -74,6 +77,9 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
     AngularFireStorageModule,
 
     AngularMaterialModule,
+
+    ToastrModule.forRoot(),
+    ToastContainerModule,
 
     FormsModule,
     ReactiveFormsModule,

@@ -9,7 +9,7 @@
   transition: width 0.3s !important;
 }
 .sidePanelCerrado {
-  width: 70px;
+  width: 90px;
   background-color: darkslategray;
   transition: width 0.3s !important;
 }
@@ -51,4 +51,7 @@ hr {
 
 mat-drawer {
   transition: transition 0.3s !important;
+  overflow: hidden;
+  scrollbar-face-color: black;
+  scrollbar-base-color: black;
 }
