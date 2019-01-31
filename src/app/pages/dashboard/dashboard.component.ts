@@ -6,6 +6,9 @@ import { NavsideComponent } from '../navside/navside.component';
 // importacion del Chart.js
 import { Chart } from 'chart.js';
 
+// importacoin del servicio
+import { ServicioService } from '../../servicios/servicio.service';
+
 // importacion de los componentes para las tablas
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 
@@ -45,7 +48,8 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(
-    public nav: NavsideComponent
+    public nav: NavsideComponent,
+    public servicio: ServicioService
   ) {
     // mostrar el navside
     this.nav.mostrarNav = true;
@@ -58,6 +62,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.servicio.newToast(1, 'Inicio de Sesión Correcto', `Bienvenido! ${this.servicio.auth.auth.currentUser.email}`);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
 

@@ -5,7 +5,7 @@ import { NavsideComponent } from '../navside/navside.component';
 import { ServicioService } from '../../servicios/servicio.service';
 
 // importacion del componente para los toast
-import { ToastrService, ToastContainerDirective } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 
@@ -15,9 +15,6 @@ declare var $: any;
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  // variables de observacion a la directiva del container de los toast
-  @ViewChild(ToastContainerDirective) toastContainer: ToastContainerDirective;
-
   // variables de email y password
   email: string;
   password: string;
@@ -35,7 +32,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toast.overlayContainer = this.toastContainer;
   }
 
   // funcion para realizar el login
@@ -45,18 +41,28 @@ export class LoginComponent implements OnInit {
         this.loginCorrecto = true;
         this.servicio.navegar('dashboard');
         console.warn('Inicio de Sesion Correcto');
-        this.toast.success(`Bienvenido ${this.servicio.auth.auth.currentUser.email}`, 'Inicio de Sesion Correcto');
       }).catch((err) => {
         this.errorLogin = err;
         console.error(err);
-        this.toast.error(this.errorLogin, 'Inicio de Sesion Erróneo', {
-          closeButton: true,
-          timeOut: 3000,
-          easing: 'ease-in',
-          progressBar: true,
-          progressAnimation: 'increasing',
-          tapToDismiss: true
-        });
+        let errMensajeToast: string = null;
+        switch (err.code) {
+          case 'auth/argument-error':
+            errMensajeToast = 'Revise si esta bien su correo y contraseña y/o rellene los campos';
+            break;
+          case 'auth/network-request-failed':
+            errMensajeToast = 'Hubo un error con la conexion a internet, por favor verifiquela';
+            break;
+          case 'auth/wrong-password':
+            errMensajeToast = 'Contraseña Incorrecta, favor ingrese de nuevo';
+            break;
+          case 'auth/user-not-found':
+            errMensajeToast = 'El correo de usuario que ha ingresado no se encuentra en la base de datos';
+            break;
+          default:
+            errMensajeToast = err;
+            break;
+        }
+        this.servicio.newToast(0, 'Inicio de Sesión Erróneo', `${errMensajeToast}`);
       });
   }
 }

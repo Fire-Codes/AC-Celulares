@@ -6,6 +6,9 @@ import { promise } from 'protractor';
 import { reject } from 'q';
 import { map } from 'rxjs/operators';
 
+// importacion del componente para los toast
+import { ToastrService, IndividualConfig } from 'ngx-toastr';
+
 // importaciones de los componente de angularfire
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -20,11 +23,28 @@ export class ServicioService {
 
   constructor(
     public router: Router,
-    public auth: AngularFireAuth
+    public auth: AngularFireAuth,
+    public toast: ToastrService
   ) { }
 
+  // funcion para navegar entre las paginas con el angular router
   public navegar(ruta: string) {
     this.router.navigate([`/${ruta}`]);
+  }
+
+  // funcion para mostrar los toast desde cualquier pagina que tenga acceso al servicio
+  public newToast(tipo: number, titulo: string, mensaje: string) {
+    const toastSettings: Partial<IndividualConfig> = {
+      timeOut: 7000,
+      closeButton: true,
+      progressBar: true,
+      progressAnimation: 'increasing'
+    };
+    if (tipo === 1) {
+      this.toast.success(`${mensaje}`, `${titulo}`, toastSettings);
+    } else {
+      this.toast.error(`${mensaje}`, `${titulo}`, toastSettings);
+    }
   }
 
   // funcion para registrar un nuevo usuario
