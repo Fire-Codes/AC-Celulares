@@ -6,6 +6,9 @@ import * as $ from 'jquery';
 // importacion del servicio
 import { ServicioService } from '../../servicios/servicio.service';
 
+// importacion de los componentes de firestore
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+
 
 @Component({
   selector: 'app-navside',
@@ -18,7 +21,8 @@ export class NavsideComponent implements OnInit {
   panel: any;
   constructor(
     public router: Router,
-    private servicio: ServicioService
+    private servicio: ServicioService,
+    public fs: AngularFirestore
   ) {
     console.log(this.router.url);
     /*if ((this.router.url === '/') || (this.router.url === '/ingresar') || this.router.url === '/plataforma') {
@@ -52,5 +56,25 @@ export class NavsideComponent implements OnInit {
       this.panel.classList.add('sidePanelAbierto');
       this.abierto = true;
     }
+  }
+
+  // funcion para cerrar sesion
+  logout() {
+    this.fs.doc(`AC Celulares/Control/Usuarios/${this.servicio.auth.auth.currentUser.email}`).update({
+      EstadoConexion: false
+    }).then((response) => {
+      console.log('Estado de conexion actualizado correctamente');
+      this.servicio.newToast(1, 'Cerrando Sesion!', `Adios ${this.servicio.auth.auth.currentUser.email}, vuelva pronto!`);
+      this.servicio.logout().then((res) => {
+        console.log('Se ha cerrado sesion correctamente');
+        this.navegar('');
+      }).catch((err) => {
+        this.servicio.newToast(0, 'Hubo un Error!', err);
+        console.error('Ha habido un problema al cerrar sesion: ' + err);
+      });
+    }).catch((err) => {
+      this.servicio.newToast(0, 'Hubo un Error!', err);
+      console.error('Ha habido un error al actualizar los datos del estado de la conexion: ' + err);
+    });
   }
 }
