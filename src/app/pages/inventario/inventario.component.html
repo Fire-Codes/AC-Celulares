@@ -6,6 +6,93 @@
 
 <body>
   <!--Comienzan los Modals-->
+  <!--Agregar nuevo producto modal-->
+  <ng-template #agregarProducto let-modal>
+    <div class="modal-header bg-info">
+      <h4 class="modal-title">Agregar Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="example-form">
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput placeholder="Cédula">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombres" required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellidos" required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dirección"></textarea>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input type="number" placeholder="Numero Telefónico" matInput required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Sexo</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                </select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <select matNativeControl required>
+                  <option value="-1" disabled="true">Tipo de Cliente</option>
+                  <option value="Estandard">Estandard</option>
+                  <option value="Premium">Premium</option>
+                </select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="example-full-width">
+          <input matInput type="email" placeholder="Correo Electrónico">
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+    </div>
+  </ng-template>
   <!--Agregar Existencias Modal-->
   <ng-template #agregarExistencias let-modal>
     <div class="modal-header">
@@ -235,7 +322,7 @@
     <div class="mb-4 slideInLeft">
       <div class="container-fluid bg-info rounded-top p-4">
         <div class="float-right">
-          <button class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
+          <button (click)='openVerticallyCentered(agregarProducto)' class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
           <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
             <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
