@@ -21,12 +21,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
+                <input matInput placeholder="ID de Producto" required disabled value="PROD1">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input type="text" matInput placeholder="Cédula">
+                <input type="text" matInput placeholder="Nombre" value="Audifonos Genéricos">
               </mat-form-field>
             </td>
           </tr>
@@ -35,12 +35,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nombres" required>
+                <input matInput placeholder="Marca" required value="Apple">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Apellidos" required>
+                <input matInput placeholder="Modelo" required value="AirPods">
               </mat-form-field>
             </td>
           </tr>
@@ -50,12 +50,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Dirección"></textarea>
+                <textarea matInput placeholder="Descripción" required></textarea>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Numero Telefónico" matInput required>
+                <input type="number" placeholder="Existencia" matInput required value="12">
               </mat-form-field>
             </td>
           </tr>
@@ -65,32 +65,21 @@
           <tr>
             <td>
               <mat-form-field>
-                <select matNativeControl required>
-                  <option value="-1" disabled="true">Sexo</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                </select>
+                <input type="number" placeholder="Precio de Compra" matInput required value="200">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field>
-                <select matNativeControl required>
-                  <option value="-1" disabled="true">Tipo de Cliente</option>
-                  <option value="Estandard">Estandard</option>
-                  <option value="Premium">Premium</option>
-                </select>
+                <input type="number" placeholder="Precio de Venta" matInput required value="300">
               </mat-form-field>
             </td>
           </tr>
         </table>
-        <mat-form-field class="example-full-width">
-          <input matInput type="email" placeholder="Correo Electrónico">
-        </mat-form-field>
       </form>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+      <button type="button" class="btn btn-info" (click)="modal.close('Close click')">Agregar</button>
     </div>
   </ng-template>
   <!--Agregar Existencias Modal-->
@@ -322,7 +311,8 @@
     <div class="mb-4 slideInLeft">
       <div class="container-fluid bg-info rounded-top p-4">
         <div class="float-right">
-          <button (click)='openVerticallyCentered(agregarProducto)' class="elevated text-center bg-info mr-3" matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
+          <button (click)='openVerticallyCentered(agregarProducto)' class="elevated text-center bg-info mr-3"
+            matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
           <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
             <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
@@ -340,55 +330,55 @@
         <!-- Clave Column -->
         <ng-container matColumnDef="Clave">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
-          <td mat-cell *matCellDef="let row"> {{row.Clave}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Clave}} </td>
         </ng-container>
 
         <!-- Marca Column -->
         <ng-container matColumnDef="Marca">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-          <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Marca}} </td>
         </ng-container>
 
         <!-- Modelo Column -->
         <ng-container matColumnDef="Modelo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-          <td mat-cell *matCellDef="let row"> {{row.Modelo}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Modelo}} </td>
         </ng-container>
 
         <!-- Existencia Column -->
         <ng-container matColumnDef="Existencia">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
-          <td mat-cell *matCellDef="let row"> {{row.Existencia}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Existencia}} </td>
         </ng-container>
 
         <!-- Precio de Compra Column -->
         <ng-container matColumnDef="pCompra">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
-          <td mat-cell *matCellDef="let row" class="text-primary"> {{row.pCompra}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center text-primary"> {{row.pCompra}} </td>
         </ng-container>
 
         <!-- Precio de Venta Column -->
         <ng-container matColumnDef="pVenta">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
-          <td mat-cell *matCellDef="let row" class="text-success"> {{row.pVenta}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center text-success"> {{row.pVenta}} </td>
         </ng-container>
 
         <!-- Nombre Column -->
         <ng-container matColumnDef="Nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Nombre}} </td>
         </ng-container>
 
         <!-- Categoria Column -->
         <ng-container matColumnDef="Categoria">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
-          <td mat-cell *matCellDef="let row"> {{row.Categoria}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Catégoria </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Categoria}} </td>
         </ng-container>
 
         <!-- Acciones Column -->
         <ng-container matColumnDef="Acciones">
-          <th mat-header-cell *matHeaderCellDef> Acciones </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+          <td mat-cell *matCellDef="let row" class="text-center">
             <div class="example-button-row">
               <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
@@ -410,8 +400,8 @@
         </ng-container>
 
         <!--Aqui comienzan los TH-->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
       </table>
       <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>

@@ -21,3 +21,9 @@ body{
 #toast-container > div {
     opacity:1;
 }
+
+html, *{
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
