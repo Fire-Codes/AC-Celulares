@@ -77,10 +77,10 @@ export class LoginComponent implements OnInit {
             .snapshotChanges().subscribe((user: Action<DocumentSnapshot<Usuario>>) => {
               this.nav.nombre = user.payload.data()['Primer Nombre'] + ' ' + user.payload.data()['Primer Apellido'];
               this.nav.photoUrl = user.payload.data().PhotoURL;
-              if (user.payload.data().Sexo === 'Masculino') {
+              if (user.payload.data().Sexo === 'Masculino' && user.payload.data().EstadoConexion) {
                 // tslint:disable-next-line:max-line-length
                 this.servicio.newToast(1, 'Inicio de Sesión', `Bienvenido ${user.payload.data()['Primer Nombre']} ${user.payload.data()['Primer Apellido']}!`);
-              } else {
+              } else if (user.payload.data().Sexo === 'Femenino' && user.payload.data().EstadoConexion) {
                 // tslint:disable-next-line:max-line-length
                 this.servicio.newToast(1, 'Inicio de Sesión', `Bienvenida ${user.payload.data()['Primer Nombre']} ${user.payload.data()['Primer Apellido']}!`);
               }
