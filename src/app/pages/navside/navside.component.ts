@@ -7,7 +7,33 @@ import * as $ from 'jquery';
 import { ServicioService } from '../../servicios/servicio.service';
 
 // importacion de los componentes de firestore
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentSnapshot, Action } from 'angularfire2/firestore';
+
+// se delcara el tipo de interfaz que debe respetar cada usuario agregado
+export interface Usuario {
+  Nombres: string;
+  Apellidos: string;
+  Correo: string;
+  Pertenece1: boolean;
+  Pertenece2: boolean;
+  Pertenece3: boolean;
+  Tipo: string;
+  UID: string;
+  Username: string;
+  Celular: number;
+  Cedula: string;
+  EstadoConexion: boolean;
+  FechaUltimaConexion: string;
+  HoraUltimaConexion: string;
+  Cargo: string;
+  Contrasena: string;
+  PhotoURL: string;
+  Sexo: string;
+  'Primer Nombre': string;
+  'Segundo Nombre': string;
+  'Primer Apellido': string;
+  'Segundo Apellido': string;
+}
 
 
 @Component({
@@ -19,6 +45,22 @@ export class NavsideComponent implements OnInit {
   mostrarNav = true;
   abierto = false;
   panel: any;
+  nombre: string;
+  photoUrl: string;
+  meses: string[] = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ];
   constructor(
     public router: Router,
     private servicio: ServicioService,
@@ -60,8 +102,17 @@ export class NavsideComponent implements OnInit {
 
   // funcion para cerrar sesion
   logout() {
+    const tiempo = new Date();
+    const mes = this.meses[tiempo.getMonth()];
+    const dia = tiempo.getDate();
+    const ano = tiempo.getFullYear();
+    const hora = tiempo.getHours();
+    const minutos = tiempo.getMinutes();
+    const segundos = tiempo.getSeconds();
     this.fs.doc(`AC Celulares/Control/Usuarios/${this.servicio.auth.auth.currentUser.email}`).update({
-      EstadoConexion: false
+      EstadoConexion: false,
+      FechaUltimaConexion: `${dia}, ${mes} de ${ano}`,
+      HoraUltimaConexion: `${hora}:${minutos}:${segundos}`
     }).then((response) => {
       console.log('Estado de conexion actualizado correctamente');
       this.servicio.newToast(1, 'Cerrando Sesion!', `Adios ${this.servicio.auth.auth.currentUser.email}, vuelva pronto!`);

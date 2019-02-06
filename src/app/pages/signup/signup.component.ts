@@ -26,6 +26,13 @@ export interface Usuario {
   FechaUltimaConexion: string;
   HoraUltimaConexion: string;
   Cargo: string;
+  Contrasena: string;
+  PhotoURL: string;
+  Sexo: string;
+  'Primer Nombre': string;
+  'Segundo Nombre': string;
+  'Primer Apellido': string;
+  'Segundo Apellido': string;
 }
 
 @Component({
@@ -47,6 +54,7 @@ export class SignupComponent implements OnInit {
   celular: number;
   contrasena = '';
   pertenece = '';
+  sexo = '';
   constructor(
     public nav: NavsideComponent,
     public servicio: ServicioService,
@@ -78,7 +86,14 @@ export class SignupComponent implements OnInit {
         EstadoConexion: null,
         FechaUltimaConexion: null,
         HoraUltimaConexion: null,
-        Cargo: this.cargo
+        Cargo: this.cargo,
+        Sexo: this.sexo,
+        'Primer Nombre': this.primerNombre,
+        'Segundo Nombre': this.segundoNombre,
+        'Primer Apellido': this.primerApellido,
+        'Segundo Apellido': this.segundoApellido,
+        // tslint:disable-next-line:max-line-length
+        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f'
       }).then(res => {
         console.warn('Datos del usuario agregados a firestore correctamente');
         location.reload();

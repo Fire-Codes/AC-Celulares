@@ -90,11 +90,24 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="text-warning">Teléfono Móvil</label>
-                        <input name="telefono" [(ngModel)]="celular" required type="number" class="form-control"
-                            placeholder="Celular">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="text-warning">Teléfono Móvil</label>
+                                <input name="telefono" [(ngModel)]="celular" required type="number" class="form-control"
+                                    placeholder="Celular">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <mat-form-field class="mb-3 mt-4" style="width: 100%;">
+                                <mat-select placeholder="Sexo" name="sexo" [(ngModel)]="sexo">
+                                    <mat-option value="Masculino">Masculino</mat-option>
+                                    <mat-option value="Femenino">Femenino</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
+
                     <button type="submit" (click)="agregarUsuario()" class="shadow btn btn-warning">Registrar Usuario</button>
                 </form>
             </div>

@@ -1,14 +1,14 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="sidePanelCerrado bounceIn" id="sidenavPanel" mode="side" [opened]='mostrarNav'>
     <div class="container text-center d-block" *ngIf="abierto; else avatar2">
-      <img src="../../../assets/ProfilePictures/edycarreyes99.jpg" alt="Avatar" class="avatar mt-4">
+      <img src="{{photoUrl}}" alt="Avatar" class="avatar mt-4">
       <div class="text-light mt-2">
-        Edycar Reyes
+        {{nombre}}
       </div>
     </div>
     <ng-template #avatar2>
       <div class="container-fluid mx-auto">
-        <img src="../../../assets/ProfilePictures/edycarreyes99.jpg" alt="Avatar" class="avatar2 mt-4">
+        <img src="{{photoUrl}}" alt="Avatar" class="avatar2 mt-4">
         <div class="text-light mt-2">
           &nbsp;
         </div>
