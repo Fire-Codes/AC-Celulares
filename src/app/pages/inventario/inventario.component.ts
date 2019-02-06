@@ -6,20 +6,12 @@ import { NavsideComponent } from '../navside/navside.component';
 // importacion de los componentes de @angular/material
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
+// importacion de la interfaz para el producto
+import { Producto } from '../../interfaces/producto';
+
 // importacion de los componentes de ng-bootstrap
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-
-export interface Producto {
-  Clave: string;
-  Nombre: string;
-  Marca: string;
-  Categoria: string;
-  Modelo: string;
-  Existencia: number;
-  pCompra: number;
-  pVenta: number;
-}
 /** Constants used to fill up our data base. */
 const Categoria: string[] = ['Accesorio', 'Repuesto', 'Celular', 'Herramienta', 'Otro'];
 const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',

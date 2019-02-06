@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
+// importacion de la interfaz para el Producto
+import { ProductoFactura } from '../../interfaces/producto-factura';
+
 // Importacion del componente para los modales
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -23,16 +26,6 @@ export interface State {
   population: string;
 }
 
-export interface Producto {
-  id: string;
-  Precio: number;
-  Descuento: number;
-  Cantidad: number;
-  Producto: string;
-  Modelo: string;
-  ValorCordoba: number;
-  ValorDolar: number;
-}
 
 @Component({
   selector: 'app-facturar',
@@ -43,8 +36,9 @@ export class FacturarComponent implements OnInit {
   stateCtrl = new FormControl();
   filteredStates: Observable<State[]>;
 
+  // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['id', 'Producto', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
-  dataSource: MatTableDataSource<Producto>;
+  dataSource: MatTableDataSource<ProductoFactura>;
   @ViewChild(MatSort) sort: MatSort;
 
   states: State[] = [
@@ -73,7 +67,7 @@ export class FacturarComponent implements OnInit {
       flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
     }
   ];
-  productos: Producto[];
+  productos: ProductoFactura[];
   constructor(
     public ngbModal: NgbModal
   ) {
@@ -115,7 +109,7 @@ export class FacturarComponent implements OnInit {
 }
 
 /** Builds and returns a new User. */
-function crearProductos(id: number): Producto {
+function crearProductos(id: number): ProductoFactura {
   const name =
     NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
     NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';

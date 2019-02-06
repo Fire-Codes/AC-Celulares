@@ -7,35 +7,13 @@ import { ServicioService } from '../../servicios/servicio.service';
 // importacion del componente para los toast
 import { ToastrService } from 'ngx-toastr';
 
+// importacion de la interfaz para el usuario
+import { Usuario } from '../../interfaces/usuario';
+
 // importacion de los componentes de las bases de datos para actualizar los datos cada vez que se inicia o se cierra sesion
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument, DocumentSnapshot, Action } from 'angularfire2/firestore';
 
 declare var $: any;
-
-export interface Usuario {
-  Nombres: string;
-  Apellidos: string;
-  Correo: string;
-  Pertenece1: boolean;
-  Pertenece2: boolean;
-  Pertenece3: boolean;
-  Tipo: string;
-  UID: string;
-  Username: string;
-  Celular: number;
-  Cedula: string;
-  EstadoConexion: boolean;
-  FechaUltimaConexion: string;
-  HoraUltimaConexion: string;
-  Cargo: string;
-  Contrasena: string;
-  PhotoURL: string;
-  Sexo: string;
-  'Primer Nombre': string;
-  'Segundo Nombre': string;
-  'Primer Apellido': string;
-  'Segundo Apellido': string;
-}
 
 @Component({
   selector: 'app-login',
