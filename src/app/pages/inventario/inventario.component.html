@@ -330,7 +330,7 @@
         <!-- Clave Column -->
         <ng-container matColumnDef="Clave">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Clave}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Id}} </td>
         </ng-container>
 
         <!-- Marca Column -->
@@ -354,13 +354,13 @@
         <!-- Precio de Compra Column -->
         <ng-container matColumnDef="pCompra">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-primary"> {{row.pCompra}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center text-primary"> {{row.PCompra}} </td>
         </ng-container>
 
         <!-- Precio de Venta Column -->
         <ng-container matColumnDef="pVenta">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-success"> {{row.pVenta}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center text-success"> {{row.PVenta}} </td>
         </ng-container>
 
         <!-- Nombre Column -->
@@ -400,8 +400,8 @@
         </ng-container>
 
         <!--Aqui comienzan los TH-->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" ></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
