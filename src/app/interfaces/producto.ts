@@ -1,10 +1,12 @@
 export interface Producto {
-    Clave: string;
+    Id: string;
     Nombre: string;
     Marca: string;
     Categoria: string;
     Modelo: string;
     Existencia: number;
-    pCompra: number;
-    pVenta: number;
+    PCompra: number;
+    PVenta: number;
+    Estado: string;
+    Descripcion: string;
 }
