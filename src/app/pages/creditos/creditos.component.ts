@@ -110,7 +110,7 @@ export class CreditosComponent implements OnInit {
   }
 
   // funcion para abrir los modales de manera centrada
-  openVerticallyCentered(content: string, cliente: UserData) {
+  openVerticallyCentered(content: string) {
     this.ngbModal.open(content, { centered: true });
   }
 

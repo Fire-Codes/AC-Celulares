@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
   }
 
   // funcion para realizar el login
-  private login() {
+  login() {
     this.servicio.login(this.email, this.password)
       .then((usuario) => {
         this.fs.doc(`AC Celulares/Control/Usuarios/${this.servicio.auth.auth.currentUser.email}`).update({
