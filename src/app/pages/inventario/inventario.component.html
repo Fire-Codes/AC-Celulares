@@ -97,12 +97,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Clave de Producto" disabled value="PROD00001">
+                <input matInput placeholder="Clave de Producto" disabled value="{{producto.Id}}">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input type="number" matInput placeholder="Nueva Cantidad">
+                <input type="number" matInput placeholder="Nueva Cantidad" [(ngModel)]="producto.Existencia" name="producto.Existencia">
               </mat-form-field>
             </td>
           </tr>
@@ -111,7 +111,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">Agregar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); editarProductos()">Agregar</button>
     </div>
   </ng-template>
 
@@ -127,43 +127,43 @@
       <table class="example-full-width text-light" cellspacing="0">
         <tr>
           <td>
-            Clave:
+            ID:
           </td>
           <td>
-            PROD00001
+            {{producto.Id}}
           </td>
         </tr>
         <tr>
           <td>Nombre:</td>
-          <td>Audifonos Genéricos</td>
+          <td>{{producto.Nombre}}</td>
         </tr>
         <tr>
           <td>Marca:</td>
-          <td>Apple</td>
+          <td>{{producto.Marca}}</td>
         </tr>
         <tr>
           <td>Modelo:</td>
-          <td>AirPods</td>
+          <td>{{producto.Modelo}}</td>
         </tr>
         <tr>
           <td>Categoria:</td>
-          <td>Accesorios</td>
+          <td>{{producto.Categoria}}</td>
         </tr>
         <tr>
           <td>Existencia:</td>
-          <td>12</td>
+          <td>{{producto.Existencia}}</td>
         </tr>
         <tr>
           <td>Precio de Compra:</td>
-          <td>200</td>
+          <td>{{producto.PCompra}}</td>
         </tr>
         <tr>
           <td>Precio de Venta:</td>
-          <td>300</td>
+          <td>{{producto.PVenta}}</td>
         </tr>
         <tr>
           <td>Descripción:</td>
-          <td>Audifonos genéricos marca apple modelo airpods color azul.</td>
+          <td>{{producto.Descripcion}}</td>
         </tr>
       </table>
     </div>
@@ -192,7 +192,7 @@
   <!--Editar Producto Modal-->
   <ng-template #editarProducto let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">Editar Producto PROD00001</h4>
+      <h4 class="modal-title">Editar Producto {{producto.Id}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -200,14 +200,14 @@
     <div class="modal-body">
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Clave" disabled value="PROD00001">
+          <input matInput placeholder="ID" disabled [(ngModel)]="producto.Id" name="producto.Id">
         </mat-form-field>
 
         <table class="example-full-width" cellspacing="0">
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nombre">
+                <input matInput placeholder="Nombre" [(ngModel)]="producto.Nombre" name="producto.Nombre">
               </mat-form-field>
             </td>
             <td>
@@ -255,7 +255,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Actualizar</button>
+      <button type="button" class="btn btn-warning" (click)="editarProductos(); modal.close('Close click')">Actualizar</button>
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
