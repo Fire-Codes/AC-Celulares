@@ -6,27 +6,24 @@ import { NavsideComponent } from '../navside/navside.component';
 // importacion de los componentes de @angular/material
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
+// importacion de los componentes de firestore
+// tslint:disable-next-line:max-line-length
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection, Action, DocumentSnapshot, DocumentChangeAction } from 'angularfire2/firestore';
+
+// importacion de la interfaz para el producto
+import { Producto } from '../../interfaces/producto';
+
+// importacion de la interfaz para los campos de las tiendas
+import { CamposTiendas } from '../../interfaces/campos-tiendas';
+
 // importacion de los componentes de ng-bootstrap
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+// importacion del servicio
+import { ServicioService } from '../../servicios/servicio.service';
 
-export interface Producto {
-  Clave: string;
-  Nombre: string;
-  Marca: string;
-  Categoria: string;
-  Modelo: string;
-  Existencia: number;
-  pCompra: number;
-  pVenta: number;
-}
-/** Constants used to fill up our data base. */
-const Categoria: string[] = ['Accesorio', 'Repuesto', 'Celular', 'Herramienta', 'Otro'];
-const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-const MARCA: string[] = ['SAMSUNG', 'LG', 'HUAWEI', 'SONY', 'APPLE'];
-const MODELO: string[] = ['GALAXY S7', 'G5', 'P20 Pro', 'XPERIA Z4', 'iPhone 5S'];
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-inventario',
@@ -35,34 +32,60 @@ const MODELO: string[] = ['GALAXY S7', 'G5', 'P20 Pro', 'XPERIA Z4', 'iPhone 5S'
 })
 export class InventarioComponent implements OnInit {
 
+  // variable para mostrar, agregar datos, eliminar producto, editar y archivar un producto y se inicializa a null
+  producto: Producto = null;
+
+  // varible para la cantidad de productos actuales y las categorias existentes
+  totalProductos: number;
+  categorias: string[];
+
+  // variables que contendra todos los productos
+  coleccionDeProductos: AngularFirestoreCollection<Producto>;
+
+  // variables de tipo observer para paginator y sort
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['Clave', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'pCompra', 'pVenta', 'Acciones'];
   dataSource: MatTableDataSource<Producto>;
 
+  // se declaran las variables para la modificacion de datos para cada producto
+
+
   constructor(
     public nav: NavsideComponent,
-    public ngbModal: NgbModal
+    public ngbModal: NgbModal,
+    public fs: AngularFirestore,
+    public servicio: ServicioService
   ) {
     // se muestra el navside
     this.nav.mostrarNav = true;
 
-    // Create 100 users
-    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    // Se extraen todos los productos ingresados
+    this.coleccionDeProductos = this.fs.collection<Producto>('AC Celulares/Control/Inventario/Tienda Principal/Productos');
+    this.coleccionDeProductos.valueChanges().subscribe(documento => {
+      // Assign the data to the data source for the table to render
+      this.dataSource = new MatTableDataSource(documento);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   ngOnInit() {
+
+    // se extraen la cantidad de productos actual y las categorias actualmente existentes
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
+      this.totalProductos = campos.payload.data()['Cantidad de Productos'];
+      this.categorias = campos.payload.data().Categorias;
+    });
 
     // se inicializan las variables para el mattable de sort y paginator
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
-  // funcion para buscar en las tablas
+  // funcion para buscar producto en la tabla
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -74,25 +97,22 @@ export class InventarioComponent implements OnInit {
   // funcion para abrir los modales de manera centrada
   openVerticallyCentered(content: string, producto: Producto) {
     this.ngbModal.open(content, { centered: true });
+    this.producto = producto;
+  }
+
+  // funcion para editar los datos de un producto
+  editarProductos() {
+    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).update(this.producto)
+      .then(response => {
+        this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
+      }).catch(err => {
+        this.servicio.newToast(0, 'Modificacion Incorrecta', err);
+      });
   }
 
 }
 
 
-/** Builds and returns a new User. */
-function createNewUser(Clave: number): Producto {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    Clave: Clave.toString(),
-    Nombre: name,
-    Marca: MARCA[Math.round(Math.random() * (MARCA.length - 1))],
-    Categoria: Categoria[Math.round(Math.random() * (Categoria.length - 1))],
-    Modelo: MODELO[Math.round(Math.random() * (MODELO.length - 1))],
-    Existencia: Math.round(Math.random() * 100),
-    pCompra: Math.round(Math.random() * 1000),
-    pVenta: Math.round(Math.random() * 10000),
-  };
+// funcion para crear un nuevo producto
+function createNewUser() {
 }

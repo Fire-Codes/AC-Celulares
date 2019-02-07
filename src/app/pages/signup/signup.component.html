@@ -1,54 +1,114 @@
 <div class="jumbotron hero-technology full-screen-hero" style="width: auto; height: auto;">
     <div class="box">
-        <mat-card id="form_login">
+        <mat-card id="form_login" class="shadow">
             <div>
                 <h4 class=" text-center mb-4">
                     Agregar Usuario
                 </h4>
                 <form>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-warning">Nombre y Apellido</span>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Nombres</label>
+                                <div class="input required-group">
+                                    <input required type="text" aria-label="Primer Nombre" class="mb-3 form-control"
+                                        placeholder="Primer Nombre" name="primerNombre" [(ngModel)]="primerNombre"
+                                        (keyup)="crearUsername()">
+                                    <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control"
+                                        placeholder="Segundo Nombre" name="segundoNombre" [(ngModel)]="segundoNombre"
+                                        (keyup)="toUpper()">
+                                </div>
+                            </div>
                         </div>
-                        <input type="text" aria-label="First name" class="form-control" placeholder="Nombres">
-                        <input type="text" aria-label="Last name" class="form-control" placeholder="Apellidos">
-                        <input type="text" aria-label="Username" class="form-control" disabled placeholder="Username">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="text-warning">Email</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Correo Electrónico">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1" class="text-warning">Contraseña</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text bg-warning" for="inputGroupSelect01">Tipo de Usuario</label>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Apellidos</label>
+                                <div class="input required-group">
+                                    <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control"
+                                        placeholder="Primer Apellido" name="primerApellido" [(ngModel)]="primerApellido"
+                                        (keyup)="crearUsername()">
+                                    <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control"
+                                        placeholder="Segundo Apellido" name="segundoApellido" [(ngModel)]="segundoApellido"
+                                        (keyup)="toUpper()">
+                                </div>
+                            </div>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Choose...</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Estandar">Estándar</option>
-                        </select>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Nombre de Usuario (Auto Generado)</label>
+                                <input required type="text" class="form-control" placeholder="Username" disabled="true"
+                                    name="username" [(ngModel)]="username">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="text-warning">Cargo</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Cargo">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Email</label>
+                                <input required type="email" class="form-control" placeholder="Correo Electrónico" name="correo"
+                                    [(ngModel)]="correo">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Contraseña</label>
+                                <input required type="password" class="form-control" placeholder="Contraseña" name="contrasena"
+                                    [(ngModel)]="contrasena">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <mat-form-field class="mb-3 mt-4" style="width: 100%;">
+                                <mat-select placeholder="Tipo de Usuario" [(ngModel)]="tipo" name="tipo">
+                                    <mat-option value="Administrador">Administrador</mat-option>
+                                    <mat-option value="Estandar">Estándar</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="text-warning">Documento de Identificación</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Documento de Identifiación">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Cargo</label>
+                                <input required type="text" class="form-control" placeholder="Cargo" name="cargo"
+                                    [(ngModel)]="cargo" (keyup)="toUpper()">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label class="text-warning">Cédula</label>
+                                <input required type="text" class="form-control" placeholder="Cédula" name="cedula"
+                                    [(ngModel)]="cedula" (keyup)="toUpper()">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <mat-form-field class="mb-3 mt-4" style="width: 100%;">
+                                <mat-select placeholder="Pertenece a:" name="pertenece" [(ngModel)]="pertenece">
+                                    <mat-option value="Pertenece1">Tienda Principal</mat-option>
+                                    <mat-option value="Pertenece2">Tienda Secundaria</mat-option>
+                                    <mat-option value="Pertenece3">Tienda Terciaria</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="text-warning">Teléfono Móvil</label>
-                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Celular">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="text-warning">Teléfono Móvil</label>
+                                <input name="telefono" [(ngModel)]="celular" required type="number" class="form-control"
+                                    placeholder="Celular">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <mat-form-field class="mb-3 mt-4" style="width: 100%;">
+                                <mat-select placeholder="Sexo" name="sexo" [(ngModel)]="sexo">
+                                    <mat-option value="Masculino">Masculino</mat-option>
+                                    <mat-option value="Femenino">Femenino</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-warning">Registrar Usuario</button>
+
+                    <button type="submit" (click)="agregarUsuario()" class="shadow btn btn-warning">Registrar Usuario</button>
                 </form>
             </div>
         </mat-card>

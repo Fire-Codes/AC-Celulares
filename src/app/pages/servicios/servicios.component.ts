@@ -57,7 +57,7 @@ export class ServiciosComponent implements OnInit {
   }
 
   // funcion para abrir los modales de manera centrada
-  mostrarModal(content: string, cliente: any) {
+  mostrarModal(content: string) {
     this.ngbModal.open(content, { centered: true });
   }
 }
