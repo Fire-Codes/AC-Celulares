@@ -19,6 +19,7 @@ div.jumbotron.hero-technology {
     position: absolute;
     -webkit-transform: translate3d(-50%, -50%, 0);
     -moz-transform: translate3d(-50%, -50%, 0);
-	transform: translate3d(-50%, -50%, 0);
-	overflow: hidden;
+    transform: translate3d(-50%, -50%, 0);
+    margin-top: 0px;
+    width: 70vw;
 }
