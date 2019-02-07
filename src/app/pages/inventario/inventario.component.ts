@@ -61,6 +61,13 @@ export class InventarioComponent implements OnInit {
     // se muestra el navside
     this.nav.mostrarNav = true;
 
+    // se extrae la cantidad total de productos almacenados y las categorias
+    this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges()
+      .subscribe((documento: Action<DocumentSnapshot<CamposTiendas>>) => {
+        this.totalProductos = documento.payload.data()['Cantidad de Productos'];
+        this.categorias = documento.payload.data().Categorias;
+      });
+
     // Se extraen todos los productos ingresados
     this.coleccionDeProductos = this.fs.collection<Producto>('AC Celulares/Control/Inventario/Tienda Principal/Productos');
     this.coleccionDeProductos.valueChanges().subscribe(documento => {
