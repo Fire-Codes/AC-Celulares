@@ -181,10 +181,10 @@
       </button>
     </div>
     <div class="modal-body bg-danger">
-      <p class="text-light">¿Estás seguro que deseas eliminar el producto PROD00001?</p>
+      <p class="text-light">¿Estás seguro que deseas eliminar el producto {{producto.Id}}</p>
     </div>
     <div class="modal-footer bg-danger">
-      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click'); eliminarProductos()">Eliminar</button>
       <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
@@ -212,7 +212,7 @@
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Marca">
+                <input matInput placeholder="Marca" [(ngModel)]="producto.Marca" name="producto.Marca">
               </mat-form-field>
             </td>
           </tr>
@@ -221,12 +221,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Modelo">
+                <input matInput placeholder="Modelo" [(ngModel)]="producto.Modelo" name="producto.Modelo">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Categoria">
+                <input matInput placeholder="Categoria" [(ngModel)]="producto.Categoria" name="producto.Categoria">
               </mat-form-field>
             </td>
           </tr>
@@ -234,7 +234,7 @@
 
         <p>
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descripción"></textarea>
+            <textarea matInput placeholder="Descripción" [(ngModel)]="producto.Descripcion" name="producto.Descripcion"></textarea>
           </mat-form-field>
         </p>
 
@@ -242,12 +242,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Compra">
+                <input matInput placeholder="Precio de Compra" [(ngModel)]="producto.PCompra" name="producto.PCompra">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Venta">
+                <input matInput placeholder="Precio de Venta" [(ngModel)]="producto.PVenta" name="producto.PVenta">
               </mat-form-field>
             </td>
           </tr>

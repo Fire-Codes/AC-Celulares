@@ -110,6 +110,15 @@ export class InventarioComponent implements OnInit {
       });
   }
 
+  // funcion para eliminar un producto
+  eliminarProductos() {
+    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).delete().then(response => {
+      this.servicio.newToast(1, 'Eliminación Correcta', `El producto ${this.producto.Id} se ha eliminado correctamente`);
+    }).catch(err => {
+      this.servicio.newToast(1, 'Eliminación Incorrecta', err);
+    });
+  }
+
 }
 
 
