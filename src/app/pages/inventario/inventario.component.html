@@ -21,12 +21,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="ID de Producto" required disabled value="PROD1">
+                <input matInput placeholder="ID de Producto" [(ngModel)]="Id" name="Id" required disabled>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input type="text" matInput placeholder="Nombre" value="Audifonos Genéricos">
+                <input type="text" matInput placeholder="Nombre" [(ngModel)]="Nombre" name="Nombre">
               </mat-form-field>
             </td>
           </tr>
@@ -35,12 +35,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Marca" required value="Apple">
+                <input matInput placeholder="Marca" required [(ngModel)]="Marca" name="Marca">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Modelo" required value="AirPods">
+                <input matInput placeholder="Modelo" required [(ngModel)]="Modelo" name="Modelo">
               </mat-form-field>
             </td>
           </tr>
@@ -50,12 +50,12 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Descripción" required value="Audifonos genéricos marca apple modelo airpods color azul."></textarea>
+                <textarea matInput placeholder="Descripción" required [(ngModel)]="Descripcion" name="Descripcion"></textarea>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Existencia" matInput required value="12">
+                <input type="number" placeholder="Existencia" matInput required [(ngModel)]="Existencia" name="Existencia">
               </mat-form-field>
             </td>
           </tr>
@@ -65,21 +65,37 @@
           <tr>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Precio de Compra" matInput required value="200">
+                <input type="number" placeholder="Precio de Compra" matInput required [(ngModel)]="PCompra" name="PCompra">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Precio de Venta" matInput required value="300">
+                <input type="number" placeholder="Precio de Venta" matInput required [(ngModel)]="PVenta" name="PVenta">
               </mat-form-field>
             </td>
           </tr>
         </table>
+        <div class="row">
+          <div class="col-10">
+            <mat-form-field style="width: 100%;">
+              <mat-select placeholder="Categoria" required [(ngModel)]="Categoria" name="Categoria">
+                <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                  {{categoria}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-2">
+            <button mat-icon-button matTooltip="Agregar una Nueva Categoria" class="text-success mx-auto" (click)='openVerticallyCentered(agregarCategorias, producto)'>
+              <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
       </form>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-info" (click)="modal.close('Close click')">Agregar</button>
+      <button type="button" class="btn btn-info" (click)="agregarProductos()">Agregar</button>
     </div>
   </ng-template>
   <!--Agregar Existencias Modal-->
@@ -112,6 +128,24 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
       <button type="button" class="btn btn-success" (click)="modal.close('Close click'); editarProductos()">Agregar</button>
+    </div>
+  </ng-template>
+  <!--Agregar Categorias Modal-->
+  <ng-template #agregarCategorias let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Agregar nueva Categoria de Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <mat-form-field style="width: 100%">
+        <input matInput placeholder="Nombre de nueva Categoria" [(ngModel)]="nuevaCategoria" name="nuevaCategoria">
+      </mat-form-field>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); agregarCategoria()">Agregar</button>
     </div>
   </ng-template>
 
@@ -314,85 +348,85 @@
           <button (click)='openVerticallyCentered(agregarProducto,producto)' class="elevated text-center bg-info mr-3"
             matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
-          <button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab>
+          <!--<button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab *ngIf="hayDatos">
             <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
-          </button>
-          <button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab>
+          </button>-->
+          <!--<button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab *ngIf="hayDatos">
             <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
-          </button>
+          </button>-->
         </div>
-        <mat-form-field class="ml-4">
-          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        <mat-form-field class="ml-4" *ngIf="hayDatos">
+          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
         </mat-form-field>
       </div>
-      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+      <table *ngIf="hayDatos; else noHayDatos" mat-table [dataSource]="dataSource" matSort class="table-hover">
 
         <!-- Clave Column -->
-        <ng-container matColumnDef="Clave">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Id}} </td>
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Id}} </td>
         </ng-container>
 
         <!-- Marca Column -->
         <ng-container matColumnDef="Marca">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Marca}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Marca}} </td>
         </ng-container>
 
         <!-- Modelo Column -->
         <ng-container matColumnDef="Modelo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Modelo}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Modelo}} </td>
         </ng-container>
 
         <!-- Existencia Column -->
         <ng-container matColumnDef="Existencia">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Existencia </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Existencia}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Existencia}} </td>
         </ng-container>
 
         <!-- Precio de Compra Column -->
         <ng-container matColumnDef="pCompra">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-primary"> {{row.PCompra}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center text-primary"> {{producto.PCompra}} </td>
         </ng-container>
 
         <!-- Precio de Venta Column -->
         <ng-container matColumnDef="pVenta">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-success"> {{row.PVenta}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center text-success"> {{producto.PVenta}} </td>
         </ng-container>
 
         <!-- Nombre Column -->
         <ng-container matColumnDef="Nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Nombre}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Nombre}} </td>
         </ng-container>
 
         <!-- Categoria Column -->
         <ng-container matColumnDef="Categoria">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Catégoria </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.Categoria}} </td>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Categoria}} </td>
         </ng-container>
 
         <!-- Acciones Column -->
         <ng-container matColumnDef="Acciones">
           <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
-          <td mat-cell *matCellDef="let row" class="text-center">
+          <td mat-cell *matCellDef="let producto" class="text-center">
             <div class="example-button-row">
-              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, row)'>
+              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, producto)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
               </button>
-              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, row)'>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, producto)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
               </button>
-              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, row)'>
+              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, producto)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
               </button>
-              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, row)'>
+              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, producto)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
               </button>
-              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, row)'>
+              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, producto)'>
                 <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
               </button>
             </div>
@@ -401,9 +435,16 @@
 
         <!--Aqui comienzan los TH-->
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let producto; columns: displayedColumns;"></tr>
       </table>
-      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+      <mat-paginator *ngIf="hayDatos" class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+      <ng-template #noHayDatos>
+        <div class="jumbotron">
+          <div class="display-3 text-center">
+            Aún no hay Productos! :(
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </body>

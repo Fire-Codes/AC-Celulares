@@ -38,6 +38,10 @@ export class InventarioComponent implements OnInit {
   // varible para la cantidad de productos actuales y las categorias existentes
   totalProductos: number;
   categorias: string[];
+  contador: number;
+
+  // variable que decide si hay o no datos para mostrar en el data table
+  hayDatos: boolean;
 
   // variables que contendra todos los productos
   coleccionDeProductos: AngularFirestoreCollection<Producto>;
@@ -46,10 +50,21 @@ export class InventarioComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Clave', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'pCompra', 'pVenta', 'Acciones'];
+  displayedColumns: string[] = ['Id', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'pCompra', 'pVenta', 'Acciones'];
   dataSource: MatTableDataSource<Producto>;
 
-  // se declaran las variables para la modificacion de datos para cada producto
+  // se declaran las variables para agregar un nuevo producto
+  Id = '';
+  Nombre = '';
+  Marca = '';
+  Categoria = '';
+  Modelo = '';
+  Existencia: number;
+  PCompra: number;
+  PVenta: number;
+  Estado = '';
+  Descripcion = '';
+  nuevaCategoria = '';
 
 
   constructor(
@@ -66,6 +81,8 @@ export class InventarioComponent implements OnInit {
       .subscribe((documento: Action<DocumentSnapshot<CamposTiendas>>) => {
         this.totalProductos = documento.payload.data()['Cantidad de Productos'];
         this.categorias = documento.payload.data().Categorias;
+        this.hayDatos = this.totalProductos <= 0 ? false : true;
+        this.contador = this.totalProductos <= 0 ? 0 : documento.payload.data().Contador;
       });
 
     // Se extraen todos los productos ingresados
@@ -75,6 +92,7 @@ export class InventarioComponent implements OnInit {
       this.dataSource = new MatTableDataSource(documento);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      console.log(this.dataSource.data.length);
     });
   }
 
@@ -86,10 +104,6 @@ export class InventarioComponent implements OnInit {
       this.totalProductos = campos.payload.data()['Cantidad de Productos'];
       this.categorias = campos.payload.data().Categorias;
     });
-
-    // se inicializan las variables para el mattable de sort y paginator
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   // funcion para buscar producto en la tabla
@@ -105,6 +119,7 @@ export class InventarioComponent implements OnInit {
   openVerticallyCentered(content: string, producto: Producto) {
     this.ngbModal.open(content, { centered: true });
     this.producto = producto;
+    this.reiniciarInputs();
   }
 
   // funcion para editar los datos de un producto
@@ -119,16 +134,92 @@ export class InventarioComponent implements OnInit {
 
   // funcion para eliminar un producto
   eliminarProductos() {
+    const totalproductos = this.totalProductos - 1;
     this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).delete().then(response => {
       this.servicio.newToast(1, 'Eliminación Correcta', `El producto ${this.producto.Id} se ha eliminado correctamente`);
+      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+        'Cantidad de Productos': totalproductos,
+        Contador: totalproductos <= 0 ? 0 : this.contador
+      }).then(resp => {
+        console.warn('Cantidad de productos actualizada correctamente' + resp);
+      }).catch(err => {
+        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+      });
     }).catch(err => {
       this.servicio.newToast(1, 'Eliminación Incorrecta', err);
     });
   }
 
-}
+  // funcion para agregar un nuevo producto
+  agregarProductos() {
+    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.Id}`).set({
+      Id: this.Id,
+      Nombre: this.Nombre,
+      Marca: this.Marca,
+      Categoria: this.Categoria,
+      Modelo: this.Modelo,
+      Existencia: this.Existencia,
+      PCompra: this.PCompra,
+      PVenta: this.PVenta,
+      Estado: 'Disponible',
+      Descripcion: this.Descripcion
+    }).then(response => {
+      const totalproductos = this.totalProductos + 1;
+      const contador = this.contador + 1;
+      this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+        'Cantidad de Productos': totalproductos,
+        Contador: contador
+      }).then(resp => {
+        console.warn('Cantidad de productos actualizada correctamente' + resp);
+        this.reiniciarInputs();
+      }).catch(err => {
+        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+      });
+    }).catch(err => {
+      this.servicio.newToast(0, 'Insercción Incorrecta', err);
+    });
+  }
 
+  // funcion para agregar una nueva categoria de productos
+  agregarCategoria() {
+    // tslint:disable-next-line:prefer-const
+    let nuevoArray = this.categorias;
+    let parecidas = 0;
+    nuevoArray.forEach(categoria => {
+      if (categoria.toLowerCase() === this.nuevaCategoria.toLowerCase()) {
+        parecidas = parecidas + 1;
+      }
+    });
+    if (parecidas > 0) {
+      this.servicio.newToast(0, 'Inserccion Incorrecta', 'Ya existe una categoria con este nombre');
+    } else {
+      nuevoArray.push(this.nuevaCategoria);
+      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+        Categorias: nuevoArray
+      }).then(response => {
+        this.servicio.newToast(1, 'Inserccion Correcta', 'La nueva categoria de productos se agrego correctamente');
+      }).catch(err => {
+        this.servicio.newToast(0, 'Inserccion Incorrecta', err);
+      });
+    }
+    this.nuevaCategoria = '';
+  }
 
-// funcion para crear un nuevo producto
-function createNewUser() {
+  // funcion para reiniciar todos los inputs
+  reiniciarInputs() {
+    this.Id = '';
+    this.Id += 'PROD';
+    this.Id += this.contador + 1;
+    this.Categoria = '';
+    this.Descripcion = '';
+    this.Estado = 'Disponible';
+    this.Existencia = 0;
+    this.Marca = '';
+    this.Modelo = '';
+    this.Nombre = '';
+    this.PCompra = 0;
+    this.PVenta = 0;
+    this.nuevaCategoria = '';
+  }
 }
