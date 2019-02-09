@@ -21,3 +21,6 @@ body{
 #toast-container > div {
     opacity:1;
 }
+.cdk-overlay-container{
+    z-index: 2000;
+}
