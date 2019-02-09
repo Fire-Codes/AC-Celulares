@@ -3,19 +3,19 @@
 
   <div class="profile-card js-profile-card">
     <div class="profile-card__img">
-      <img src="../../../assets/ProfilePictures/edycarreyes99.jpg" alt="profile card">
+      <img src="{{photoURL}}" alt="profile card">
     </div>
 
     <div class="profile-card__cnt js-profile-cnt">
-      <div class="profile-card__name text-primary">Edycar Reyes</div>
-      <div class="profile-card__txt">Front-end Developer from <strong style="color: orange;">FireCodes</strong></div>
+      <div class="profile-card__name text-primary">{{Nombre}}</div>
+      <div class="profile-card__txt">{{Cargo}} from <strong style="color: orange;">ACCelulares</strong></div>
       <div class="profile-card-loc">
         <span class="profile-card-loc__icon">
           <mat-icon class="icon" aria-label="Example icon-button with a heart icon">supervised_user_circle</mat-icon>
         </span>
 
         <span class="profile-card-loc__txt">
-          Tipo de Usuario: Administrador
+          Tipo de Usuario: {{Tipo}}
         </span>
       </div>
 
@@ -46,7 +46,7 @@
       </div>
 
       <div class="profile-card-social">
-        <a href="https://www.facebook.com/iaMuhammedErdem" class="profile-card-social__item facebook" target="_blank">
+        <a class="profile-card-social__item facebook">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-facebook"></use>
@@ -54,7 +54,7 @@
           </span>
         </a>
 
-        <a href="https://twitter.com/iaMuhammedErdem" class="profile-card-social__item twitter" target="_blank">
+        <a class="profile-card-social__item twitter">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-twitter"></use>
@@ -62,7 +62,7 @@
           </span>
         </a>
 
-        <a href="https://www.instagram.com/iamuhammederdem" class="profile-card-social__item instagram" target="_blank">
+        <a class="profile-card-social__item instagram">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-instagram"></use>
@@ -70,7 +70,7 @@
           </span>
         </a>
 
-        <a href="https://www.behance.net/iaMuhammedErdem" class="profile-card-social__item behance" target="_blank">
+        <a class="profile-card-social__item behance">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-behance"></use>
@@ -78,7 +78,7 @@
           </span>
         </a>
 
-        <a href="https://github.com/muhammederdem" class="profile-card-social__item github" target="_blank">
+        <a class="profile-card-social__item github">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-github"></use>
@@ -86,7 +86,7 @@
           </span>
         </a>
 
-        <a href="https://codepen.io/JavaScriptJunkie" class="profile-card-social__item codepen" target="_blank">
+        <a class="profile-card-social__item codepen">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-codepen"></use>
@@ -94,7 +94,7 @@
           </span>
         </a>
 
-        <a href="http://muhammederdem.com.tr/" class="profile-card-social__item link" target="_blank">
+        <a class="profile-card-social__item link">
           <span class="icon-font">
             <svg class="icon">
               <use xlink:href="#icon-link"></use>
