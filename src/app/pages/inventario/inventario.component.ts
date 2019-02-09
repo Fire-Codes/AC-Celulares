@@ -83,6 +83,7 @@ export class InventarioComponent implements OnInit {
         this.categorias = documento.payload.data().Categorias;
         this.hayDatos = this.totalProductos <= 0 ? false : true;
         this.contador = this.totalProductos <= 0 ? 0 : documento.payload.data().Contador;
+        console.log(this.contador + 1);
       });
 
     // Se extraen todos los productos ingresados
@@ -103,6 +104,7 @@ export class InventarioComponent implements OnInit {
     this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
       this.totalProductos = campos.payload.data()['Cantidad de Productos'];
       this.categorias = campos.payload.data().Categorias;
+      this.reiniciarId();
     });
   }
 
@@ -221,5 +223,12 @@ export class InventarioComponent implements OnInit {
     this.PCompra = 0;
     this.PVenta = 0;
     this.nuevaCategoria = '';
+  }
+
+  // funcion para agregar un nuevo id
+  reiniciarId() {
+    this.Id = '';
+    this.Id += 'PROD';
+    this.Id += this.contador + 1;
   }
 }
