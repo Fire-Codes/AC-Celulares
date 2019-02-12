@@ -6,12 +6,15 @@ import { promise } from 'protractor';
 import { reject } from 'q';
 import { map } from 'rxjs/operators';
 
+// se importa la interfaz del usuario
+import { Usuario } from './../interfaces/usuario';
+
 // importacion del componente para los toast
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 
 // importaciones de los componente de angularfire
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable, Subscription } from 'rxjs';
@@ -20,12 +23,25 @@ import { Observable, Subscription } from 'rxjs';
   providedIn: 'root'
 })
 export class ServicioService {
-
+  Usuarios: AngularFirestoreCollection<Usuario>;
   constructor(
     public router: Router,
     public auth: AngularFireAuth,
-    public toast: ToastrService
+    public toast: ToastrService,
+    public fs: AngularFirestore
   ) { }
+
+  // funcion para extraer todos los usuarios de la base de datos
+  public extraerUsuarios() {
+    let Usuarioss: Usuario[];
+    this.Usuarios = this.fs.collection<Usuario>('AC Celulares/Control/Clientes');
+    this.Usuarios.valueChanges().subscribe(usuario => {
+      // Assign the data to the data source for the table to render
+      Usuarioss = usuario;
+    });
+    console.warn(Usuarioss);
+    return Usuarioss;
+  }
 
   // funcion para navegar entre las paginas con el angular router
   public navegar(ruta: string) {

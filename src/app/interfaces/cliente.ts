@@ -11,4 +11,9 @@ export interface Cliente {
     'Cantidad de Compras': number;
     Nombres: string;
     Apellidos: string;
+    Sexo: string;
+    PhotoURL: string;
+    Ciudad: string;
+    Departamento: string;
+    NombreCompleto: string;
 }

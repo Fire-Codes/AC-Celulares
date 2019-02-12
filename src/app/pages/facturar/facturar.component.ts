@@ -1,3 +1,4 @@
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -9,6 +10,7 @@ import { ProductoFactura } from '../../interfaces/producto-factura';
 
 // Importacion del componente para los modales
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Usuario } from 'src/app/interfaces/usuario';
 
 const NAMES = ['Edycar', 'Susan', 'Jaime', 'Edmundo', 'Carmen'];
 
@@ -35,47 +37,24 @@ export interface State {
 export class FacturarComponent implements OnInit {
   stateCtrl = new FormControl();
   filteredStates: Observable<State[]>;
+  public itemsCollection: AngularFirestoreCollection<Usuario>;
+  items: Observable<Usuario[]>;
 
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['id', 'Producto', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
   dataSource: MatTableDataSource<ProductoFactura>;
   @ViewChild(MatSort) sort: MatSort;
 
-  states: State[] = [
-    {
-      name: 'Arkansas',
-      population: '2.978M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Arkansas.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
-    },
-    {
-      name: 'California',
-      population: '39.14M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_California.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
-    },
-    {
-      name: 'Florida',
-      population: '20.27M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Florida.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg'
-    },
-    {
-      name: 'Texas',
-      population: '27.47M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Texas.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
-    }
-  ];
+  clientes: any;
+  valordebusqueda = '';
   productos: ProductoFactura[];
   constructor(
-    public ngbModal: NgbModal
+    public ngbModal: NgbModal,
+    public fs: AngularFirestore
   ) {
-    this.filteredStates = this.stateCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this._filterStates(state) : this.states.slice())
-      );
+    this.itemsCollection = this.fs.collection<Usuario>('AC Celulares/Control/Clientes');
+    this.items = this.itemsCollection.valueChanges();
+
     // Create 100 users
     const productos = Array.from({ length: 10 }, (_, k) => crearProductos(k + 1));
     this.productos = productos;
@@ -86,12 +65,19 @@ export class FacturarComponent implements OnInit {
   ngOnInit() {
     // Sort table components init
     this.dataSource.sort = this.sort;
+    this.buscar();
   }
 
-  _filterStates(value: string): State[] {
-    const filterValue = value.toLowerCase();
-
-    return this.states.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  // funcion para buscar cliente
+  buscar() {
+    // tslint:disable-next-line:prefer-const
+    let self = this;
+    self.clientes = self.fs.collection('AC Celulares/Control/Clientes', ref => ref
+      .orderBy('NombreCompleto')
+      .startAt(self.valordebusqueda.toUpperCase())
+      .endAt(self.valordebusqueda.toUpperCase() + '\uf8ff')
+      .limit(10)
+    ).valueChanges();
   }
 
   // funcion para abrir los modales de manera centrada
