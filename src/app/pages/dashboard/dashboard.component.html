@@ -1,10 +1,8 @@
 <nav class="navbar navbar-dark bg-dark elevated shake">
   <div class="container slideInLeft">
     <a class="navbar-brand text-light">AC Celulares</a>
-    <form class="form-inline">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Buscar...">
-      <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-      <a href="#" class="text-light my-2 my-sm-0"><i class="fas fa-search"></i></a>
+    <form class="form-inline text-light">
+      {{fechaHora}}
     </form>
   </div>
 </nav>
@@ -95,50 +93,6 @@
           </mat-card-title>
         </mat-card>
       </div>
-    </div>
-
-    <div class="mb-4 slideInLeft">
-      <div class="container-fluid bg-warning rounded-top p-4">
-        <div class="float-right"><button class="elevated text-center" mat-fab color="accent"><i matListIcon class="fas fa-user-plus text-dark"></i></button></div>
-        <mat-card-title class="ml-4 mt-4">
-          Clientes
-        </mat-card-title>
-        <mat-form-field class="ml-4">
-          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-        </mat-form-field>
-      </div>
-      <table mat-table [dataSource]="dataSource" matSort class="table-hover">
-
-        <!-- ID Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-        </ng-container>
-
-        <!-- Telefono Column -->
-        <ng-container matColumnDef="Telefono">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
-          <td mat-cell *matCellDef="let row"> {{row.Telefono}} </td>
-        </ng-container>
-
-        <!-- Nombre Column -->
-        <ng-container matColumnDef="Nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
-        </ng-container>
-
-        <!-- Tipo Column -->
-        <ng-container matColumnDef="Tipo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
-          <td mat-cell *matCellDef="let row"> {{row.Tipo}} </td>
-        </ng-container>
-
-        <!--Aqui comienzan los TH-->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
-      <mat-paginator class="elevated mb-3" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </body>
