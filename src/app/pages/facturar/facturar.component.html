@@ -220,11 +220,12 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscar()" [matAutocomplete]="auto" [formControl]="stateCtrl" [(ngModel)]="valordebusqueda" name="valordebusqueda">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+                <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscar()"
+                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl" [(ngModel)]="valordebusqueda" name="valordebusqueda">
+                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
+                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.NombreCompleto}}</span> |
+                    <span>{{cliente.Nombres}}</span> |
                     <small>{{cliente.Tipo}}</small>
                   </mat-option>
                 </mat-autocomplete>
@@ -241,11 +242,12 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscar()" [matAutocomplete]="auto" [formControl]="stateCtrl">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+                <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscar()"
+                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
+                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
+                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.NombreCompleto}}</span> |
+                    <span>{{cliente.Nombres}}</span> |
                     <small>{{cliente.Tipo}}</small>
                   </mat-option>
                 </mat-autocomplete>
@@ -262,11 +264,12 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()" [matAutocomplete]="auto" [formControl]="stateCtrl">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()"
+                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
+                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
+                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.NombreCompleto}}</span> |
+                    <span>{{cliente.Nombres}}</span> |
                     <small>{{cliente.Tipo}}</small>
                   </mat-option>
                 </mat-autocomplete>
@@ -314,11 +317,12 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()" [matAutocomplete]="auto" [formControl]="stateCtrl">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()"
+                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
+                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
+                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.NombreCompleto}}</span> |
+                    <span>{{cliente.Nombres}}</span> |
                     <small>{{cliente.Tipo}}</small>
                   </mat-option>
                 </mat-autocomplete>

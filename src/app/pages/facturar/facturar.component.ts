@@ -5,28 +5,15 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
-// importacion de la interfaz para el Producto
+// importacion de las interfaces
 import { ProductoFactura } from '../../interfaces/producto-factura';
+import { Usuario } from 'src/app/interfaces/usuario';
+import { Cliente } from 'src/app/interfaces/cliente';
 
 // Importacion del componente para los modales
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Usuario } from 'src/app/interfaces/usuario';
 
 const NAMES = ['Edycar', 'Susan', 'Jaime', 'Edmundo', 'Carmen'];
-
-export interface UserData {
-  id: string;
-  Nombre: string;
-  Telefono: string;
-  Tipo: string;
-  Cedula: String;
-}
-
-export interface State {
-  flag: string;
-  name: string;
-  population: string;
-}
 
 
 @Component({
@@ -36,7 +23,6 @@ export interface State {
 })
 export class FacturarComponent implements OnInit {
   stateCtrl = new FormControl();
-  filteredStates: Observable<State[]>;
   public itemsCollection: AngularFirestoreCollection<Usuario>;
   items: Observable<Usuario[]>;
 
@@ -45,16 +31,13 @@ export class FacturarComponent implements OnInit {
   dataSource: MatTableDataSource<ProductoFactura>;
   @ViewChild(MatSort) sort: MatSort;
 
-  clientes: any;
+  clientes: Observable<Cliente[]>;
   valordebusqueda = '';
   productos: ProductoFactura[];
   constructor(
     public ngbModal: NgbModal,
     public fs: AngularFirestore
   ) {
-    this.itemsCollection = this.fs.collection<Usuario>('AC Celulares/Control/Clientes');
-    this.items = this.itemsCollection.valueChanges();
-
     // Create 100 users
     const productos = Array.from({ length: 10 }, (_, k) => crearProductos(k + 1));
     this.productos = productos;
@@ -68,11 +51,17 @@ export class FacturarComponent implements OnInit {
     this.buscar();
   }
 
+  // funcion que se ejecutara cuando un cliente se seleccione
+  seleccionarCliente(cliente: Cliente) {
+    console.log('CLICKED');
+    console.log(cliente.Id);
+  }
+
   // funcion para buscar cliente
   buscar() {
     // tslint:disable-next-line:prefer-const
     let self = this;
-    self.clientes = self.fs.collection('AC Celulares/Control/Clientes', ref => ref
+    self.clientes = self.fs.collection<Cliente>('AC Celulares/Control/Clientes', ref => ref
       .orderBy('NombreCompleto')
       .startAt(self.valordebusqueda.toUpperCase())
       .endAt(self.valordebusqueda.toUpperCase() + '\uf8ff')
