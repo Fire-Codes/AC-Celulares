@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators';
 // se importa la interfaz del usuario
 import { Usuario } from './../interfaces/usuario';
 
+// se importa la interfaz del cliente
+import { Cliente } from './../interfaces/cliente';
+
 // importacion del componente para los toast
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 
