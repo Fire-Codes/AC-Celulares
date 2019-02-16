@@ -16,4 +16,5 @@ export interface Cliente {
     Ciudad: string;
     Departamento: string;
     NombreCompleto: string;
+    Correo: string;
 }

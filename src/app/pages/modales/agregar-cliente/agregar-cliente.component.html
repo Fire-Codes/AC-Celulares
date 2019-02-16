@@ -16,9 +16,9 @@
         <label class="text-warning">Nombres</label>
         <div class="input required-group">
           <input required type="text" aria-label="Primer Nombre" class="mb-3 form-control" placeholder="Primer Nombre"
-            name="primerNombre" [(ngModel)]="primerNombre" (keyup)="toUpper()">
+            name="primerNombre" [(ngModel)]="primerNombre" (keyup)="toUpper()" required>
           <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control" placeholder="Segundo Nombre"
-            name="segundoNombre" [(ngModel)]="segundoNombre" (keyup)="toUpper()">
+            name="segundoNombre" [(ngModel)]="segundoNombre" (keyup)="toUpper()" required>
         </div>
       </div>
     </div>
@@ -27,9 +27,9 @@
         <label class="text-warning">Apellidos</label>
         <div class="input required-group">
           <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control" placeholder="Primer Apellido"
-            name="primerApellido" [(ngModel)]="primerApellido" (keyup)="toUpper()">
+            name="primerApellido" [(ngModel)]="primerApellido" (keyup)="toUpper()" required>
           <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control" placeholder="Segundo Apellido"
-            name="segundoApellido" [(ngModel)]="segundoApellido" (keyup)="toUpper()">
+            name="segundoApellido" [(ngModel)]="segundoApellido" (keyup)="toUpper()" required>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
   <div class="row mt-3">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
-        <mat-select placeholder="Tipo de Usuario" [(ngModel)]="tipoUsuario" name="tipoUsuario">
+        <mat-select placeholder="Tipo de Usuario" [(ngModel)]="tipoUsuario" name="tipoUsuario" required>
           <mat-option value="Premium">
             Premium
           </mat-option>
@@ -66,7 +66,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
-        <mat-select placeholder="Sexo" name="sexo" [(ngModel)]="sexo">
+        <mat-select required placeholder="Sexo" name="sexo" [(ngModel)]="sexo">
           <mat-option value="Masculino">
             Masculino
           </mat-option>
@@ -88,20 +88,20 @@
   <div class="row mt-3">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
-        <input placeholder="Departamento" type="text" matInput name="departamento" [(ngModel)]="departamento">
+        <input required placeholder="Departamento" type="text" matInput name="departamento" [(ngModel)]="departamento">
       </mat-form-field>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
-        <input placeholder="Municipio" type="text" matInput name="municipio" [(ngModel)]="municipio">
+        <input required placeholder="Municipio" type="text" matInput name="municipio" [(ngModel)]="municipio">
       </mat-form-field>
     </div>
   </div>
   <mat-form-field style="width: 100%;">
-    <textarea matInput placeholder="Dirección" name="direccion" [(ngModel)]="direccion"></textarea>
+    <textarea required matInput placeholder="Dirección" name="direccion" [(ngModel)]="direccion"></textarea>
   </mat-form-field>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
-  <button type="button" class="btn btn-warning" (click)="cerrarModal()">Actualizar</button>
+  <button type="button" class="btn btn-warning" (click)="agregarCliente()">Agregar</button>
 </div>
