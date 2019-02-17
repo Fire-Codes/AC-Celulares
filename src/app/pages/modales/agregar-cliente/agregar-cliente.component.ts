@@ -32,19 +32,19 @@ export class AgregarClienteComponent implements OnInit {
   cedula = '';
   sexo = '';
   email = '';
-  departamento = '';
-  municipio = '';
+  departamento = 'Chinandega';
+  municipio = 'Chichigalpa';
   direccion = '';
   id = '';
   nombreCompleto = '';
   nombres = '';
   apellidos = '';
 
-  verificarInputsBool = false;
-  verficarClienteBool = false;
-
   // variables que contendran la cantidad de cliente
   cantidadClientes: number;
+
+  contadorErrores = 0;
+
   // variables para emision de eventos
   @Output() cerrarModalEvent = new EventEmitter();
 
@@ -69,72 +69,82 @@ export class AgregarClienteComponent implements OnInit {
     if ((this.primerNombre === '') || (this.segundoNombre === '') || (this.primerApellido === '') || (this.segundoApellido === '') || (this.tipoUsuario === '') || (this.sexo === '') || (this.departamento === '') || (this.municipio === '') || (this.direccion === '')) {
       this.servicio.newToast(0, 'Faltan Datos!', 'Ingrese todos los campos que son requeridos para proceder');
       console.error('datos incorrectos');
-      this.verificarInputsBool = false;
     } else {
 
       // condicional que verifica que el cliente que se va a agregar no coincida con los datos de otro ya agregado a la base de datos
-      let contador;
       this.fs.collection('AC Celulares/Control/Clientes').snapshotChanges().subscribe((documentos: DocumentChangeAction<Cliente>[]) => {
         documentos.map((documento: DocumentChangeAction<Cliente>) => {
           if (documento.payload.doc.data().Cedula === this.cedula) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este numero de Cédula.');
-            contador = contador + 1;
+            this.contadorErrores = this.contadorErrores + 1;
+            console.error('Error en la cedula=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Correo === this.email) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este coreo eletrónico.');
-            contador = contador + 1;
+            this.contadorErrores = this.contadorErrores + 1;
+            console.error('Error en el correo=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Id === this.nombreCompleto) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este Id.');
-            contador = contador + 1;
+            this.contadorErrores = this.contadorErrores + 1;
+            console.error('Error en el id=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Telefono === this.celular) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este número telefónico.');
-            contador = contador + 1;
+            this.contadorErrores = this.contadorErrores + 1;
+            console.error('Error en el telefono=' + this.contadorErrores);
           }
-          console.error(contador);
         });
       });
-
-      // condicional que verifica la cantidad de errores que se produjeron al verificar los datos de otro cliente
-      if (contador === 0) {
-
-        // funcion que se ejecuta a un dado caso que el contador de errores sea igual  0
-        this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.nombreCompleto}`).set({
-          Id: this.nombreCompleto,
-          'Primer Nombre': this.primerNombre,
-          'Primer Apellido': this.primerApellido,
-          'Segundo Nombre': this.segundoNombre,
-          'Segundo Apellido': this.segundoApellido,
-          Tipo: this.tipoUsuario,
-          Telefono: this.celular,
-          Cedula: this.cedula === '' ? null : this.cedula,
-          Sexo: this.sexo,
-          Correo: this.email === '' ? null : this.email,
-          Departamento: this.departamento,
-          Ciudad: this.municipio,
-          Direccion: this.direccion,
-          NombreCompleto: this.nombreCompleto,
-          // tslint:disable-next-line:max-line-length
-          PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
-          Apellidos: this.primerApellido + ' ' + this.segundoApellido,
-          Nombres: this.primerNombre + ' ' + this.segundoNombre,
-          'Cantidad de Compras': 0
-        }).then((resp) => {
-          this.servicio.newToast(1, 'Insercción Correcta', `El Cliente ${this.nombreCompleto} se agregó al sistema correctamente`);
-          this.fs.doc<ControlTienda>('AC Celulares/Control').update({
-            'Cantidad de Clientes': this.cantidadClientes + 1,
-            'Contador de Clientes': this.cantidadClientes + 1
+      setTimeout(() => {
+        // condicional que verifica la cantidad de errores que se produjeron al verificar los datos de otro cliente
+        if (this.contadorErrores > 0) {
+          console.error('Hubieron errores en la verificacion');
+          return;
+        } else {
+          console.warn('No hubieron errores en la verificacion');
+          // funcion que se ejecuta a un dado caso que el contador de errores sea igual  0
+          this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.nombreCompleto}`).set({
+            Id: this.nombreCompleto,
+            'Primer Nombre': this.primerNombre,
+            'Primer Apellido': this.primerApellido,
+            'Segundo Nombre': this.segundoNombre,
+            'Segundo Apellido': this.segundoApellido,
+            Tipo: this.tipoUsuario,
+            Telefono: this.celular,
+            Cedula: this.cedula === '' ? null : this.cedula,
+            Sexo: this.sexo,
+            Correo: this.email === '' ? null : this.email,
+            Departamento: this.departamento,
+            Ciudad: this.municipio,
+            Direccion: this.direccion,
+            NombreCompleto: this.nombreCompleto,
+            // tslint:disable-next-line:max-line-length
+            PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
+            Apellidos: this.primerApellido + ' ' + this.segundoApellido,
+            Nombres: this.primerNombre + ' ' + this.segundoNombre,
+            'Cantidad de Compras': 0
+          }).then((resp) => {
+            this.servicio.newToast(1, 'Insercción Correcta', `El Cliente ${this.nombreCompleto} se agregó al sistema correctamente`);
+            this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+              'Cantidad de Clientes': this.cantidadClientes + 1,
+              'Contador de Clientes': this.cantidadClientes + 1
+            });
+          }).catch((err) => {
+            this.servicio.newToast(0, 'Error de Insercción', err);
           });
-        }).catch((err) => {
-          this.servicio.newToast(0, 'Error de Insercción', err);
-        });
 
-        // se manda a llamar al cerrar el modal solamente a un dado caso que todas las otras funciones hayan sido correctas
-        this.cerrarModal();
-      }
+          // se manda a llamar a la funcion para limpar todos los inputs antes de cerrar el modal
+          this.reiniciarInputs();
+
+
+          // se manda a llamar al cerrar el modal solamente a un dado caso que todas las otras funciones hayan sido correctas
+          this.cerrarModal();
+        }
+      }, 1500);
     }
   }
 
   // funcion para emitir el evento para cerrar el modal
   cerrarModal() {
+    this.reiniciarInputs();
     this.cerrarModalEvent.emit();
   }
 
@@ -146,5 +156,25 @@ export class AgregarClienteComponent implements OnInit {
     this.segundoApellido = this.segundoApellido.toUpperCase();
     this.cedula = this.cedula.toUpperCase();
     this.nombreCompleto = `${this.primerNombre} ${this.segundoNombre} ${this.primerApellido} ${this.segundoApellido}`;
+  }
+
+  // funcion para reiniciar todos los inputs
+  reiniciarInputs() {
+    this.primerNombre = '';
+    this.segundoNombre = '';
+    this.primerApellido = '';
+    this.segundoApellido = '';
+    this.tipoUsuario = '';
+    this.celular = null;
+    this.cedula = '';
+    this.sexo = '';
+    this.email = '';
+    this.departamento = '';
+    this.municipio = '';
+    this.direccion = '';
+    this.id = '';
+    this.nombreCompleto = '';
+    this.nombres = '';
+    this.apellidos = '';
   }
 }
