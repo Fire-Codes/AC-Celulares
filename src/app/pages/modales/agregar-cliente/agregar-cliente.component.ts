@@ -4,6 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 // se importan los componentes para firebase
 // tslint:disable-next-line:max-line-length
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentSnapshot, Action, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // se importa el servicio
 import { ServicioService } from '../../../servicios/servicio.service';
@@ -12,8 +13,7 @@ import { ServicioService } from '../../../servicios/servicio.service';
 import { ControlTienda } from 'src/app/interfaces/control';
 import { CamposTiendas } from 'src/app/interfaces/campos-tiendas';
 import { Cliente } from 'src/app/interfaces/cliente';
-
-
+import { DepartamentosMunicipios } from 'src/app/interfaces/departamentos-municipios';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -32,8 +32,28 @@ export class AgregarClienteComponent implements OnInit {
   cedula = '';
   sexo = '';
   email = '';
-  departamento = 'Chinandega';
-  municipio = 'Chichigalpa';
+  departamento = '';
+  departamentos: string[] = [
+    'Managua',
+    'Boaco',
+    'Carazo',
+    'Chinandega',
+    'Chontales',
+    'Esteli',
+    'Granada',
+    'Jinotega',
+    'Leon',
+    'Madriz',
+    'Masaya',
+    'Matagalpa',
+    'Nueva Segovia',
+    'Rio San Juan',
+    'Rivas',
+    'Región Autónoma de la Costa Caribe Norte (RAAN)',
+    'Región Autónoma de la Costa Caribe Sur (RAAS)'
+  ];
+  departamentosMunicipios: DepartamentosMunicipios[];
+  municipio = '';
   direccion = '';
   id = '';
   nombreCompleto = '';
@@ -50,11 +70,14 @@ export class AgregarClienteComponent implements OnInit {
 
   constructor(
     public fs: AngularFirestore,
-    public servicio: ServicioService
+    public servicio: ServicioService,
+    public db: AngularFireDatabase
   ) {
-    this.fs.doc('AC Celulares/Control').snapshotChanges().subscribe(controles => {
+    this.fs.doc('AC Celulares/Control').snapshotChanges().subscribe((controles: Action<DocumentSnapshot<ControlTienda>>) => {
       this.cantidadClientes = controles.payload.data()['Cantidad de Clientes'];
+      this.departamentosMunicipios = controles.payload.data()['Departamentos y Municipios'];
       console.warn(this.cantidadClientes);
+      console.warn(this.departamentosMunicipios);
     });
   }
 
