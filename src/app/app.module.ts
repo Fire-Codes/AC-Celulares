@@ -45,6 +45,7 @@ import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar-cliente.component';
+import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clientes.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar
     ServiciosComponent,
     PagoServiciosComponent,
     PerfilComponent,
-    AgregarClienteComponent
+    AgregarClienteComponent,
+    TablaClientesComponent
   ],
   imports: [
     BrowserModule,
