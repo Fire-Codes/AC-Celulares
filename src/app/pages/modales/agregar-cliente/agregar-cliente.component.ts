@@ -1,4 +1,3 @@
-import { map } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // se importan los componentes para firebase
@@ -14,6 +13,7 @@ import { ControlTienda } from 'src/app/interfaces/control';
 import { CamposTiendas } from 'src/app/interfaces/campos-tiendas';
 import { Cliente } from 'src/app/interfaces/cliente';
 import { DepartamentosMunicipios } from 'src/app/interfaces/departamentos-municipios';
+import { Producto } from 'src/app/interfaces/producto';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -76,8 +76,6 @@ export class AgregarClienteComponent implements OnInit {
     this.fs.doc('AC Celulares/Control').snapshotChanges().subscribe((controles: Action<DocumentSnapshot<ControlTienda>>) => {
       this.cantidadClientes = controles.payload.data()['Cantidad de Clientes'];
       this.departamentosMunicipios = controles.payload.data()['Departamentos y Municipios'];
-      console.warn(this.cantidadClientes);
-      console.warn(this.departamentosMunicipios);
     });
   }
 
@@ -152,6 +150,36 @@ export class AgregarClienteComponent implements OnInit {
             });
           }).catch((err) => {
             this.servicio.newToast(0, 'Error de Insercción', err);
+          });
+
+          // integracion con el realtime database
+          this.db.database.ref(`AC Celulares/Control/Clientes/${this.nombreCompleto}`).set({
+            Id: this.nombreCompleto,
+            'Primer Nombre': this.primerNombre,
+            'Primer Apellido': this.primerApellido,
+            'Segundo Nombre': this.segundoNombre,
+            'Segundo Apellido': this.segundoApellido,
+            Tipo: this.tipoUsuario,
+            Telefono: this.celular,
+            Cedula: this.cedula === '' ? null : this.cedula,
+            Sexo: this.sexo,
+            Correo: this.email === '' ? null : this.email,
+            Departamento: this.departamento,
+            Ciudad: this.municipio,
+            Direccion: this.direccion,
+            NombreCompleto: this.nombreCompleto,
+            // tslint:disable-next-line:max-line-length
+            PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
+            Apellidos: this.primerApellido + ' ' + this.segundoApellido,
+            Nombres: this.primerNombre + ' ' + this.segundoNombre,
+            'Cantidad de Compras': 0
+          }).then((resp) => {
+            this.db.database.ref('AC Celulares/Control').update({
+              'Cantidad de Clientes': this.cantidadClientes + 1,
+              'Contador de Clientes': this.cantidadClientes + 1
+            });
+          }).catch((err) => {
+            console.error('Error al realizar la copia de seguridad al realtime database: ' + err);
           });
 
           // se manda a llamar a la funcion para limpar todos los inputs antes de cerrar el modal
