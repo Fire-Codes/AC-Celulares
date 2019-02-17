@@ -7,7 +7,8 @@ import { NavsideComponent } from './../navside/navside.component';
 import { ServicioService } from '../../servicios/servicio.service';
 
 // importacion de los componentes de firestore para su integracion con el componente actual
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // importacion de la interfaz para el usuario
 import { Usuario } from '../../interfaces/usuario';
@@ -35,7 +36,8 @@ export class SignupComponent implements OnInit {
   constructor(
     public nav: NavsideComponent,
     public servicio: ServicioService,
-    public fs: AngularFirestore
+    public fs: AngularFirestore,
+    public db: AngularFireDatabase
   ) {
     this.nav.mostrarNav = false;
   }
@@ -76,6 +78,34 @@ export class SignupComponent implements OnInit {
         location.reload();
       }).catch(err => {
         console.error('Hubo un error al agregar los dtos del nuevo usuario a firestore: ' + err);
+      });
+
+      // integracion con el realtime database
+      let id = this.correo;
+      id = id.replace('.', '_');
+      this.db.database.ref(`AC Celulares/Control/Usuarios/${id}`).set({
+        Nombres: this.primerNombre + ' ' + this.segundoNombre,
+        Apellidos: this.primerApellido + ' ' + this.segundoApellido,
+        Correo: this.correo,
+        Pertenece1: this.pertenece === 'Pertenece1' ? true : false,
+        Pertenece2: this.pertenece === 'Pertenece2' ? true : false,
+        Pertenece3: this.pertenece === 'Pertenece3' ? true : false,
+        Tipo: this.tipo,
+        UID: null,
+        Username: this.username,
+        Celular: this.celular,
+        Cedula: this.cedula,
+        EstadoConexion: null,
+        FechaUltimaConexion: null,
+        HoraUltimaConexion: null,
+        Cargo: this.cargo,
+        Sexo: this.sexo,
+        'Primer Nombre': this.primerNombre,
+        'Segundo Nombre': this.segundoNombre,
+        'Primer Apellido': this.primerApellido,
+        'Segundo Apellido': this.segundoApellido,
+        // tslint:disable-next-line:max-line-length
+        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f'
       });
     }).catch(err => {
       this.servicio.newToast(0, 'Hubo un Error!', `Error al agregar el usuario ${this.username}: ` + err);
