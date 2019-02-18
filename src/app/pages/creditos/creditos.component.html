@@ -126,7 +126,7 @@
       <div class="container-fluid bg-success rounded-top p-4">
         <div matTooltip="Realizar Nuevo Crédito" class="float-right"><button (click)='openVerticallyCentered(nuevoCredito)'
             class="elevated text-center bg-success" mat-fab>
-            <mat-icon aria-label="Example icon-button with a heart icon">attach_money</mat-icon>
+            <mat-icon>attach_money</mat-icon>
           </button>
         </div>
         <mat-card-title class="ml-4 mt-4 text-dark">
@@ -174,13 +174,13 @@
           <td mat-cell *matCellDef="let row">
             <div class="example-button-row">
               <button mat-icon-button class="text-primary" matTooltip="Ver Crédito de Cliente" (click)='verDetallesCredito(verCredito, row)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+                <mat-icon>remove_red_eye</mat-icon>
               </button>
               <button mat-icon-button class="text-secondary" matTooltip="Abonar Cuota">
                 <i class="fas fa-piggy-bank text-secondary" style="font-size: 1.3rem;"></i>
               </button>
               <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)='openVerticallyCentered(eliminarCreditoCliente, row)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                <mat-icon>delete</mat-icon>
               </button>
             </div>
           </td>

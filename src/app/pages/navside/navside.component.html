@@ -51,7 +51,7 @@
       </a>
       <div class="container mt-4 text-center mb-4">
         <button mat-mini-fab (click)="logout()" matTooltip="Cerrar Sesión" class="bg-danger">
-          <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">exit_to_app</mat-icon>
+          <mat-icon class="text-light">exit_to_app</mat-icon>
         </button>
       </div>
     </mat-list>
@@ -105,20 +105,20 @@
     </mat-list>
     <div class="container-fluid text-center position-sticky fixed-bottom" *ngIf="abierto; else cerrado" style="background-color: gray;">
       <button mat-icon-button class="mx-auto" (click)="abrirCerrar()" matTooltip="Contraer">
-        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light mx-auto">arrow_back_ios</mat-icon>
+        <mat-icon class="text-light mx-auto">arrow_back_ios</mat-icon>
       </button>
       <!--<button mat-icon-button (click)="abrirCerrar()" matTooltip="Contraer">
-        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light">arrow_back_ios</mat-icon>
+        <mat-icon class="text-light">arrow_back_ios</mat-icon>
       </button>-->
     </div>
     <ng-template #cerrado>
       <div class="container-fluid text-center position-sticky fixed-bottom" style="background-color: gray;">
         <button mat-icon-button class="mx-auto" (click)="abrirCerrar()" matTooltip="Expandir">
-          <mat-icon aria-label="Example icon-button with a heart icon" class="rotated text-light mx-auto">arrow_back_ios</mat-icon>
+          <mat-icon class="rotated text-light mx-auto">arrow_back_ios</mat-icon>
         </button>
       </div>
       <!--<button mat-icon-button (click)="abrirCerrar()" matTooltip="Expandir">
-        <mat-icon aria-label="Example icon-button with a heart icon" class="text-light rotated">arrow_back_ios</mat-icon>
+        <mat-icon class="text-light rotated">arrow_back_ios</mat-icon>
       </button>-->
     </ng-template>
   </mat-drawer>
