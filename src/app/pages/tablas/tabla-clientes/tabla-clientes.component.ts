@@ -27,6 +27,13 @@ export class TablaClientesComponent implements OnInit {
 
   // variable que contendra el cliente seleccionado para realizar acciones con el
   cliente: Cliente = null;
+  cantidadDeComprasCliente: number;
+  tieneCedula = false;
+  tieneCorreo = false;
+  primerNombre = '';
+  primerApellido = '';
+  segundoNombre = '';
+  segundoApellido = '';
 
   // variable que contendra la cantidad total de los clientes almacenados en la base de datos
   contadorClientes: number;
@@ -78,8 +85,29 @@ export class TablaClientesComponent implements OnInit {
   }
 
   // funcion para abrir los modales de manera centrada
-  openVerticallyCentered(content: string) {
+  openVerticallyCentered(content: string, cliente: Cliente) {
     this.ngbModal.open(content, { centered: true });
+    this.cliente = cliente;
+    this.cantidadDeComprasCliente = cliente['Cantidad de Compras'];
+    this.primerNombre = cliente['Primer Nombre'];
+    this.primerApellido = cliente['Primer Apellido'];
+    this.segundoNombre = cliente['Segundo Nombre'];
+    this.segundoApellido = cliente['Segundo Apellido'];
+    if (cliente.Cedula === null) {
+      this.tieneCedula = false;
+    } else {
+      this.tieneCedula = true;
+    }
+    if (cliente.Correo === null) {
+      this.tieneCorreo = false;
+    } else {
+      this.tieneCorreo = true;
+    }
+  }
+
+  // funcion para hacer mayusculas el texto ingresado
+  toUpper() {
+    this.cliente.Cedula = this.cliente.Cedula.toUpperCase();
   }
 
 }

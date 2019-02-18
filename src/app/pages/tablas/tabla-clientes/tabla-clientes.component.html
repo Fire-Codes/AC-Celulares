@@ -1,4 +1,68 @@
 <!--Comienzan los Modals-->
+
+<!--Ver Cliente Modal-->
+<ng-template #verCliente let-modal>
+  <div class="modal-header bg-primary">
+    <h4 class="modal-title text-light">Ver Detalles de Cliente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-primary">
+    <table class="example-full-width text-light" cellspacing="0">
+      <tr>
+        <td>
+          ID:
+        </td>
+        <td>
+          {{cliente.Id}}
+        </td>
+      </tr>
+      <tr>
+        <td>Nombres:</td>
+        <td>{{cliente.Nombres}}</td>
+      </tr>
+      <tr>
+        <td>Apellidos:</td>
+        <td>{{cliente.Apellidos}}</td>
+      </tr>
+      <tr>
+        <td>Teléfono:</td>
+        <td>{{cliente.Telefono}}</td>
+      </tr>
+      <tr>
+        <td>Tipo de Cliente:</td>
+        <td>{{cliente.Tipo}}</td>
+      </tr>
+      <tr>
+        <td>Cédula:</td>
+        <td *ngIf="tieneCedula; noCedulaCliente">{{cliente.Cedula}}</td>
+        <td *ngIf="!tieneCedula" class="text-warning">No Registrada</td>
+      </tr>
+      <tr>
+        <td>Dirección:</td>
+        <td>{{cliente.Departamento}}, {{cliente.Ciudad}}, {{cliente.Direccion}}</td>
+      </tr>
+      <tr>
+        <td>Cantidad Total de Compras:</td>
+        <td>{{cantidadDeComprasCliente}}</td>
+      </tr>
+      <tr>
+        <td>Sexo:</td>
+        <td>{{cliente.Sexo}}</td>
+      </tr>
+      <tr>
+        <td>Correo Electrónico:</td>
+        <td *ngIf="tieneCorreo">{{cliente.Correo}}</td>
+        <td *ngIf="!tieneCorreo" class="text-warning">No Registrado</td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer bg-primary">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
 <!--Agregar un nuevo cliente Modal-->
 <ng-template #agregarCliente let-modal>
   <app-agregar-cliente (cerrarModalEvent)="modal.close('Close click')"></app-agregar-cliente>
@@ -13,73 +77,101 @@
     </button>
   </div>
   <div class="modal-body">
-    <form class="example-form">
-
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="ID de Cliente" disabled value="CLI00001">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input type="text" matInput placeholder="Cédula" value="084-100899-1000J" disabled="true">
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nombres" required value="Edycar Jesus">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Apellidos" required value="Reyes Jimenez">
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <textarea matInput placeholder="Dirección" placeholder="Gas. UNO San Martin 1/2 C. al Sur"></textarea>
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field>
-              <input type="number" placeholder="Numero Telefónico" matInput required value="85601622">
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field>
-              <input type="text" matInput value="Masculino" disabled="true">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field>
-              <select matNativeControl required>
-                <option value="Premium">Premium</option>
-                <option value="Estandard">Estandard</option>
-              </select>
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-      <mat-form-field class="example-full-width">
-        <input matInput type="email" placeholder="Correo Electrónico" value="edycarreyes@gmail.com">
-      </mat-form-field>
-    </form>
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos Generales
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group">
+          <label class="text-warning">Nombres</label>
+          <div class="input required-group">
+            <input required type="text" aria-label="Primer Nombre" class="mb-3 form-control" placeholder="Primer Nombre"
+              name="primerNombre" disabled [(ngModel)]="primerNombre" required>
+            <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control" placeholder="Segundo Nombre"
+              name="segundoNombre" disabled [(ngModel)]="segundoNombre" required>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group">
+          <label class="text-warning">Apellidos</label>
+          <div class="input required-group">
+            <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control" placeholder="Primer Apellido"
+              name="primerApellido" disabled [(ngModel)]="primerApellido" required>
+            <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control" placeholder="Segundo Apellido"
+              name="segundoApellido" disabled [(ngModel)]="segundoApellido" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos Personales
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Tipo de Usuario" [(ngModel)]="cliente.Tipo" name="cliente.Tipo" required>
+            <mat-option value="Premium">
+              Premium
+            </mat-option>
+            <mat-option value="Estandar">
+              Estandar
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input type="number" placeholder="Numero Telefónico" matInput required name="cliente.Telefono" [(ngModel)]="cliente.Telefono">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input placeholder="Cédula" type="text" matInput name="cliente.Cedula" [(ngModel)]="cliente.Cedula" (keyup)="toUpper()">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <mat-select disabled required placeholder="Sexo" name="cliente.Sexo" [(ngModel)]="cliente.Sexo">
+            <mat-option value="Masculino">
+              Masculino
+            </mat-option>
+            <mat-option value="Femenino">
+              Femenino
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field style="width: 100%;">
+      <input matInput type="email" placeholder="Correo Electrónico" name="cliente.Correo" [(ngModel)]="cliente.Correo">
+    </mat-form-field>
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos de Vivienda
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input matInput type="text" placeholder="Departamento" name="cliente.Departamento" [(ngModel)]="cliente.Departamento">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input matInput type="text" placeholder="Municipio" name="cliente.Ciudad" [(ngModel)]="cliente.Ciudad">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field style="width: 100%;">
+      <textarea required matInput placeholder="Dirección" name="cliente.Direccion" [(ngModel)]="cliente.Direccion"></textarea>
+    </mat-form-field>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
@@ -174,7 +266,7 @@
           <div class="text-dark text-center" *ngIf="cliente.Cedula; else noCedula">{{cliente.Cedula}}</div>
           <ng-template #noCedula>
             <div class="text-danger text-center">
-              No Tiene
+              No Registrada
             </div>
           </ng-template>
         </td>
@@ -185,8 +277,7 @@
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let cliente">
           <div class="example-button-row">
-            <button mat-icon-button class="text-primary" matTooltip="Ver Cliente">
-              <!--(click)='openVerticallyCentered(verCliente, cliente)'-->
+            <button mat-icon-button class="text-primary" matTooltip="Ver Cliente" (click)='openVerticallyCentered(verCliente, cliente)'>
               <mat-icon>remove_red_eye</mat-icon>
             </button>
             <button mat-icon-button color="accent" matTooltip="Editar Cliente" (click)='openVerticallyCentered(editarCliente, cliente)'>
