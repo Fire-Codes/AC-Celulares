@@ -105,6 +105,19 @@ export class TablaClientesComponent implements OnInit {
     }
   }
 
+  // funcion para editar los datos de un cliente
+  editarClientes() {
+    this.fs.doc(`AC Celulares/Control/Clientes/${this.cliente.Id}`).update(this.cliente)
+      .then(response => {
+        this.servicio.newToast(1, 'Modificacion Correcta', `El Cliente ${this.cliente.Id} se ha modificado con éxito`);
+      }).catch(err => {
+        this.servicio.newToast(0, 'Modificacion Incorrecta', err);
+      });
+
+    // integracion con el realtime database
+    this.db.database.ref(`AC Celulares/Control/Clientes/${this.cliente.Id}`).update(this.cliente);
+  }
+
   // funcion para hacer mayusculas el texto ingresado
   toUpper() {
     this.cliente.Cedula = this.cliente.Cedula.toUpperCase();
