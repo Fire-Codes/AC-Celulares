@@ -115,6 +115,12 @@ export class FacturarComponent implements OnInit {
   imprimirFactura() {
     window.print();
   }
+
+  // funcion que se ejecutara cada vez que el usuario le de click en agregar producto a factura
+  agregarProductoFactura() {
+    this.productoSeleccionado = null;
+    this.productoSeleccionadoDescuento = null;
+  }
 }
 
 /** Builds and returns a new User. */
