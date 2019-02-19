@@ -66,6 +66,7 @@ export class SeleccionarProductoDescuentoComponent implements OnInit {
   // funcion para seleccionar el producto
   seleccionarProducto(producto: Producto) {
     this.factura.productoSeleccionadoDescuento = producto;
+    this.cerrarModal();
   }
 
 }
