@@ -44,6 +44,10 @@ import { DetallesCreditoComponent } from './pages/detalles-credito/detalles-cred
 import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
+import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar-cliente.component';
+import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clientes.component';
+import { SeleccionarProductoComponent } from './pages/modales/seleccionar-producto/seleccionar-producto.component';
+import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccionar-producto-descuento/seleccionar-producto-descuento.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +66,11 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
     DetallesCreditoComponent,
     ServiciosComponent,
     PagoServiciosComponent,
-    PerfilComponent
+    PerfilComponent,
+    AgregarClienteComponent,
+    TablaClientesComponent,
+    SeleccionarProductoComponent,
+    SeleccionarProductoDescuentoComponent
   ],
   imports: [
     BrowserModule,

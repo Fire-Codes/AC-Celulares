@@ -9,21 +9,6 @@ import { Chart } from 'chart.js';
 // importacoin del servicio
 import { ServicioService } from '../../servicios/servicio.service';
 
-// importacion de los componentes para las tablas
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
-
-export interface UserData {
-  id: string;
-  Nombre: string;
-  Telefono: string;
-  Tipo: string;
-}
-/** Constants used to fill up our data base. */
-const TIPO: string[] = ['Estándar', 'Premium'];
-const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -31,10 +16,16 @@ const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
 })
 
 export class DashboardComponent implements OnInit {
+  // variable que contendra el string de la fecha y hora
+  fechaHora = '';
 
+  // variable que contendra todos los meses
+  // tslint:disable-next-line:max-line-length
+  meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  // variable que contendra todos los dias de la semana
+  diasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
   @ViewChild('graficoPastelCanvas') graficoPastelCanvas;
   @ViewChild('graficoBarraCanvas') graficoBarraCanvas;
   @ViewChild('graficoLineaCanvas') graficoLineaCanvas;
@@ -43,8 +34,6 @@ export class DashboardComponent implements OnInit {
   graficoBarraChart: any;
   graficoLineaChart: any;
 
-  displayedColumns: string[] = ['id', 'Nombre', 'Telefono', 'Tipo'];
-  dataSource: MatTableDataSource<UserData>;
 
 
   constructor(
@@ -54,18 +43,11 @@ export class DashboardComponent implements OnInit {
     // mostrar el navside
     this.nav.mostrarNav = true;
 
-    // Create 100 users
-    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    // se manda a llamar a la funcion para mostrar la hora
+    this.extraerFechaHora();
   }
 
   ngOnInit() {
-    // this.servicio.newToast(1, 'Inicio de Sesión Correcto', `Bienvenido! ${this.servicio.auth.auth.currentUser.email}`);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-
     this.graficoPastelChart = new Chart(this.graficoPastelCanvas.nativeElement, {
 
       type: 'doughnut',
@@ -203,26 +185,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  // funcion para extraer la fecha y la hora a cada segundo
+  extraerFechaHora() {
+    setInterval(() => {
+      const fechaHora = new Date();
+      if ((fechaHora.getHours() >= 0) && (fechaHora.getHours() <= 12)) {
+        // tslint:disable-next-line:max-line-length
+        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours()}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} AM`;
+      } else if (fechaHora.getHours() > 12) {
+        // tslint:disable-next-line:max-line-length
+        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours() - 12}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} PM`;
+      }
+    }, 1000);
   }
-
-}
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    Nombre: name,
-    Telefono: '8' + Math.round(Math.random() * 99999999).toString(),
-    Tipo: TIPO[Math.round(Math.random() * (TIPO.length - 1))]
-  };
 }
