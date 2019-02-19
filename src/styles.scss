@@ -1,26 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-.elevated{
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+.elevated {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
-body{
-    scrollbar-face-color: #6685CA;
-
-    scrollbar-highlight-color: #6685CA;
-
-    scrollbar-shadow-color: #6685CA;
-
-    scrollbar-3dlight-color:#FFFFFF;
-
-    scrollbar-arrow-color:#FFFFFF;
-
-    scrollbar-track-color:#E5E5E5;
-
-    scrollbar-darkshadow-color:#000000;
+body {
+  background-color: #e5e9ed;
+  margin: 0;
+  min-height: 100vh;
 }
 #toast-container > div {
-    opacity:1;
+  opacity: 1;
 }
-.cdk-overlay-container{
-    z-index: 2000;
+.cdk-overlay-container {
+  z-index: 2000;
 }

@@ -9,6 +9,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 // importacion de los componentes de firestore
 // tslint:disable-next-line:max-line-length
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection, Action, DocumentSnapshot, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // importacion de la interfaz para el producto
 import { Producto } from '../../interfaces/producto';
@@ -71,7 +72,8 @@ export class InventarioComponent implements OnInit {
     public nav: NavsideComponent,
     public ngbModal: NgbModal,
     public fs: AngularFirestore,
-    public servicio: ServicioService
+    public servicio: ServicioService,
+    public db: AngularFireDatabase
   ) {
     // se muestra el navside
     this.nav.mostrarNav = true;
@@ -83,6 +85,7 @@ export class InventarioComponent implements OnInit {
         this.categorias = documento.payload.data().Categorias;
         this.hayDatos = this.totalProductos <= 0 ? false : true;
         this.contador = this.totalProductos <= 0 ? 0 : documento.payload.data().Contador;
+        console.log(this.contador + 1);
       });
 
     // Se extraen todos los productos ingresados
@@ -103,6 +106,7 @@ export class InventarioComponent implements OnInit {
     this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
       this.totalProductos = campos.payload.data()['Cantidad de Productos'];
       this.categorias = campos.payload.data().Categorias;
+      this.reiniciarId();
     });
   }
 
@@ -130,6 +134,9 @@ export class InventarioComponent implements OnInit {
       }).catch(err => {
         this.servicio.newToast(0, 'Modificacion Incorrecta', err);
       });
+
+    // integracion con el realtime database
+    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).update(this.producto);
   }
 
   // funcion para eliminar un producto
@@ -147,6 +154,14 @@ export class InventarioComponent implements OnInit {
       });
     }).catch(err => {
       this.servicio.newToast(1, 'Eliminación Incorrecta', err);
+    });
+
+    // integracion con el realtime database
+    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).remove().then(response => {
+      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+        'Cantidad de Productos': totalproductos,
+        Contador: totalproductos <= 0 ? 0 : this.contador
+      });
     });
   }
 
@@ -179,6 +194,35 @@ export class InventarioComponent implements OnInit {
     }).catch(err => {
       this.servicio.newToast(0, 'Insercción Incorrecta', err);
     });
+
+    // integracion con el realtime database
+    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.Id}`).set({
+      Id: this.Id,
+      Nombre: this.Nombre,
+      Marca: this.Marca,
+      Categoria: this.Categoria,
+      Modelo: this.Modelo,
+      Existencia: this.Existencia,
+      PCompra: this.PCompra,
+      PVenta: this.PVenta,
+      Estado: 'Disponible',
+      Descripcion: this.Descripcion
+    }).then(response => {
+      const totalproductos = this.totalProductos + 1;
+      const contador = this.contador + 1;
+      this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+        'Cantidad de Productos': totalproductos,
+        Contador: contador
+      }).then(resp => {
+        console.warn('Cantidad de productos actualizada correctamente' + resp);
+        this.reiniciarInputs();
+      }).catch(err => {
+        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+      });
+    }).catch(err => {
+      console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+    });
   }
 
   // funcion para agregar una nueva categoria de productos
@@ -202,6 +246,11 @@ export class InventarioComponent implements OnInit {
       }).catch(err => {
         this.servicio.newToast(0, 'Inserccion Incorrecta', err);
       });
+
+      // integracion con el realtime database
+      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+        Categorias: nuevoArray
+      });
     }
     this.nuevaCategoria = '';
   }
@@ -221,5 +270,12 @@ export class InventarioComponent implements OnInit {
     this.PCompra = 0;
     this.PVenta = 0;
     this.nuevaCategoria = '';
+  }
+
+  // funcion para agregar un nuevo id
+  reiniciarId() {
+    this.Id = '';
+    this.Id += 'PROD';
+    this.Id += this.contador + 1;
   }
 }

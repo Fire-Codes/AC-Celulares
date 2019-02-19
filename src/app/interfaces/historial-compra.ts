@@ -4,4 +4,5 @@ export interface HistorialCompra {
     'Tipo de Pago': string;
     'Total Cordoba': number;
     'Total Dolar': number;
+    Fecha: Date;
 }

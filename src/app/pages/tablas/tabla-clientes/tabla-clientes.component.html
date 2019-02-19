@@ -1,0 +1,306 @@
+<!--Comienzan los Modals-->
+
+<!--Ver Cliente Modal-->
+<ng-template #verCliente let-modal>
+  <div class="modal-header bg-primary">
+    <h4 class="modal-title text-light">Ver Detalles de Cliente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-primary">
+    <table class="example-full-width text-light" cellspacing="0">
+      <tr>
+        <td>
+          ID:
+        </td>
+        <td>
+          {{cliente.Id}}
+        </td>
+      </tr>
+      <tr>
+        <td>Nombres:</td>
+        <td>{{cliente.Nombres}}</td>
+      </tr>
+      <tr>
+        <td>Apellidos:</td>
+        <td>{{cliente.Apellidos}}</td>
+      </tr>
+      <tr>
+        <td>Teléfono:</td>
+        <td>{{cliente.Telefono}}</td>
+      </tr>
+      <tr>
+        <td>Tipo de Cliente:</td>
+        <td>{{cliente.Tipo}}</td>
+      </tr>
+      <tr>
+        <td>Cédula:</td>
+        <td *ngIf="tieneCedula; noCedulaCliente">{{cliente.Cedula}}</td>
+        <td *ngIf="!tieneCedula" class="text-warning">No Registrada</td>
+      </tr>
+      <tr>
+        <td>Dirección:</td>
+        <td>{{cliente.Departamento}}, {{cliente.Ciudad}}, {{cliente.Direccion}}</td>
+      </tr>
+      <tr>
+        <td>Cantidad Total de Compras:</td>
+        <td>{{cantidadDeComprasCliente}}</td>
+      </tr>
+      <tr>
+        <td>Sexo:</td>
+        <td>{{cliente.Sexo}}</td>
+      </tr>
+      <tr>
+        <td>Correo Electrónico:</td>
+        <td *ngIf="tieneCorreo">{{cliente.Correo}}</td>
+        <td *ngIf="!tieneCorreo" class="text-warning">No Registrado</td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer bg-primary">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<!--Agregar un nuevo cliente Modal-->
+<ng-template #agregarCliente let-modal>
+  <app-agregar-cliente (cerrarModalEvent)="modal.close('Close click')"></app-agregar-cliente>
+</ng-template>
+
+<!--Editar un cliente Modal-->
+<ng-template #editarCliente let-modal>
+  <div class="modal-header bg-warning">
+    <h4 class="modal-title">Editar Cliente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos Generales
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group">
+          <label class="text-warning">Nombres</label>
+          <div class="input required-group">
+            <input required type="text" aria-label="Primer Nombre" class="mb-3 form-control" placeholder="Primer Nombre"
+              name="primerNombre" disabled [(ngModel)]="primerNombre" required>
+            <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control" placeholder="Segundo Nombre"
+              name="segundoNombre" disabled [(ngModel)]="segundoNombre" required>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group">
+          <label class="text-warning">Apellidos</label>
+          <div class="input required-group">
+            <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control" placeholder="Primer Apellido"
+              name="primerApellido" disabled [(ngModel)]="primerApellido" required>
+            <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control" placeholder="Segundo Apellido"
+              name="segundoApellido" disabled [(ngModel)]="segundoApellido" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos Personales
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Tipo de Usuario" [(ngModel)]="cliente.Tipo" name="cliente.Tipo" required>
+            <mat-option value="Premium">
+              Premium
+            </mat-option>
+            <mat-option value="Estandar">
+              Estandar
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input type="number" placeholder="Numero Telefónico" matInput required name="cliente.Telefono" [(ngModel)]="cliente.Telefono">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input placeholder="Cédula" type="text" matInput name="cliente.Cedula" [(ngModel)]="cliente.Cedula" (keyup)="toUpper()">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <mat-select disabled required placeholder="Sexo" name="cliente.Sexo" [(ngModel)]="cliente.Sexo">
+            <mat-option value="Masculino">
+              Masculino
+            </mat-option>
+            <mat-option value="Femenino">
+              Femenino
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field style="width: 100%;">
+      <input matInput type="email" placeholder="Correo Electrónico" name="cliente.Correo" [(ngModel)]="cliente.Correo">
+    </mat-form-field>
+    <div class="container-fluid">
+      <div class="text-center text-warning">
+        Datos de Vivienda
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input matInput type="text" placeholder="Departamento" name="cliente.Departamento" [(ngModel)]="cliente.Departamento">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <mat-form-field style="width: 100%;">
+          <input matInput type="text" placeholder="Municipio" name="cliente.Ciudad" [(ngModel)]="cliente.Ciudad">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field style="width: 100%;">
+      <textarea required matInput placeholder="Dirección" name="cliente.Direccion" [(ngModel)]="cliente.Direccion"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click'); editarClientes()">Actualizar</button>
+  </div>
+</ng-template>
+
+<!--Eliminar Cliente Modal-->
+<ng-template #eliminarCliente let-modal>
+  <div class="modal-header bg-danger">
+    <h4 class="modal-title text-light">Eliminar Cliente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-danger">
+    <p class="text-light">¿Estás seguro que deseas eliminar el Cliente CLI00001?</p>
+  </div>
+  <div class="modal-footer bg-danger">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<!--Vender Productos a Cliente Modal-->
+<ng-template #venderProductos let-modal>
+  <div class="modal-header bg-success">
+    <h4 class="modal-title text-light">Vender Productos</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-success">
+    <p>Aún está en producción.</p>
+  </div>
+  <div class="modal-footer bg-success">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Aceptar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+
+
+<div class="container mt-4">
+  <div class="mb-4 slideInLeft">
+    <div class="container-fluid bg-warning rounded-top p-4">
+      <div class="float-right"><button (click)='openVerticallyCentered(agregarCliente, null)' class="elevated text-center"
+          mat-fab color="accent"><i matListIcon class="fas fa-user-plus text-dark"></i></button></div>
+      <mat-card-title class="ml-4 mt-4">
+        Clientes
+      </mat-card-title>
+      <mat-form-field class="ml-4">
+        <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+      <!-- ID Column -->
+      <!--<ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.Id}} </td>
+      </ng-container>-->
+
+      <!-- Telefono Column -->
+      <ng-container matColumnDef="Telefono">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.Telefono}} </td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Nombres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.Nombres}} </td>
+      </ng-container>
+
+      <!-- Apellidos Column -->
+      <ng-container matColumnDef="Apellidos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.Apellidos}} </td>
+      </ng-container>
+
+      <!-- Tipo Column -->
+      <ng-container matColumnDef="Tipo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.Tipo}} </td>
+      </ng-container>
+
+      <!-- Cedula Column -->
+      <ng-container matColumnDef="Cedula">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cedula </th>
+        <td mat-cell *matCellDef="let cliente">
+          <div class="text-dark text-center" *ngIf="cliente.Cedula; else noCedula">{{cliente.Cedula}}</div>
+          <ng-template #noCedula>
+            <div class="text-danger text-center">
+              No Registrada
+            </div>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!--Acciones Column-->
+      <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let cliente">
+          <div class="example-button-row">
+            <button mat-icon-button class="text-primary" matTooltip="Ver Cliente" (click)='openVerticallyCentered(verCliente, cliente)'>
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" matTooltip="Editar Cliente" (click)='openVerticallyCentered(editarCliente, cliente)'>
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="text-secondary" matTooltip="Vender Productos" (click)='openVerticallyCentered(venderProductos, cliente)'>
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras" (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+              <mat-icon>history</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!--Aqui comienzan los TH-->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let cliente; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
