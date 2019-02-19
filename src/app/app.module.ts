@@ -46,6 +46,8 @@ import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.co
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar-cliente.component';
 import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clientes.component';
+import { SeleccionarProductoComponent } from './pages/modales/seleccionar-producto/seleccionar-producto.component';
+import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccionar-producto-descuento/seleccionar-producto-descuento.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clie
     PagoServiciosComponent,
     PerfilComponent,
     AgregarClienteComponent,
-    TablaClientesComponent
+    TablaClientesComponent,
+    SeleccionarProductoComponent,
+    SeleccionarProductoDescuentoComponent
   ],
   imports: [
     BrowserModule,
