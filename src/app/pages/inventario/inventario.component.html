@@ -87,7 +87,7 @@
           </div>
           <div class="col-2">
             <button mat-icon-button matTooltip="Agregar una Nueva Categoria" class="text-success mx-auto" (click)='openVerticallyCentered(agregarCategorias, producto)'>
-              <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
+              <mat-icon>add_circle</mat-icon>
             </button>
           </div>
         </div>
@@ -349,10 +349,10 @@
             matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
           <!--<button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab *ngIf="hayDatos">
-            <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+            <mat-icon>archive</mat-icon>
           </button>-->
           <!--<button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab *ngIf="hayDatos">
-            <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
+            <mat-icon>print</mat-icon>
           </button>-->
         </div>
         <mat-form-field class="ml-4" *ngIf="hayDatos">
@@ -415,19 +415,19 @@
           <td mat-cell *matCellDef="let producto" class="text-center">
             <div class="example-button-row">
               <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, producto)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">add_circle</mat-icon>
+                <mat-icon>add_circle</mat-icon>
               </button>
               <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, producto)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+                <mat-icon>delete</mat-icon>
               </button>
               <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, producto)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                <mat-icon>edit</mat-icon>
               </button>
               <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, producto)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">remove_red_eye</mat-icon>
+                <mat-icon>remove_red_eye</mat-icon>
               </button>
               <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, producto)'>
-                <mat-icon aria-label="Example icon-button with a heart icon">archive</mat-icon>
+                <mat-icon>archive</mat-icon>
               </button>
             </div>
           </td>
