@@ -103,6 +103,17 @@
       <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
+
+  <!--Mostrar Productos Producto Modal-->
+  <ng-template style="width: 90vw;" #mostrarProductos let-modal>
+    <app-seleccionar-producto (cerrarModalSeleccionarProductos)="modal.close('Close click')"></app-seleccionar-producto>
+  </ng-template>
+
+  <!--Mostrar Productos Descuento Producto Modal-->
+  <ng-template style="width: 90vw;" #mostrarProductosDescuento let-modal>
+    <app-seleccionar-producto-descuento (cerrarModalSeleccionarProductosDescuento)="modal.close('Close click')"></app-seleccionar-producto-descuento>
+  </ng-template>
+
   <nav class="navbar navbar-dark bg-dark elevated shake">
     <div class="container slideInLeft">
       <a class="navbar-brand text-light">Facturar</a>
@@ -137,9 +148,9 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscar()"
-                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl" [(ngModel)]="valordebusqueda" name="valordebusqueda">
-                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
+                <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
+                  [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente" name="valordebusquedaCliente">
+                <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
                   <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
                     <span>{{cliente.Nombres}}</span> |
@@ -159,13 +170,13 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscar()"
-                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
-                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
-                    <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.Nombres}}</span> |
-                    <small>{{cliente.Tipo}}</small>
+                <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
+                  [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor" name="valordebusquedaVendedor">
+                <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
+                  <mat-option *ngFor="let vendedor of usuarios | async" (click)="seleccionarUsuario(vendedor)" [value]="vendedor.Correo">
+                    <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
+                    <span>{{vendedor.Nombres}}</span> |
+                    <small>{{vendedor.Tipo}}</small>
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -176,23 +187,31 @@
       <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center mt-4">
         <mat-card class="elevated widthFullCard">
           <mat-card-title>
-            Calcular Descuento
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                Calcular Descuento
+              </div>
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="float-right">
+                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab (click)="openVerticallyCentered(mostrarProductosDescuento)">
+                    <mat-icon class="text-light justify-content-center align-items-center">format_list_bulleted</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
           </mat-card-title>
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()"
-                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
-                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
-                    <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.Nombres}}</span> |
-                    <small>{{cliente.Tipo}}</small>
-                  </mat-option>
-                </mat-autocomplete>
+                <input *ngIf="productoSeleccionadoDescuento" disabled matInput placeholder="Producto Seleccionado"
+                  [(ngModel)]="productoSeleccionadoDescuento.Id" name="productoSeleccionadoDescuento.Id">
+                <input *ngIf="!productoSeleccionadoDescuento" disabled matInput placeholder="Producto Seleccionado">
               </mat-form-field>
               <mat-form-field class="fullWidth">
-                <input type="number" matInput placeholder="Precio C/U" value="500" disabled="true">
+                <input *ngIf="productoSeleccionadoDescuento" type="number" matInput placeholder="Precio C/U"
+                  [(ngModel)]="productoSeleccionadoDescuento.PVenta" name="productoSeleccionadoDescuento.PVenta"
+                  disabled="true">
+                <input *ngIf="!productoSeleccionadoDescuento" type="number" matInput placeholder="Precio C/U" disabled="true">
               </mat-form-field>
               <mat-form-field class="fullWidth">
                 <mat-select placeholder="Tipo de Descuento">
@@ -224,7 +243,7 @@
               </div>
               <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="float-right">
-                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab (click)="openVerticallyCentered(agregarCliente)">
+                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab (click)="openVerticallyCentered(mostrarProductos)">
                     <mat-icon class="text-light justify-content-center align-items-center">format_list_bulleted</mat-icon>
                   </button>
                 </div>
@@ -234,18 +253,14 @@
           <mat-card-content>
             <form class="example-form">
               <mat-form-field class="fullWidth">
-                <input matInput placeholder="Seleccionar Producto" aria-label="Cliente" (keyup)="buscar()"
-                  [matAutocomplete]="resultadosDeBusqueda" [formControl]="stateCtrl">
-                <mat-autocomplete #resultadosDeBusqueda="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
-                    <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
-                    <span>{{cliente.Nombres}}</span> |
-                    <small>{{cliente.Tipo}}</small>
-                  </mat-option>
-                </mat-autocomplete>
+                <input *ngIf="productoSeleccionado" disabled matInput placeholder="Producto Seleccionado" [(ngModel)]="productoSeleccionado.Id"
+                  name="productoSeleccionado.Id">
+                <input *ngIf="!productoSeleccionado" disabled matInput placeholder="Producto Seleccionado">
               </mat-form-field>
               <mat-form-field class="fullWidth">
-                <input matInput type="number" placeholder="Stock" disabled>
+                <input *ngIf="productoSeleccionado" matInput type="number" placeholder="Stock" disabled [(ngModel)]="productoSeleccionado.Existencia"
+                  name='productoSeleccionado.Existencia'>
+                <input *ngIf="!productoSeleccionado" matInput type="number" placeholder="Stock" disabled>
               </mat-form-field>
               <mat-form-field class="fullWidth">
                 <input matInput type="number" placeholder="Cantidad a Vender">
@@ -267,7 +282,7 @@
     <div class="mb-4 slideInLeft">
       <div class="container-fluid rounded-top p-4" style="background-color: #009688;">
         <div class="float-right">
-          <button class="elevated text-center" matTooltip="Vender Productos" mat-fab style="background-color: #02756a;">
+          <button (click)="imprimirFactura()" class="elevated text-center" matTooltip="Vender Productos" mat-fab style="background-color: #02756a;">
             <mat-icon class="text-light">attach_money</mat-icon>
           </button>
         </div>
@@ -281,6 +296,13 @@
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> ID </th>
           <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Marca">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Marca </th>
+          <td mat-cell *matCellDef="let row"> {{row.Marca}} </td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 

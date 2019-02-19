@@ -7,4 +7,5 @@ export interface ProductoFactura {
     Modelo: string;
     ValorCordoba: number;
     ValorDolar: number;
+    Marca: string;
 }
