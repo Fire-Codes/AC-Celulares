@@ -38,6 +38,17 @@ export class FacturarComponent implements OnInit {
   // variable que contendra el poducto seleccionado para calcular su descuento
   public productoSeleccionadoDescuento: Producto;
 
+  // variables que almacenara el tipo de descuento a realizar y sus valores
+  tipoDescuento = '';
+  cantidadDescuento = 0;
+  cantidadCalcularDescuento = 0;
+  tipoDescuentoCantidad = false;
+  venderPrecioCompra = false;
+  public precioFinal = 0;
+
+  // variable que almacena la cantidad de unidades que se venderan
+  cantidadVender = 0;
+
 
   clientes: Observable<Cliente[]>;
   usuarios: Observable<Usuario[]>;
@@ -60,6 +71,13 @@ export class FacturarComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.buscarClientes();
     this.buscarVendedor();
+  }
+
+  // funcion para cambiar el tipo de descuento
+  cambiarTipodescuento() {
+    this.tipoDescuentoCantidad = !this.tipoDescuentoCantidad;
+    this.cantidadCalcularDescuento = 0;
+    this.cantidadDescuento = 0;
   }
 
   // funcion que se ejecutara cuando un cliente se seleccione
@@ -116,10 +134,35 @@ export class FacturarComponent implements OnInit {
     window.print();
   }
 
+  // funcion para vender a precio de compra
+  venderAPrecioCompra() {
+    if (this.venderPrecioCompra) {
+      this.cantidadDescuento = this.productoSeleccionado.PVenta - this.productoSeleccionado.PCompra;
+      this.precioFinal = this.productoSeleccionado.PVenta - this.cantidadDescuento;
+    } else {
+      this.cantidadDescuento = 0;
+      this.precioFinal = this.productoSeleccionado.PVenta;
+    }
+  }
+
   // funcion que se ejecutara cada vez que el usuario le de click en agregar producto a factura
   agregarProductoFactura() {
     this.productoSeleccionado = null;
     this.productoSeleccionadoDescuento = null;
+  }
+
+  // funcion para calcular el descuento segun su tipo
+  calcularDescuento() {
+    switch (this.tipoDescuento) {
+      case 'porcentaje':
+        this.cantidadDescuento = (this.cantidadCalcularDescuento * this.productoSeleccionado.PVenta) / 100;
+        break;
+      case 'cantidad':
+        this.cantidadDescuento = this.cantidadCalcularDescuento;
+        break;
+      default:
+        break;
+    }
   }
 }
 
