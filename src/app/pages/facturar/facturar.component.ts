@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
+// importacion del servicio
+import { ServicioService } from 'src/app/servicios/servicio.service';
+
 // importacion de las interfaces
 import { ProductoFactura } from '../../interfaces/producto-factura';
 import { Usuario } from 'src/app/interfaces/usuario';
@@ -33,10 +36,10 @@ export class FacturarComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   // variable que contendra el producto seleccionado a venderse
-  public productoSeleccionado: Producto;
+  public productoSeleccionado: Producto = null;
 
   // variable que contendra el poducto seleccionado para calcular su descuento
-  public productoSeleccionadoDescuento: Producto;
+  public productoSeleccionadoDescuento: Producto = null;
 
   // variables que almacenara el tipo de descuento a realizar y sus valores
   tipoDescuento = '';
@@ -49,26 +52,40 @@ export class FacturarComponent implements OnInit {
   // variable que almacena la cantidad de unidades que se venderan
   cantidadVender = 0;
 
-
+  // variables que almacenan los documentos de firestore
   clientes: Observable<Cliente[]>;
   usuarios: Observable<Usuario[]>;
+
+  // variables que almacenaran los valores de busqueda para los documentos de firestore
   valordebusquedaCliente = '';
   valordebusquedaVendedor = '';
+
+  // variable que almacena el array de productos que se agregaran al mattable
   productos: ProductoFactura[];
+
+  // variable que determinara si tienen o no datos el mattable
+  hayDatosEnTabla = false;
+
+
   constructor(
     public ngbModal: NgbModal,
-    public fs: AngularFirestore
+    public fs: AngularFirestore,
+    public servicio: ServicioService
   ) {
-    // Create 100 users
-    const productos = Array.from({ length: 10 }, (_, k) => crearProductos(k + 1));
-    this.productos = productos;
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(productos);
+
+    // se inicializa el array a 0
+    this.productos = [];
+
+
+    // Se asigna el array de productos al contenido de la tabla
+    this.dataSource = new MatTableDataSource(this.productos);
   }
 
   ngOnInit() {
-    // Sort table components init
+    // se inicializa el matsort de la tabla con los datos existentes
     this.dataSource.sort = this.sort;
+
+    // se manda a inicializar los datos para los autocomplete de los clientes y vendedores
     this.buscarClientes();
     this.buscarVendedor();
   }
@@ -145,10 +162,42 @@ export class FacturarComponent implements OnInit {
     }
   }
 
+  // funcion para agregar el descuento
+  agregarDescuento() {
+    this.precioFinal -= this.cantidadDescuento;
+  }
+
   // funcion que se ejecutara cada vez que el usuario le de click en agregar producto a factura
   agregarProductoFactura() {
-    this.productoSeleccionado = null;
-    this.productoSeleccionadoDescuento = null;
+    if (this.cantidadVender > this.productoSeleccionado.Existencia) {
+      this.servicio.newToast(0, 'Error de Stock', 'La cantidad a vender no puede ser mayor a la cantidad en stock del producto');
+    } else if (this.precioFinal < this.productoSeleccionado.PCompra) {
+      this.servicio.newToast(0, 'Error de Precio', 'El precio final del producto no puede ser menor al precio de compra del mismo');
+    } else if (this.cantidadVender === 0) {
+      this.servicio.newToast(0, 'Error de Cantidad', 'Debe de agregar al menos 1 producto en campo "Cantidad"');
+    } else if (this.productoSeleccionado == null) {
+      this.servicio.newToast(0, 'Error de Insercción', 'Debe de seleccionar un producto antes de agregarlo');
+    } else {
+      this.productos.push({
+        id: this.productoSeleccionado.Id,
+        Producto: this.productoSeleccionado.Nombre,
+        Modelo: this.productoSeleccionado.Modelo,
+        Precio: this.productoSeleccionado.PVenta,
+        Descuento: this.cantidadDescuento,
+        Cantidad: this.cantidadVender,
+        ValorCordoba: this.cantidadVender * this.precioFinal,
+        ValorDolar: (this.cantidadVender * this.precioFinal) / 32.5,
+        Marca: this.productoSeleccionado.Marca
+      });
+      this.dataSource = new MatTableDataSource(this.productos);
+      this.productoSeleccionado = null;
+      this.productoSeleccionadoDescuento = null;
+      this.precioFinal = 0;
+      this.cantidadVender = 0;
+      this.cantidadDescuento = 0;
+      this.servicio.newToast(1, 'Insercción Correcta!', 'El producto se agrego correctamente a la factura');
+      this.hayDatosEnTabla = true;
+    }
   }
 
   // funcion para calcular el descuento segun su tipo
@@ -165,29 +214,3 @@ export class FacturarComponent implements OnInit {
     }
   }
 }
-
-/** Builds and returns a new User. */
-function crearProductos(id: number): ProductoFactura {
-  const producto =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-  const modelo =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-  const marca =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    Producto: producto,
-    Modelo: modelo,
-    Precio: Math.round(Math.random() * 100),
-    Descuento: Math.round(Math.random() * 100),
-    Cantidad: Math.round(Math.random() * 100),
-    ValorCordoba: Math.round(Math.random() * 1000),
-    ValorDolar: Math.round(Math.random() * 10000),
-    Marca: marca
-  };
-}
-
