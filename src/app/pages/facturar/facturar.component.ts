@@ -1,9 +1,9 @@
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+
+// importacion del componente del NavSide
+import { NavsideComponent } from '../navside/navside.component';
 
 // importacion del servicio
 import { ServicioService } from 'src/app/servicios/servicio.service';
@@ -13,12 +13,13 @@ import { ProductoFactura } from '../../interfaces/producto-factura';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { Cliente } from 'src/app/interfaces/cliente';
 import { Producto } from 'src/app/interfaces/producto';
+import { ControlTienda } from 'src/app/interfaces/control';
+
+// importacion de los componentes de la base de datos
+import { AngularFirestoreCollection, AngularFirestore, Action, DocumentSnapshot } from 'angularfire2/firestore';
 
 // Importacion del componente para los modales
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-const NAMES = ['Edycar', 'Susan', 'Jaime', 'Edmundo', 'Carmen'];
-
 
 @Component({
   selector: 'app-facturar',
@@ -26,14 +27,17 @@ const NAMES = ['Edycar', 'Susan', 'Jaime', 'Edmundo', 'Carmen'];
   styleUrls: ['./facturar.component.scss']
 })
 export class FacturarComponent implements OnInit {
-  stateCtrl = new FormControl();
-  public itemsCollection: AngularFirestoreCollection<Usuario>;
-  items: Observable<Usuario[]>;
 
+  // variable que contiene los datos de la tabla y las columnas a ser mostradas
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['id', 'Producto', 'Marca', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
   dataSource: MatTableDataSource<ProductoFactura>;
+
+  // variable que es de tipo observable del matsort de la tabla
   @ViewChild(MatSort) sort: MatSort;
+
+  // variable que almacena el tipo de cambio en su tiempo real
+  tipoCambioMoneda: number;
 
   // variable que contendra el producto seleccionado a venderse
   public productoSeleccionado: Producto = null;
@@ -70,8 +74,15 @@ export class FacturarComponent implements OnInit {
   constructor(
     public ngbModal: NgbModal,
     public fs: AngularFirestore,
-    public servicio: ServicioService
+    public servicio: ServicioService,
+    public nav: NavsideComponent
   ) {
+
+    // se inicializa la variable de tipo de cambio de moneda
+    this.fs.doc('AC Celulares/Control').snapshotChanges()
+      .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
+        this.tipoCambioMoneda = control.payload.data()['Tipo de Cambio'];
+      });
 
     // se inicializa el array a 0
     this.productos = [];
@@ -95,18 +106,6 @@ export class FacturarComponent implements OnInit {
     this.tipoDescuentoCantidad = !this.tipoDescuentoCantidad;
     this.cantidadCalcularDescuento = 0;
     this.cantidadDescuento = 0;
-  }
-
-  // funcion que se ejecutara cuando un cliente se seleccione
-  seleccionarCliente(cliente: Cliente) {
-    console.log('CLICKED');
-    console.log(cliente.Id);
-  }
-
-  // funcion que se ejecutara cuando un vendedor se seleccione
-  seleccionarUsuario(vendedor: Usuario) {
-    console.log('CLICKED');
-    console.log(vendedor.UID);
   }
 
   // funcion para buscar cliente
@@ -148,7 +147,11 @@ export class FacturarComponent implements OnInit {
 
   // funcion para imprimir
   imprimirFactura() {
-    window.print();
+    // this.nav.mostrarNav = false;
+    setTimeout(() => {
+      // return xepOnline.Formatter.Format('content', { render: 'download' });
+      // window.print();
+    }, 1000);
   }
 
   // funcion para vender a precio de compra
@@ -186,7 +189,8 @@ export class FacturarComponent implements OnInit {
         Descuento: this.cantidadDescuento,
         Cantidad: this.cantidadVender,
         ValorCordoba: this.cantidadVender * this.precioFinal,
-        ValorDolar: (this.cantidadVender * this.precioFinal) / 32.5,
+        // tslint:disable-next-line:max-line-length
+        ValorDolar: Math.round(((this.cantidadVender * this.precioFinal) / this.tipoCambioMoneda) * 100) / 100,
         Marca: this.productoSeleccionado.Marca
       });
       this.dataSource = new MatTableDataSource(this.productos);

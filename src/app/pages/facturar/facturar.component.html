@@ -1,4 +1,4 @@
-<body>
+<body id="content">
   <!--Comienzan los Modals-->
   <!--Agregar nuevo cliente modal-->
   <ng-template #agregarCliente let-modal>
@@ -166,7 +166,7 @@
       <a class="navbar-brand text-light">Facturar</a>
       <form class="form-inline">
         <span class="text-light">
-          Tasa de Cambio: $1 = C$32.5043 |
+          Tasa de Cambio: $1 = C${{tipoCambioMoneda}} |
         </span>
         <button mat-icon-button disabled="true" class="text-secondary text-light my-2 my-sm-0" matTooltip="Historial de Ventas">
           <mat-icon>history</mat-icon>
@@ -198,7 +198,7 @@
                 <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
                   [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente" name="valordebusquedaCliente">
                 <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
-                  <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)" [value]="cliente.NombreCompleto">
+                  <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
                     <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
                     <span>{{cliente.Nombres}}</span> |
                     <small>{{cliente.Tipo}}</small>
@@ -220,7 +220,7 @@
                 <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
                   [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor" name="valordebusquedaVendedor">
                 <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
-                  <mat-option *ngFor="let vendedor of usuarios | async" (click)="seleccionarUsuario(vendedor)" [value]="vendedor.Correo">
+                  <mat-option *ngFor="let vendedor of usuarios | async" [value]="vendedor.Correo">
                     <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
                     <span>{{vendedor.Nombres}}</span> |
                     <small>{{vendedor.Tipo}}</small>
@@ -359,8 +359,7 @@
                     <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
                       [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente" name="valordebusquedaCliente">
                     <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
-                      <mat-option *ngFor="let cliente of clientes | async" (click)="seleccionarCliente(cliente)"
-                        [value]="cliente.NombreCompleto">
+                      <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
                         <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
                         <span>{{cliente.Nombres}}</span> |
                         <small>{{cliente.Tipo}}</small>
@@ -373,8 +372,7 @@
                     <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
                       [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor" name="valordebusquedaVendedor">
                     <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
-                      <mat-option *ngFor="let vendedor of usuarios | async" (click)="seleccionarUsuario(vendedor)"
-                        [value]="vendedor.Correo">
+                      <mat-option *ngFor="let vendedor of usuarios | async" [value]="vendedor.Correo">
                         <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
                         <span>{{vendedor.Nombres}}</span> |
                         <small>{{vendedor.Tipo}}</small>
