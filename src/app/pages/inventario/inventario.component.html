@@ -118,7 +118,7 @@
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input type="number" matInput placeholder="Nueva Cantidad" [(ngModel)]="producto.Existencia" name="producto.Existencia">
+                <input type="number" matInput placeholder="Cantidad a Agregar" [(ngModel)]="nuevaExistencia" name="nuevaExistencia">
               </mat-form-field>
             </td>
           </tr>
@@ -127,7 +127,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); editarProductos()">Agregar</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); agregarExistencia()">Agregar</button>
     </div>
   </ng-template>
   <!--Agregar Categorias Modal-->
@@ -233,11 +233,19 @@
     </div>
     <div class="modal-body">
       <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="ID" disabled [(ngModel)]="producto.Id" name="producto.Id">
-        </mat-form-field>
-
         <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID" disabled [(ngModel)]="producto.Id" name="producto.Id">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="number" matInput placeholder="Existencias" [(ngModel)]="producto.Existencia" name="producto.Existencia">
+              </mat-form-field>
+            </td>
+          </tr>
           <tr>
             <td>
               <mat-form-field class="example-full-width">

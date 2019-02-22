@@ -34,6 +34,9 @@ import { Observable } from 'rxjs';
 })
 export class InventarioComponent implements OnInit {
 
+  // variable que contendra la nueva existencia para agregarla al producto posteriormente
+  nuevaExistencia = 0;
+
   // variable para mostrar, agregar datos, eliminar producto, editar y archivar un producto y se inicializa a null
   producto: Producto = null;
 
@@ -139,6 +142,27 @@ export class InventarioComponent implements OnInit {
     this.ngbModal.open(content, { centered: true });
     this.producto = producto;
     this.reiniciarInputs();
+  }
+
+  // funcion para agregar nueva existencia
+  agregarExistencia() {
+    let anteriorExistencia = 0;
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+      .snapshotChanges().subscribe((producto: Action<DocumentSnapshot<Producto>>) => {
+        anteriorExistencia = producto.payload.data().Existencia;
+        console.log(anteriorExistencia);
+      });
+    setTimeout(() => {
+      console.log(this.nuevaExistencia);
+      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+        .update({ Existencia: anteriorExistencia + this.nuevaExistencia }).then(resp => {
+          this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
+        });
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+        .update({ Existencia: anteriorExistencia + this.nuevaExistencia }).then(resp => {
+          this.nuevaExistencia = 0;
+        });
+    }, 2000);
   }
 
   // funcion para editar los datos de un producto
