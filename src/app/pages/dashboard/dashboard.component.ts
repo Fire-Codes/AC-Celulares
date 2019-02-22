@@ -16,6 +16,10 @@ import { ServicioService } from '../../servicios/servicio.service';
 })
 
 export class DashboardComponent implements OnInit {
+
+  // variable que determina en que plataforma esta
+  plataforma = '';
+
   // variable que contendra el string de la fecha y hora
   fechaHora = '';
 
@@ -40,6 +44,23 @@ export class DashboardComponent implements OnInit {
     public nav: NavsideComponent,
     public servicio: ServicioService
   ) {
+
+    // le asigna el valor a la plataforma segun la tienda en la que se encuentra
+    switch (this.servicio.tienda) {
+      case 'Tienda Principal':
+        this.plataforma = '';
+        break;
+      case 'Tienda 2':
+        this.plataforma = 'Tienda 2';
+        break;
+      case 'Tienda 3':
+        this.plataforma = 'Tienda 3';
+        break;
+      default:
+        this.plataforma = '';
+        break;
+    }
+
     // mostrar el navside
     this.nav.mostrarNav = true;
 
