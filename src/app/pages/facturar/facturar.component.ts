@@ -194,7 +194,26 @@ export class FacturarComponent implements OnInit {
           'Articulos Comprados': this.productos
         }).then((res) => {
           // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
+            .set({
+              'Tipo de Pago': 'Efectivo',
+              'Total Cordoba': this.totalCordoba(),
+              'Total Dolar': this.totalDolar(),
+              Hora: tiempo.getHours(),
+              Minuto: tiempo.getMinutes(),
+              Segundo: tiempo.getSeconds(),
+              Dia: tiempo.getDate(),
+              Mes: this.meses[tiempo.getMonth()],
+              Ano: tiempo.getFullYear(),
+              Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+              Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+              // tslint:disable-next-line:max-line-length
+              Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+              'Articulos Comprados': this.productos
+            });
+          // tslint:disable-next-line:max-line-length
           this.servicio.newToast(1, 'Factura Generada al Cliente Correctamente', 'Se agregaron los productos vendidos al historial del cliente correctamente');
+          this.limpiarTodo();
         }).catch(err => {
           this.servicio.newToast(0, 'Error de Venta', err);
         });
@@ -203,6 +222,19 @@ export class FacturarComponent implements OnInit {
       // return xepOnline.Formatter.Format('content', { render: 'download' });
       // window.print();
     }, 1000);
+  }
+
+  // funcion que se ejecutara una vez qu la factura se haya pagado
+  limpiarTodo() {
+    this.valordebusquedaCliente = '';
+    this.valordebusquedaVendedor = '';
+    this.cantidadVender = 0;
+    this.precioFinal = 0;
+    this.cantidadCalcularDescuento = 0;
+    this.cantidadDescuento = 0;
+    this.productoSeleccionado = null;
+    this.productos = [];
+    this.hayDatosEnTabla = false;
   }
 
   // funcion para vender a precio de compra
