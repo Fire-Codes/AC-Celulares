@@ -27,6 +27,7 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class ServicioService {
   Usuarios: AngularFirestoreCollection<Usuario>;
+  public tienda: string;
   constructor(
     public router: Router,
     public auth: AngularFireAuth,
@@ -94,6 +95,7 @@ export class ServicioService {
   public logout() {
     return this.auth.auth.signOut().then((response) => {
       console.warn('Se ha cerrado Sesion');
+      this.tienda = '';
       this.navegar('');
     }).catch((err) => {
       console.error(err);

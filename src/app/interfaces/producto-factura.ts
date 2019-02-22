@@ -1,11 +1,11 @@
 export interface ProductoFactura {
     id: string;
     Precio: number;
-    Descuento: number;
+    DescuentoPorUnidad: number;
     Cantidad: number;
     Producto: string;
     Modelo: string;
-    ValorCordoba: number;
-    ValorDolar: number;
+    TotalCordoba: number;
+    TotalDolar: number;
     Marca: string;
 }

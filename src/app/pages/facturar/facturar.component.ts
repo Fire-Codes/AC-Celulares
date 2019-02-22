@@ -14,6 +14,7 @@ import { Usuario } from 'src/app/interfaces/usuario';
 import { Cliente } from 'src/app/interfaces/cliente';
 import { Producto } from 'src/app/interfaces/producto';
 import { ControlTienda } from 'src/app/interfaces/control';
+import { HistorialCompra } from './../../interfaces/historial-compra';
 
 // importacion de los componentes de la base de datos
 import { AngularFirestoreCollection, AngularFirestore, Action, DocumentSnapshot } from 'angularfire2/firestore';
@@ -27,6 +28,22 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./facturar.component.scss']
 })
 export class FacturarComponent implements OnInit {
+
+  // variable que almacena todos los meses del año
+  meses: string[] = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ];
 
   // variable que contiene los datos de la tabla y las columnas a ser mostradas
   // tslint:disable-next-line:max-line-length
@@ -143,15 +160,40 @@ export class FacturarComponent implements OnInit {
 
   /** Gets the total cost of all transactions. */
   totalCordoba() {
-    return this.productos.map(t => t.ValorCordoba).reduce((acc, value) => acc + value, 0);
+    return this.productos.map(t => t.TotalCordoba).reduce((acc, value) => acc + value, 0);
   }
   totalDolar() {
-    return this.productos.map(t => t.ValorDolar).reduce((acc, value) => acc + value, 0);
+    return this.productos.map(t => t.TotalDolar).reduce((acc, value) => acc + value, 0);
   }
 
   // funcion para imprimir
   imprimirFactura() {
     // this.nav.mostrarNav = false;
+    if ((this.valordebusquedaCliente === '') || (this.valordebusquedaVendedor === '')) {
+      this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar un Cliente y un Vendedor');
+    } else {
+      const tiempo = new Date();
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
+        .set({
+          'Tipo de Pago': 'Efectivo',
+          'Total Cordoba': this.totalCordoba(),
+          'Total Dolar': this.totalDolar(),
+          Hora: tiempo.getHours(),
+          Minuto: tiempo.getMinutes(),
+          Segundo: tiempo.getSeconds(),
+          Dia: tiempo.getDate(),
+          Mes: this.meses[tiempo.getMonth()],
+          Ano: tiempo.getFullYear(),
+          Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+          Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+          // tslint:disable-next-line:max-line-length
+          Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+          'Articulos Comprados': this.productos
+        }).then((res) => {
+
+        });
+    }
     setTimeout(() => {
       // return xepOnline.Formatter.Format('content', { render: 'download' });
       // window.print();
@@ -190,11 +232,11 @@ export class FacturarComponent implements OnInit {
         Producto: this.productoSeleccionado.Nombre,
         Modelo: this.productoSeleccionado.Modelo,
         Precio: this.productoSeleccionado.PVenta,
-        Descuento: this.cantidadDescuento,
+        DescuentoPorUnidad: this.cantidadDescuento,
         Cantidad: this.cantidadVender,
-        ValorCordoba: this.cantidadVender * this.precioFinal,
+        TotalCordoba: this.cantidadVender * this.precioFinal,
         // tslint:disable-next-line:max-line-length
-        ValorDolar: Math.round(((this.cantidadVender * this.precioFinal) / this.tipoCambioMoneda) * 100) / 100,
+        TotalDolar: Math.round(((this.cantidadVender * this.precioFinal) / this.tipoCambioMoneda) * 100) / 100,
         Marca: this.productoSeleccionado.Marca
       });
       this.productosFactura = new MatTableDataSource(this.productos);

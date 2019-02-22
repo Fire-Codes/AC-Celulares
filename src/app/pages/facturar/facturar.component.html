@@ -498,7 +498,7 @@
         <!-- Descuento Column -->
         <ng-container matColumnDef="Descuento">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Descuento </th>
-          <td mat-cell *matCellDef="let productoFactura">C${{productoFactura.Descuento}}</td>
+          <td mat-cell *matCellDef="let productoFactura">C${{productoFactura.DescuentoPorUnidad}}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
@@ -512,14 +512,14 @@
         <!-- TotalCordoba Column -->
         <ng-container matColumnDef="TotalCordoba">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total C$ </th>
-          <td mat-cell *matCellDef="let productoFactura"> C${{productoFactura.ValorCordoba}} </td>
+          <td mat-cell *matCellDef="let productoFactura"> C${{productoFactura.TotalCordoba}} </td>
           <td mat-footer-cell *matFooterCellDef class="bg-secondary text-light text-center">C${{totalCordoba()}}</td>
         </ng-container>
 
         <!-- TotalDolar Column -->
         <ng-container matColumnDef="TotalDolar">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total $ </th>
-          <td mat-cell *matCellDef="let productoFactura"> ${{productoFactura.ValorDolar}} </td>
+          <td mat-cell *matCellDef="let productoFactura"> ${{productoFactura.TotalDolar}} </td>
           <td mat-footer-cell *matFooterCellDef class="bg-primary text-light text-center">${{totalDolar()}}</td>
         </ng-container>
 
