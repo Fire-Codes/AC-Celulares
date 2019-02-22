@@ -96,7 +96,7 @@
       </button>
     </div>
     <div class="modal-body bg-danger">
-      <p class="text-light">¿Estás seguro que deseas eliminar el producto {{productoEliminar.id}} de la factura?</p>
+      <p class="text-light">¿Estás seguro que deseas eliminar el producto {{productoEliminar.Id}} de la factura?</p>
     </div>
     <div class="modal-footer bg-danger">
       <button type="button" class="btn btn-light" (click)="modal.close('Close click'); eliminarProductoFactura()">Eliminar</button>
@@ -463,7 +463,7 @@
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> ID </th>
-          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.id}} </td>
+          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Id}} </td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 

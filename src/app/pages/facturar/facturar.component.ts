@@ -18,6 +18,7 @@ import { HistorialCompra } from './../../interfaces/historial-compra';
 
 // importacion de los componentes de la base de datos
 import { AngularFirestoreCollection, AngularFirestore, Action, DocumentSnapshot } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // Importacion del componente para los modales
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -95,7 +96,8 @@ export class FacturarComponent implements OnInit {
     public ngbModal: NgbModal,
     public fs: AngularFirestore,
     public servicio: ServicioService,
-    public nav: NavsideComponent
+    public nav: NavsideComponent,
+    public db: AngularFireDatabase
   ) {
 
     // se inicializa la variable de tipo de cambio de moneda
@@ -191,7 +193,10 @@ export class FacturarComponent implements OnInit {
           Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
           'Articulos Comprados': this.productos
         }).then((res) => {
-
+          // tslint:disable-next-line:max-line-length
+          this.servicio.newToast(1, 'Factura Generada al Cliente Correctamente', 'Se agregaron los productos vendidos al historial del cliente correctamente');
+        }).catch(err => {
+          this.servicio.newToast(0, 'Error de Venta', err);
         });
     }
     setTimeout(() => {
@@ -227,8 +232,12 @@ export class FacturarComponent implements OnInit {
     } else if (this.productoSeleccionado == null) {
       this.servicio.newToast(0, 'Error de Insercción', 'Debe de seleccionar un producto antes de agregarlo');
     } else {
+      this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.productoSeleccionado.Id}`)
+        .update({ Existencia: this.productoSeleccionado.Existencia - this.cantidadVender });
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.productoSeleccionado.Id}`)
+        .update({ Existencia: this.productoSeleccionado.Existencia - this.cantidadVender });
       this.productos.push({
-        id: this.productoSeleccionado.Id,
+        Id: this.productoSeleccionado.Id,
         Producto: this.productoSeleccionado.Nombre,
         Modelo: this.productoSeleccionado.Modelo,
         Precio: this.productoSeleccionado.PVenta,
@@ -252,12 +261,27 @@ export class FacturarComponent implements OnInit {
 
   // eliminar producto de la factura
   eliminarProductoFactura() {
+    let cantidadAnterior = 0;
+    let idProducto: ProductoFactura;
     this.productosFactura.data.forEach((producto, index) => {
-      if (this.productoEliminar.id === producto.id) {
+      if (this.productoEliminar.Id === producto.Id) {
+        idProducto = producto;
         this.productos.splice(index, 1);
         this.productosFactura = new MatTableDataSource(this.productos);
       }
     });
+    this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`).snapshotChanges()
+      .subscribe(product => {
+        cantidadAnterior = product.payload.data().Existencia;
+        console.log(product.payload.data().Existencia);
+      });
+    console.log(cantidadAnterior);
+    setTimeout(() => {
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
+        .update({ Existencia: cantidadAnterior + idProducto.Cantidad });
+      this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
+        .update({ Existencia: cantidadAnterior + idProducto.Cantidad });
+    }, 2000);
   }
 
   // funcion para calcular el descuento segun su tipo

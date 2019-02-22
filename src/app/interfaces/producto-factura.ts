@@ -1,5 +1,5 @@
 export interface ProductoFactura {
-    id: string;
+    Id: string;
     Precio: number;
     DescuentoPorUnidad: number;
     Cantidad: number;
