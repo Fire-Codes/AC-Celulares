@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center align-items-center jumbotron hero-technology full-screen-hero" style="width: auto; height: auto;">
   <div class="row d-flex justify-content-center align-items-center">
-    <div class="col-sm-4 col-md-4 col-lg-4">
+    <div *ngIf="tienda1" class="col-sm-4 col-md-4 col-lg-4">
       <div class="card mx-auto shadow-lg bg-white bounceIn" style="width: 18rem;">
         <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
         <div class="card-body text-center">
@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4 col-md-4 col-lg-4">
+    <div *ngIf="tienda2" class="col-sm-4 col-md-4 col-lg-4">
       <div class="card mx-auto shadow-lg bg-white bounceIn" style="width: 18rem;">
         <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
         <div class="card-body text-center">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4 col-md-4 col-lg-4">
+    <div *ngIf="tienda3" class="col-sm-4 col-md-4 col-lg-4">
       <div class="card mx-auto shadow-lg bg-white bounceIn" style="width: 18rem;">
         <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
         <div class="card-body text-center">
