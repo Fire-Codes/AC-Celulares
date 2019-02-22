@@ -1,3 +1,4 @@
+import { ControlTienda } from 'src/app/interfaces/control';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 // importacion del componente navside
@@ -40,6 +41,9 @@ export class InventarioComponent implements OnInit {
   totalProductos: number;
   categorias: string[];
   contador: number;
+
+  // variable que contiene la cantidad general de las 3 tiendas de productos
+  totalGeneralProductos: number;
 
   // variable que decide si hay o no datos para mostrar en el data table
   hayDatos: boolean;
@@ -88,6 +92,11 @@ export class InventarioComponent implements OnInit {
         console.log(this.contador + 1);
       });
 
+    // se extrae la cantidad general de productos de las 3 tiendas
+    this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
+      this.totalGeneralProductos = control.payload.data()['Cantidad Total de Productos'];
+    });
+
     // Se extraen todos los productos ingresados
     this.coleccionDeProductos = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
     this.coleccionDeProductos.valueChanges().subscribe(documento => {
@@ -103,10 +112,16 @@ export class InventarioComponent implements OnInit {
 
     // se extraen la cantidad de productos actual y las categorias actualmente existentes
     // tslint:disable-next-line:max-line-length
-    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
-      this.totalProductos = campos.payload.data()['Cantidad de Productos'];
-      this.categorias = campos.payload.data().Categorias;
-      this.reiniciarId();
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).snapshotChanges()
+      .subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
+        this.totalProductos = campos.payload.data()['Cantidad de Productos'];
+        this.categorias = campos.payload.data().Categorias;
+        this.reiniciarId();
+      });
+
+    // se extrae la cantidad general de productos de las 3 tiendas
+    this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
+      this.totalGeneralProductos = control.payload.data()['Cantidad Total de Productos'];
     });
   }
 
@@ -142,28 +157,50 @@ export class InventarioComponent implements OnInit {
   // funcion para eliminar un producto
   eliminarProductos() {
     const totalproductos = this.totalProductos - 1;
-    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).delete().then(response => {
-      this.servicio.newToast(1, 'Eliminación Correcta', `El producto ${this.producto.Id} se ha eliminado correctamente`);
-      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
-        'Cantidad de Productos': totalproductos,
-        Contador: totalproductos <= 0 ? 0 : this.contador
-      }).then(resp => {
-        console.warn('Cantidad de productos actualizada correctamente' + resp);
+    const totalGeneralProductos = this.totalGeneralProductos - 1;
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).delete()
+      .then(response => {
+        this.servicio.newToast(1, 'Eliminación Correcta', `El producto ${this.producto.Id} se ha eliminado correctamente`);
+
+        // se actualizan la cantidad total de productos de dicha tienda
+        this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
+          'Cantidad de Productos': totalproductos,
+          Contador: totalproductos <= 0 ? 0 : this.contador
+        }).then(resp => {
+          console.warn('Cantidad de productos actualizada correctamente' + resp);
+        }).catch(err => {
+          console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        });
+
+        // se actualizan los productos generales de las 3 tiendas
+        this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+          'Cantidad Total de Productos': totalGeneralProductos
+        }).then(resp => {
+          console.warn('Cantidad de productos actualizada correctamente' + resp);
+        }).catch(err => {
+          console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        });
+
       }).catch(err => {
-        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        this.servicio.newToast(1, 'Eliminación Incorrecta', err);
       });
-    }).catch(err => {
-      this.servicio.newToast(1, 'Eliminación Incorrecta', err);
-    });
 
     // integracion con el realtime database
     // tslint:disable-next-line:max-line-length
-    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).remove().then(response => {
-      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
-        'Cantidad de Productos': totalproductos,
-        Contador: totalproductos <= 0 ? 0 : this.contador
+    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+      .remove().then(response => {
+
+        // se actualizan la cantidad total de productos de dicha tienda
+        this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
+          'Cantidad de Productos': totalproductos,
+          Contador: totalproductos <= 0 ? 0 : this.contador
+        });
+
+        // se actualizan los productos generales de las 3 tiendas
+        this.db.database.ref(`AC Celulares/Control`).update({
+          'Cantidad Total de Productos': totalGeneralProductos
+        });
       });
-    });
   }
 
   // funcion para agregar un nuevo producto
@@ -182,7 +219,10 @@ export class InventarioComponent implements OnInit {
     }).then(response => {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
+      const totalGeneralProductos = this.totalGeneralProductos + 1;
       this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+
+      // se actualiza el total de productos de dicha tienda
       this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: contador
@@ -192,6 +232,16 @@ export class InventarioComponent implements OnInit {
       }).catch(err => {
         console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
+
+      // se actualiza el total general de productos de las 3 tiendas
+      this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+        'Cantidad Total de Productos': totalGeneralProductos
+      }).then(resp => {
+        console.warn('Cantidad de productos actualizada correctamente' + resp);
+      }).catch(err => {
+        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+      });
+
     }).catch(err => {
       this.servicio.newToast(0, 'Insercción Incorrecta', err);
     });
@@ -211,7 +261,10 @@ export class InventarioComponent implements OnInit {
     }).then(response => {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
+      const totalGeneralProductos = this.totalGeneralProductos + 1;
       this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+
+      // se actualiza el total de productos de dicha tienda
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: contador
@@ -221,6 +274,12 @@ export class InventarioComponent implements OnInit {
       }).catch(err => {
         console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
+
+      // se actualiza el total general de productos de las 3 tiendas
+      this.db.database.ref(`AC Celulares/Control`).update({
+        'Cantidad Total de Productos': totalGeneralProductos
+      });
+
     }).catch(err => {
       console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
     });
