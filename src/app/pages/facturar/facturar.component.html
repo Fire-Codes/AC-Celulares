@@ -99,7 +99,8 @@
       <p class="text-light">¿Estás seguro que deseas eliminar el producto {{productoEliminar.Id}} de la factura?</p>
     </div>
     <div class="modal-footer bg-danger">
-      <button type="button" class="btn btn-light" (click)="modal.close('Close click'); eliminarProductoFactura()">Eliminar</button>
+      <button type="button" class="btn btn-light"
+        (click)="modal.close('Close click'); eliminarProductoFactura()">Eliminar</button>
       <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
@@ -158,7 +159,8 @@
 
   <!--Mostrar Productos Descuento Producto Modal-->
   <ng-template style="width: 90vw;" #mostrarProductosDescuento let-modal>
-    <app-seleccionar-producto-descuento (cerrarModalSeleccionarProductosDescuento)="modal.close('Close click')"></app-seleccionar-producto-descuento>
+    <app-seleccionar-producto-descuento (cerrarModalSeleccionarProductosDescuento)="modal.close('Close click')">
+    </app-seleccionar-producto-descuento>
   </ng-template>
 
   <nav class="navbar navbar-dark bg-dark elevated shake">
@@ -168,7 +170,8 @@
         <span class="text-light">
           Tasa de Cambio: $1 = C${{tipoCambioMoneda}} |
         </span>
-        <button mat-icon-button disabled="true" class="text-secondary text-light my-2 my-sm-0" matTooltip="Historial de Ventas">
+        <button mat-icon-button disabled="true" class="text-secondary text-light my-2 my-sm-0"
+          matTooltip="Historial de Ventas">
           <mat-icon>history</mat-icon>
         </button>
       </form>
@@ -334,18 +337,22 @@
               </div>
               <div class="col-sm-6 col-md-6 col-lg-6">
                 <div *ngIf="productoSeleccionado && !venderPrecioCompra" class="float-right ml-3">
-                  <button class="elevated text-center bg-secondary" matTooltip="Agregar Descuento" mat-fab (click)="openVerticallyCentered(descuentoProducto)">
+                  <button class="elevated text-center bg-secondary" matTooltip="Agregar Descuento" mat-fab
+                    (click)="openVerticallyCentered(descuentoProducto,null)">
                     <mat-icon class="text-warning justify-content-center align-items-center">money_off</mat-icon>
                   </button>
                 </div>
                 <div class="float-right">
-                  <button class="elevated text-center bg-warning" matTooltip="Agregar Nuevo Cliente" mat-fab (click)="openVerticallyCentered(agregarCliente)">
+                  <button class="elevated text-center bg-warning" matTooltip="Agregar Nuevo Cliente" mat-fab
+                    (click)="openVerticallyCentered(agregarCliente,null)">
                     <mat-icon class="text-dark justify-content-center align-items-center">person_add</mat-icon>
                   </button>
                 </div>
                 <div class="float-right mr-3">
-                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab (click)="openVerticallyCentered(mostrarProductos)">
-                    <mat-icon class="text-light justify-content-center align-items-center">format_list_bulleted</mat-icon>
+                  <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab
+                    (click)="openVerticallyCentered(mostrarProductos,null)">
+                    <mat-icon class="text-light justify-content-center align-items-center">format_list_bulleted
+                    </mat-icon>
                   </button>
                 </div>
               </div>
@@ -357,7 +364,8 @@
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
                     <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
-                      [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente" name="valordebusquedaCliente">
+                      [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente"
+                      name="valordebusquedaCliente">
                     <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
                       <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
                         <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
@@ -370,7 +378,8 @@
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
                     <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
-                      [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor" name="valordebusquedaVendedor">
+                      [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor"
+                      name="valordebusquedaVendedor">
                     <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
                       <mat-option *ngFor="let vendedor of usuarios | async" [value]="vendedor.Correo">
                         <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
@@ -391,8 +400,8 @@
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
-                    <input *ngIf="productoSeleccionado" matInput type="number" placeholder="Stock" disabled [(ngModel)]="productoSeleccionado.Existencia"
-                      name='productoSeleccionado.Existencia'>
+                    <input *ngIf="productoSeleccionado" matInput type="number" placeholder="Stock" disabled
+                      [(ngModel)]="productoSeleccionado.Existencia" name='productoSeleccionado.Existencia'>
                     <input *ngIf="!productoSeleccionado" matInput type="number" placeholder="Stock" disabled>
                   </mat-form-field>
                 </div>
@@ -400,14 +409,17 @@
               <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
-                    <input *ngIf="productoSeleccionado" type="number" matInput placeholder="Precio C/U" [(ngModel)]="productoSeleccionado.PVenta"
-                      name="productoSeleccionadoDescuento.PVenta" disabled="true">
-                    <input *ngIf="!productoSeleccionado" type="number" matInput placeholder="Precio C/U" disabled="true">
+                    <input *ngIf="productoSeleccionado" type="number" matInput placeholder="Precio C/U"
+                      [(ngModel)]="productoSeleccionado.PVenta" name="productoSeleccionadoDescuento.PVenta"
+                      disabled="true">
+                    <input *ngIf="!productoSeleccionado" type="number" matInput placeholder="Precio C/U"
+                      disabled="true">
                   </mat-form-field>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
-                    <input matInput type="number" name="cantidadVender" [(ngModel)]="cantidadVender" placeholder="Cantidad a Vender">
+                    <input matInput type="number" name="cantidadVender" [(ngModel)]="cantidadVender"
+                      placeholder="Cantidad a Vender">
                   </mat-form-field>
                 </div>
               </div>
@@ -422,8 +434,8 @@
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <mat-form-field class="fullWidth">
                     <span matPrefix>C$ &nbsp;</span>
-                    <input type="number" matInput placeholder="Precio Final" name="precioFinal" [(ngModel)]="precioFinal"
-                      disabled>
+                    <input type="number" matInput placeholder="Precio Final" name="precioFinal"
+                      [(ngModel)]="precioFinal" disabled>
                   </mat-form-field>
                 </div>
               </div>
@@ -450,7 +462,8 @@
     <div class="mb-4 slideInLeft">
       <div class="container-fluid rounded-top p-4" style="background-color: #009688;">
         <div class="float-right">
-          <button (click)="imprimirFactura()" class="elevated text-center" matTooltip="Vender Productos" mat-fab style="background-color: #02756a;">
+          <button (click)="imprimirFactura()" class="elevated text-center" matTooltip="Vender Productos" mat-fab
+            style="background-color: #02756a;">
             <mat-icon class="text-light">attach_money</mat-icon>
           </button>
         </div>
@@ -528,7 +541,8 @@
           <th mat-header-cell *matHeaderCellDef class="text-light"> Acciones </th>
           <td mat-cell *matCellDef="let productoFactura">
             <div class="example-button-row">
-              <button mat-icon-button color="warn" matTooltip="Eliminar Venta" (click)='openVerticallyCentered(eliminarProducto, productoFactura)'>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Venta"
+                (click)='openVerticallyCentered(eliminarProducto, productoFactura)'>
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
@@ -537,7 +551,8 @@
         </ng-container>
 
         <!--Aqui comienzan los TH-->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="text-center text-light" style="background-color: #009688;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="text-center text-light"
+          style="background-color: #009688;"></tr>
         <tr mat-row *matRowDef="let productoFactura; columns: displayedColumns;"></tr>
         <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" style="background-color: #009688;"></tr>
       </table>
