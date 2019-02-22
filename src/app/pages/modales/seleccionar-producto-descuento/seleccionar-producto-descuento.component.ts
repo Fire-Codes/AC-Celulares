@@ -36,7 +36,7 @@ export class SeleccionarProductoDescuentoComponent implements OnInit {
     public factura: FacturarComponent
   ) {
     // Se extraen todos los productos ingresados
-    this.coleccionDeProductos = this.fs.collection<Producto>('AC Celulares/Control/Inventario/Tienda Principal/Productos');
+    this.coleccionDeProductos = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
     this.coleccionDeProductos.valueChanges().subscribe(documento => {
       // Assign the data to the data source for the table to render
       this.productos = new MatTableDataSource(documento);

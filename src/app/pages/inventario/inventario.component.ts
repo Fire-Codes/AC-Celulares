@@ -79,7 +79,7 @@ export class InventarioComponent implements OnInit {
     this.nav.mostrarNav = true;
 
     // se extrae la cantidad total de productos almacenados y las categorias
-    this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges()
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).snapshotChanges()
       .subscribe((documento: Action<DocumentSnapshot<CamposTiendas>>) => {
         this.totalProductos = documento.payload.data()['Cantidad de Productos'];
         this.categorias = documento.payload.data().Categorias;
@@ -89,7 +89,7 @@ export class InventarioComponent implements OnInit {
       });
 
     // Se extraen todos los productos ingresados
-    this.coleccionDeProductos = this.fs.collection<Producto>('AC Celulares/Control/Inventario/Tienda Principal/Productos');
+    this.coleccionDeProductos = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
     this.coleccionDeProductos.valueChanges().subscribe(documento => {
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(documento);
@@ -103,7 +103,7 @@ export class InventarioComponent implements OnInit {
 
     // se extraen la cantidad de productos actual y las categorias actualmente existentes
     // tslint:disable-next-line:max-line-length
-    this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).snapshotChanges().subscribe((campos: Action<DocumentSnapshot<CamposTiendas>>) => {
       this.totalProductos = campos.payload.data()['Cantidad de Productos'];
       this.categorias = campos.payload.data().Categorias;
       this.reiniciarId();
@@ -128,7 +128,7 @@ export class InventarioComponent implements OnInit {
 
   // funcion para editar los datos de un producto
   editarProductos() {
-    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).update(this.producto)
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).update(this.producto)
       .then(response => {
         this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
       }).catch(err => {
@@ -136,15 +136,15 @@ export class InventarioComponent implements OnInit {
       });
 
     // integracion con el realtime database
-    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).update(this.producto);
+    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).update(this.producto);
   }
 
   // funcion para eliminar un producto
   eliminarProductos() {
     const totalproductos = this.totalProductos - 1;
-    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).delete().then(response => {
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).delete().then(response => {
       this.servicio.newToast(1, 'Eliminación Correcta', `El producto ${this.producto.Id} se ha eliminado correctamente`);
-      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: totalproductos <= 0 ? 0 : this.contador
       }).then(resp => {
@@ -157,8 +157,9 @@ export class InventarioComponent implements OnInit {
     });
 
     // integracion con el realtime database
-    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.producto.Id}`).remove().then(response => {
-      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+    // tslint:disable-next-line:max-line-length
+    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).remove().then(response => {
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: totalproductos <= 0 ? 0 : this.contador
       });
@@ -167,7 +168,7 @@ export class InventarioComponent implements OnInit {
 
   // funcion para agregar un nuevo producto
   agregarProductos() {
-    this.fs.doc(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.Id}`).set({
+    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
       Id: this.Id,
       Nombre: this.Nombre,
       Marca: this.Marca,
@@ -182,7 +183,7 @@ export class InventarioComponent implements OnInit {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
       this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
-      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: contador
       }).then(resp => {
@@ -196,7 +197,7 @@ export class InventarioComponent implements OnInit {
     });
 
     // integracion con el realtime database
-    this.db.database.ref(`AC Celulares/Control/Inventario/Tienda Principal/Productos/${this.Id}`).set({
+    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
       Id: this.Id,
       Nombre: this.Nombre,
       Marca: this.Marca,
@@ -211,7 +212,7 @@ export class InventarioComponent implements OnInit {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
       this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
-      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         'Cantidad de Productos': totalproductos,
         Contador: contador
       }).then(resp => {
@@ -239,7 +240,7 @@ export class InventarioComponent implements OnInit {
       this.servicio.newToast(0, 'Inserccion Incorrecta', 'Ya existe una categoria con este nombre');
     } else {
       nuevoArray.push(this.nuevaCategoria);
-      this.fs.doc('AC Celulares/Control/Inventario/Tienda Principal').update({
+      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         Categorias: nuevoArray
       }).then(response => {
         this.servicio.newToast(1, 'Inserccion Correcta', 'La nueva categoria de productos se agrego correctamente');
@@ -248,7 +249,7 @@ export class InventarioComponent implements OnInit {
       });
 
       // integracion con el realtime database
-      this.db.database.ref('AC Celulares/Control/Inventario/Tienda Principal').update({
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
         Categorias: nuevoArray
       });
     }
