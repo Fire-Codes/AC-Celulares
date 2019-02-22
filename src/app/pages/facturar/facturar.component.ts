@@ -31,7 +31,7 @@ export class FacturarComponent implements OnInit {
   // variable que contiene los datos de la tabla y las columnas a ser mostradas
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['id', 'Producto', 'Marca', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
-  dataSource: MatTableDataSource<ProductoFactura>;
+  productosFactura: MatTableDataSource<ProductoFactura>;
 
   // variable que es de tipo observable del matsort de la tabla
   @ViewChild(MatSort) sort: MatSort;
@@ -44,6 +44,9 @@ export class FacturarComponent implements OnInit {
 
   // variable que contendra el poducto seleccionado para calcular su descuento
   public productoSeleccionadoDescuento: Producto = null;
+
+  // variable que contendra el producto seleccionado para eliminar de la tabla
+  public productoEliminar: ProductoFactura;
 
   // variables que almacenara el tipo de descuento a realizar y sus valores
   tipoDescuento = '';
@@ -89,12 +92,12 @@ export class FacturarComponent implements OnInit {
 
 
     // Se asigna el array de productos al contenido de la tabla
-    this.dataSource = new MatTableDataSource(this.productos);
+    this.productosFactura = new MatTableDataSource(this.productos);
   }
 
   ngOnInit() {
     // se inicializa el matsort de la tabla con los datos existentes
-    this.dataSource.sort = this.sort;
+    this.productosFactura.sort = this.sort;
 
     // se manda a inicializar los datos para los autocomplete de los clientes y vendedores
     this.buscarClientes();
@@ -133,7 +136,8 @@ export class FacturarComponent implements OnInit {
   }
 
   // funcion para abrir los modales de manera centrada
-  openVerticallyCentered(content: string) {
+  openVerticallyCentered(content: string, productoEliminar: ProductoFactura) {
+    this.productoEliminar = productoEliminar;
     this.ngbModal.open(content, { centered: true });
   }
 
@@ -193,15 +197,25 @@ export class FacturarComponent implements OnInit {
         ValorDolar: Math.round(((this.cantidadVender * this.precioFinal) / this.tipoCambioMoneda) * 100) / 100,
         Marca: this.productoSeleccionado.Marca
       });
-      this.dataSource = new MatTableDataSource(this.productos);
+      this.productosFactura = new MatTableDataSource(this.productos);
       this.productoSeleccionado = null;
       this.productoSeleccionadoDescuento = null;
       this.precioFinal = 0;
       this.cantidadVender = 0;
       this.cantidadDescuento = 0;
-      this.servicio.newToast(1, 'Insercción Correcta!', 'El producto se agrego correctamente a la factura');
+      // this.servicio.newToast(1, 'Insercción Correcta!', 'El producto se agrego correctamente a la factura');
       this.hayDatosEnTabla = true;
     }
+  }
+
+  // eliminar producto de la factura
+  eliminarProductoFactura() {
+    this.productosFactura.data.forEach((producto, index) => {
+      if (this.productoEliminar.id === producto.id) {
+        this.productos.splice(index, 1);
+        this.productosFactura = new MatTableDataSource(this.productos);
+      }
+    });
   }
 
   // funcion para calcular el descuento segun su tipo
