@@ -178,6 +178,17 @@ export class FacturarComponent implements OnInit {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar un Cliente y un Vendedor');
     } else {
       const tiempo = new Date();
+      let totalCantidadComprasCliente = 0;
+      let totalComprasActualesCliente = 0;
+      this.productos.forEach(producto => {
+        totalCantidadComprasCliente += producto.Cantidad;
+      });
+      // se leen las compras actuales del cliente
+      this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
+        .subscribe(cliente => {
+          this.totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
+          totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+        });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
         .set({
@@ -196,48 +207,37 @@ export class FacturarComponent implements OnInit {
           Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
           'Articulos Comprados': this.productos
         }).then((res) => {
-          let totalComprasActualesCliente;
-          let totalCantidadComprasCliente;
-          this.productosFactura.data.forEach(producto => {
-            totalCantidadComprasCliente += producto.Cantidad;
-          });
-          // se leen las compras actuales del cliente
-          this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
-            .subscribe(cliente => {
-              this.totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
-              totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
-            });
-          setTimeout(() => {
-            this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
-              'Cantidad de Compras': totalComprasActualesCliente
-            }).then(respo => {
-              // tslint:disable-next-line:max-line-length
-              this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
-                .set({
-                  'Tipo de Pago': 'Efectivo',
-                  'Total Cordoba': this.totalCordoba(),
-                  'Total Dolar': this.totalDolar(),
-                  Hora: tiempo.getHours(),
-                  Minuto: tiempo.getMinutes(),
-                  Segundo: tiempo.getSeconds(),
-                  Dia: tiempo.getDate(),
-                  Mes: this.meses[tiempo.getMonth()],
-                  Ano: tiempo.getFullYear(),
-                  Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
-                  Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+          console.log(totalComprasActualesCliente);
+          this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
+            'Cantidad de Compras': totalComprasActualesCliente
+          }).then(respo => {
+            // tslint:disable-next-line:max-line-length
+            this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
+              .set({
+                'Tipo de Pago': 'Efectivo',
+                'Total Cordoba': this.totalCordoba(),
+                'Total Dolar': this.totalDolar(),
+                Hora: tiempo.getHours(),
+                Minuto: tiempo.getMinutes(),
+                Segundo: tiempo.getSeconds(),
+                Dia: tiempo.getDate(),
+                Mes: this.meses[tiempo.getMonth()],
+                Ano: tiempo.getFullYear(),
+                Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+                Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+                // tslint:disable-next-line:max-line-length
+                Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+                'Articulos Comprados': this.productos
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
+                  'Cantidad de Compras': totalComprasActualesCliente
+                }).then(respon => {
                   // tslint:disable-next-line:max-line-length
-                  Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-                  'Articulos Comprados': this.productos
-                }).then(resp => {
-                  this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
-                    'Cantidad de Compras': totalComprasActualesCliente
-                  });
+                  this.servicio.newToast(1, 'Factura Generada al Cliente Correctamente', 'Se agregaron los productos vendidos al historial del cliente correctamente');
+                  this.limpiarTodo();
                 });
-            });
-          }, 2000);
-          // tslint:disable-next-line:max-line-length
-          this.servicio.newToast(1, 'Factura Generada al Cliente Correctamente', 'Se agregaron los productos vendidos al historial del cliente correctamente');
-          this.limpiarTodo();
+              });
+          });
         }).catch(err => {
           this.servicio.newToast(0, 'Error de Venta', err);
         });
