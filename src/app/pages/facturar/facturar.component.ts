@@ -198,7 +198,7 @@ export class FacturarComponent implements OnInit {
         }).then((res) => {
           let totalComprasActualesCliente;
           let totalCantidadComprasCliente;
-          this.productos.forEach(producto => {
+          this.productosFactura.data.forEach(producto => {
             totalCantidadComprasCliente += producto.Cantidad;
           });
           // se leen las compras actuales del cliente
