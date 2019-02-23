@@ -13,6 +13,9 @@ import { AngularFireDatabase } from 'angularfire2/database';
 // importacion de la interfaz para el usuario
 import { Usuario } from '../../interfaces/usuario';
 
+// importacion de la interfaz para el control
+import { ControlTienda } from './../../interfaces/control';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -33,6 +36,9 @@ export class SignupComponent implements OnInit {
   contrasena = '';
   pertenece = '';
   sexo = '';
+
+  // variable que contendra la cantidad total de usuarios actualmente
+  totalUsuarios: number;
   constructor(
     public nav: NavsideComponent,
     public servicio: ServicioService,
@@ -43,6 +49,10 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
+    // se extrae la cantidad total de usuarios actualmente
+    this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
+      this.totalUsuarios = control.payload.data()['Cantidad Total de Usuarios'];
+    });
   }
 
   // se crea la funcion para agregar un nuevo usuario
@@ -74,8 +84,12 @@ export class SignupComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f'
       }).then(res => {
+        const totalUsuarios = this.totalUsuarios + 1;
         console.warn('Datos del usuario agregados a firestore correctamente');
-        location.reload();
+        this.fs.doc<ControlTienda>('AC Celulares/Control').update({ 'Cantidad Total de Usuarios': totalUsuarios }).then(resp => {
+          this.db.database.ref('AC Celulares/Control').update({ 'Cantidad Total de Usuarios': totalUsuarios });
+        });
+        this.reiniciarInputs();
       }).catch(err => {
         console.error('Hubo un error al agregar los dtos del nuevo usuario a firestore: ' + err);
       });
@@ -126,6 +140,23 @@ export class SignupComponent implements OnInit {
       this.username += this.primerApellido;
     }
     console.log(this.username);
+  }
+
+  // funcion para reiniciar todos los inputs
+  reiniciarInputs() {
+    this.primerNombre = '';
+    this.segundoNombre = '';
+    this.primerApellido = '';
+    this.segundoApellido = '';
+    this.username = '';
+    this.correo = '';
+    this.tipo = '';
+    this.cargo = '';
+    this.cedula = '';
+    this.celular = null;
+    this.contrasena = '';
+    this.pertenece = '';
+    this.sexo = '';
   }
 
   // se crea la funcion para pasar todo el texto a mayusculas
