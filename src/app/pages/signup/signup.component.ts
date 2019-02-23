@@ -44,9 +44,7 @@ export class SignupComponent implements OnInit {
     public servicio: ServicioService,
     public fs: AngularFirestore,
     public db: AngularFireDatabase
-  ) {
-    this.nav.mostrarNav = false;
-  }
+  ) { }
 
   ngOnInit() {
     // se extrae la cantidad total de usuarios actualmente
