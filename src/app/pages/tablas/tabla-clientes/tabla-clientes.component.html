@@ -63,6 +63,12 @@
   </div>
 </ng-template>
 
+<!--Venta Rapida modal-->
+<ng-template #ventaRapida let-modal>
+  <app-venta-rapida [producto]="null" [cliente]="cliente" (cerrarModalVentaRapida)="modal.dismiss('Cross click')">
+  </app-venta-rapida>
+</ng-template>
+
 <!--Agregar un nuevo cliente Modal-->
 <ng-template #agregarCliente let-modal>
   <app-agregar-cliente (cerrarModalEvent)="modal.close('Close click')"></app-agregar-cliente>
@@ -292,8 +298,7 @@
               (click)='openVerticallyCentered(editarCliente, cliente)'>
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button matTooltip="Venta Rápida"
-              (click)='openVerticallyCentered(venderProductos, cliente)'>
+            <button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, cliente)'>
               <mat-icon style="color: orange;">offline_bolt</mat-icon>
             </button>
             <button mat-icon-button color="warn" matTooltip="Eliminar Cliente"

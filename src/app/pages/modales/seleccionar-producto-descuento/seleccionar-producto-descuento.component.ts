@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Producto } from 'src/app/interfaces/producto';
 import { FacturarComponent } from './../../facturar/facturar.component';
+import { VentaRapidaComponent } from './../venta-rapida/venta-rapida.component';
 
 // se importa el servicio
 import { ServicioService } from './../../../servicios/servicio.service';
@@ -30,10 +31,15 @@ export class SeleccionarProductoDescuentoComponent implements OnInit {
   // variables para emision de eventos
   @Output() cerrarModalSeleccionarProductosDescuento = new EventEmitter();
 
+  // variable para determinar de donde se esta llamando
+  @Input() venta = false;
+  @Input() facturar = false;
+
   constructor(
     public fs: AngularFirestore,
     public servicio: ServicioService,
-    public factura: FacturarComponent
+    public factura: FacturarComponent,
+    public ventaRapida: VentaRapidaComponent
   ) {
     // Se extraen todos los productos ingresados
     this.coleccionDeProductos = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
@@ -65,7 +71,11 @@ export class SeleccionarProductoDescuentoComponent implements OnInit {
 
   // funcion para seleccionar el producto
   seleccionarProducto(producto: Producto) {
-    this.factura.productoSeleccionadoDescuento = producto;
+    if (this.venta) {
+      this.ventaRapida.producto = producto;
+    } else {
+      this.factura.productoSeleccionadoDescuento = producto;
+    }
     this.cerrarModal();
   }
 

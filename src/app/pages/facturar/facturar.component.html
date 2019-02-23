@@ -154,7 +154,8 @@
 
   <!--Mostrar Productos Producto Modal-->
   <ng-template style="width: 90vw;" #mostrarProductos let-modal>
-    <app-seleccionar-producto (cerrarModalSeleccionarProductos)="modal.close('Close click')"></app-seleccionar-producto>
+    <app-seleccionar-producto [facturar]="true" [venta]="null"
+      (cerrarModalSeleccionarProductos)="modal.close('Close click')"></app-seleccionar-producto>
   </ng-template>
 
   <!--Mostrar Productos Descuento Producto Modal-->

@@ -1,14 +1,287 @@
-<div class="modal-header bg-info">
-  <h4 class="modal-title">Seleccionar Producto</h4>
+<!--Comienzan los modales-->
+
+<!--Mostrar Productos Producto Modal-->
+<ng-template style="width: 90vw;" #mostrarProductos let-modal>
+  <app-seleccionar-producto [facturar]="null" [venta]="true"
+    (cerrarModalSeleccionarProductos)="modal.close('Close click')"></app-seleccionar-producto>
+</ng-template>
+
+<!--Eliminar Producto Modal-->
+<ng-template #eliminarProducto let-modal>
+  <div class="modal-header bg-danger">
+    <h4 class="modal-title text-light">Eliminar Venta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-danger">
+    <p class="text-light">¿Estás seguro que deseas eliminar el producto {{productoEliminar.Id}} de la factura?</p>
+  </div>
+  <div class="modal-footer bg-danger">
+    <button type="button" class="btn btn-light"
+      (click)="modal.close('Close click'); eliminarProductoFactura()">Eliminar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<!--Agregar Cliente Modal-->
+<ng-template #agregarCliente let-modal>
+  <app-agregar-cliente (cerrarModalEvent)="modal.close('Close click')"></app-agregar-cliente>
+</ng-template>
+
+<!--Descuento de Producto Modal-->
+<ng-template #descuentoProducto let-modal>
+  <div class="modal-header bg-secondary">
+    <h4 class="modal-title text-light">Calcular Descuento para {{producto.Id}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row mt-4">
+      <div class="col-sm-6 col-md-6 col-lg 6">
+        <mat-form-field class="fullWidth">
+          <mat-select name="tipoDescuento" [(ngModel)]="tipoDescuento" (selectionChange)="cambiarTipodescuento()"
+            placeholder="Tipo de Descuento">
+            <mat-option value="porcentaje">
+              % | En Porcentaje
+            </mat-option>
+            <mat-option value="cantidad">
+              C$ | En Cantidad
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg 6">
+        <mat-form-field class="fullWidth" *ngIf="!tipoDescuentoCantidad">
+          <input type="number" matInput placeholder="Cantidad de Descuento" name="cantidadCalcularDescuento"
+            [(ngModel)]="cantidadCalcularDescuento" (keyup)="calcularDescuento()">
+        </mat-form-field>
+        <mat-form-field class="fullWidth" *ngIf="tipoDescuentoCantidad">
+          <input type="number" matInput placeholder="Porcentaje de Descuento" name="cantidadCalcularDescuento"
+            [(ngModel)]="cantidadCalcularDescuento" (keyup)="calcularDescuento()">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container-fluid mt-4">
+      <div class="text-center text-primary">
+        Descuento: C${{cantidadDescuento}}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Eliminar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click'); agregarDescuento()">Agregar
+      Descuento</button>
+  </div>
+</ng-template>
+
+<div class="modal-header" style="background-color: orange;">
+  <h4 class="modal-title">Venta Rápida</h4>
   <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <div class="container-fluid bg-info rounded-top p-4">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="float-left">
+        <mat-checkbox *ngIf="producto" class="example-margin" [(ngModel)]="venderPrecioCompra"
+          (change)="venderAPrecioCompra()">
+          ¿Vender a Precio de Compra?
+        </mat-checkbox>
+      </div>
+      <div *ngIf="producto && !venderPrecioCompra" class="float-right ml-3">
+        <button class="elevated text-center bg-secondary" matTooltip="Agregar Descuento" mat-fab
+          (click)="openVerticallyCentered(descuentoProducto,null)">
+          <mat-icon class="text-warning justify-content-center align-items-center">money_off</mat-icon>
+        </button>
+      </div>
+      <div class="float-right">
+        <button class="elevated text-center bg-warning" matTooltip="Agregar Nuevo Cliente" mat-fab
+          (click)="openVerticallyCentered(agregarCliente)">
+          <mat-icon class="text-dark justify-content-center align-items-center">person_add</mat-icon>
+        </button>
+      </div>
+      <div class="float-right mr-3">
+        <button class="elevated text-center bg-info" matTooltip="Listar Productos" mat-fab
+          (click)="openVerticallyCentered(mostrarProductos,null)">
+          <mat-icon class="text-light justify-content-center align-items-center">format_list_bulleted
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
+          [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente"
+          name="valordebusquedaCliente">
+        <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
+          <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+            <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
+            <span>{{cliente.Nombres}}</span> |
+            <small>{{cliente.Tipo}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
+          [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor"
+          name="valordebusquedaVendedor">
+        <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
+          <mat-option *ngFor="let vendedor of vendedores | async" [value]="vendedor.Correo">
+            <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
+            <span>{{vendedor.Nombres}}</span> |
+            <small>{{vendedor.Tipo}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" disabled matInput placeholder="Producto Seleccionado" [(ngModel)]="producto.Id"
+          name="producto.Id">
+        <input *ngIf="!producto" disabled matInput placeholder="Producto Seleccionado">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" matInput type="number" placeholder="Stock" disabled [(ngModel)]="producto.Existencia"
+          name='producto.Existencia'>
+        <input *ngIf="!producto" matInput type="number" placeholder="Stock" disabled>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" type="number" matInput placeholder="Precio C/U" [(ngModel)]="producto.PVenta"
+          name="productoSeleccionadoDescuento.PVenta" disabled="true">
+        <input *ngIf="!producto" type="number" matInput placeholder="Precio C/U" disabled="true">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input matInput type="number" name="cantidadVender" [(ngModel)]="cantidadVender"
+          placeholder="Cantidad a Vender">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <span matPrefix>C$ &nbsp;</span>
+        <input disabled type="number" name="cantidadDescuento" [(ngModel)]="cantidadDescuento" matInput
+          placeholder="Descuento por Unidad">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <span matPrefix>C$ &nbsp;</span>
+        <input type="number" matInput placeholder="Precio Final" name="precioFinal" [(ngModel)]="precioFinal" disabled>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="float-right">
+    <button mat-raised-button class="bg-info text-light elevated" (click)="agregarProductoFactura()">
+      Agregar Producto
+    </button>
+  </div>
 
+  <div class="text-center">
+    Productos A Vender
+  </div>
+
+  <div *ngIf="hayDatosEnTabla" class="container mt-4">
+    <div class="mb-4 slideInLeft">
+      <table mat-table [dataSource]="productosFactura" matSort class="table-hover">
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Marca">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Marca </th>
+          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Marca}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Modelo Column -->
+        <ng-container matColumnDef="Modelo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Modelo </th>
+          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Modelo}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Producto Column -->
+        <ng-container matColumnDef="Producto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Producto </th>
+          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Producto}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Precio Column -->
+        <ng-container matColumnDef="Precio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Precio </th>
+          <td mat-cell *matCellDef="let productoFactura"> C${{productoFactura.Precio}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Descuento Column -->
+        <ng-container matColumnDef="Descuento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Descuento </th>
+          <td mat-cell *matCellDef="let productoFactura">C${{productoFactura.DescuentoPorUnidad}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Cantidad Column -->
+        <ng-container matColumnDef="Cantidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Cantidad </th>
+          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Cantidad}} </td>
+          <td mat-footer-cell *matFooterCellDef class="text-light text-center"> Total </td>
+        </ng-container>
+
+        <!-- TotalCordoba Column -->
+        <ng-container matColumnDef="TotalCordoba">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total C$ </th>
+          <td mat-cell *matCellDef="let productoFactura"> C${{productoFactura.TotalCordoba}} </td>
+          <td mat-footer-cell *matFooterCellDef class="bg-secondary text-light text-center">C${{totalCordoba()}}</td>
+        </ng-container>
+
+        <!-- TotalDolar Column -->
+        <ng-container matColumnDef="TotalDolar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total $ </th>
+          <td mat-cell *matCellDef="let productoFactura"> ${{productoFactura.TotalDolar}} </td>
+          <td mat-footer-cell *matFooterCellDef class="bg-primary text-light text-center">${{totalDolar()}}</td>
+        </ng-container>
+
+        <!--Acciones Column-->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-light"> Acciones </th>
+          <td mat-cell *matCellDef="let productoFactura">
+            <div class="example-button-row">
+              <button mat-icon-button color="warn" matTooltip="Eliminar Venta"
+                (click)='openVerticallyCentered(eliminarProducto, productoFactura)'>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!--Aqui comienzan los TH-->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="text-center text-light"
+          style="background-color: #009688;"></tr>
+        <tr mat-row *matRowDef="let productoFactura; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky:true" style="background-color: #009688;"></tr>
+      </table>
+    </div>
   </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
+  <button type="button" class="btn btn-success" (click)="imprimirFactura()">Vender</button>
 </div>

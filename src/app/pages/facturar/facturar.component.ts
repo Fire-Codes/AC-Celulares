@@ -176,6 +176,8 @@ export class FacturarComponent implements OnInit {
     // this.nav.mostrarNav = false;
     if ((this.valordebusquedaCliente === '') || (this.valordebusquedaVendedor === '')) {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar un Cliente y un Vendedor');
+    } else if (this.productos.length === 0) {
+      this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar al menos 1 producto para poder facturarlo');
     } else {
       const tiempo = new Date();
       let totalCantidadComprasCliente = 0;
