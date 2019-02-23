@@ -48,6 +48,7 @@ import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar
 import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clientes.component';
 import { SeleccionarProductoComponent } from './pages/modales/seleccionar-producto/seleccionar-producto.component';
 import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccionar-producto-descuento/seleccionar-producto-descuento.component';
+import { VentaRapidaComponent } from './pages/modales/venta-rapida/venta-rapida.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccion
     AgregarClienteComponent,
     TablaClientesComponent,
     SeleccionarProductoComponent,
-    SeleccionarProductoDescuentoComponent
+    SeleccionarProductoDescuentoComponent,
+    VentaRapidaComponent
   ],
   imports: [
     BrowserModule,
