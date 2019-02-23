@@ -193,6 +193,9 @@ export class FacturarComponent implements OnInit {
           Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
           'Articulos Comprados': this.productos
         }).then((res) => {
+          this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
+            'Cantidad de Compras': this.productos.length
+          });
           // tslint:disable-next-line:max-line-length
           this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
             .set({
@@ -210,6 +213,10 @@ export class FacturarComponent implements OnInit {
               // tslint:disable-next-line:max-line-length
               Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
               'Articulos Comprados': this.productos
+            }).then(resp => {
+              this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
+                'Cantidad de Compras': this.productos.length
+              });
             });
           // tslint:disable-next-line:max-line-length
           this.servicio.newToast(1, 'Factura Generada al Cliente Correctamente', 'Se agregaron los productos vendidos al historial del cliente correctamente');
