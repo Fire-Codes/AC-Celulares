@@ -188,26 +188,28 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="float-right">
-    <button mat-raised-button class="bg-info text-light elevated" (click)="agregarProductoFactura()">
-      Agregar Producto
-    </button>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="float-right">
+        <button mat-raised-button class="bg-info text-light elevated" (click)="agregarProductoFactura()">
+          Agregar Producto
+        </button>
+      </div>
+    </div>
   </div>
-
-  <div class="text-center">
-    Productos A Vender
-  </div>
-
-  <div *ngIf="hayDatosEnTabla" class="container mt-4">
-    <div class="mb-4 slideInLeft">
+  <div class="row">
+    <div class="text-center">
+      Productos A Vender
+    </div>
+    <div *ngIf="hayDatosEnTabla" class="mt-4" style="width: 100%;">
       <table mat-table [dataSource]="productosFactura" matSort class="table-hover">
 
-        <!-- Modelo Column -->
-        <ng-container matColumnDef="Marca">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Marca </th>
-          <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Marca}} </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
+        <!-- Marca Column -->
+        <!--<ng-container matColumnDef="Marca">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Marca </th>
+              <td mat-cell *matCellDef="let productoFactura"> {{productoFactura.Marca}} </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>-->
 
         <!-- Modelo Column -->
         <ng-container matColumnDef="Modelo">
@@ -248,7 +250,8 @@
         <ng-container matColumnDef="TotalCordoba">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-light"> Total C$ </th>
           <td mat-cell *matCellDef="let productoFactura"> C${{productoFactura.TotalCordoba}} </td>
-          <td mat-footer-cell *matFooterCellDef class="bg-secondary text-light text-center">C${{totalCordoba()}}</td>
+          <td mat-footer-cell *matFooterCellDef class="bg-secondary text-light text-center">C${{totalCordoba()}}
+          </td>
         </ng-container>
 
         <!-- TotalDolar Column -->

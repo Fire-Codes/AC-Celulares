@@ -74,7 +74,7 @@ export class VentaRapidaComponent implements OnInit {
 
   // variable que contiene los datos de la tabla y las columnas a ser mostradas
   // tslint:disable-next-line:max-line-length
-  displayedColumns: string[] = ['Producto', 'Marca', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
+  displayedColumns: string[] = ['Producto', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
   productosFactura: MatTableDataSource<ProductoFactura>;
 
 
@@ -94,11 +94,6 @@ export class VentaRapidaComponent implements OnInit {
     public db: AngularFireDatabase,
     public ngbModal: NgbModal
   ) {
-    if (this.producto == null) {
-      this.precioFinal = 0;
-    } else {
-      this.precioFinal = this.producto.PVenta;
-    }
     // se inicializa la variable de tipo de cambio de moneda
     this.fs.doc('AC Celulares/Control').snapshotChanges()
       .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
@@ -114,6 +109,11 @@ export class VentaRapidaComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.producto == null) {
+      this.precioFinal = 0;
+    } else {
+      this.precioFinal = this.producto.PVenta;
+    }
     // se verifica de donde fue que se llamo el modal
     if (this.producto == null) {
       this.valordebusquedaCliente = this.cliente.NombreCompleto;
@@ -286,6 +286,9 @@ export class VentaRapidaComponent implements OnInit {
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });
       this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });
+      if (this.productos.length === 0) {
+        this.hayDatosEnTabla = false;
+      }
     }, 2000);
   }
 
