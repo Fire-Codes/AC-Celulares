@@ -50,6 +50,9 @@ import { SeleccionarProductoComponent } from './pages/modales/seleccionar-produc
 // tslint:disable-next-line:max-line-length
 import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccionar-producto-descuento/seleccionar-producto-descuento.component';
 import { VentaRapidaComponent } from './pages/modales/venta-rapida/venta-rapida.component';
+import { ReservarProductoComponent } from './pages/modales/reservar-producto/reservar-producto.component';
+import { SistemaApartadoComponent } from './pages/tablas/sistema-apartado/sistema-apartado.component';
+import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +76,10 @@ import { VentaRapidaComponent } from './pages/modales/venta-rapida/venta-rapida.
     TablaClientesComponent,
     SeleccionarProductoComponent,
     SeleccionarProductoDescuentoComponent,
-    VentaRapidaComponent
+    VentaRapidaComponent,
+    ReservarProductoComponent,
+    SistemaApartadoComponent,
+    ProductosReservadosComponent
   ],
   imports: [
     BrowserModule,
