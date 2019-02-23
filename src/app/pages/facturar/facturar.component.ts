@@ -197,15 +197,19 @@ export class FacturarComponent implements OnInit {
           'Articulos Comprados': this.productos
         }).then((res) => {
           let totalComprasActualesCliente;
+          let totalCantidadComprasCliente;
+          this.productos.forEach(producto => {
+            totalCantidadComprasCliente += producto.Cantidad;
+          });
           // se leen las compras actuales del cliente
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
             .subscribe(cliente => {
               this.totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
-              totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
+              totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
             });
           setTimeout(() => {
             this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
-              'Cantidad de Compras': totalComprasActualesCliente + this.productos.length
+              'Cantidad de Compras': totalComprasActualesCliente
             }).then(respo => {
               // tslint:disable-next-line:max-line-length
               this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
@@ -226,7 +230,7 @@ export class FacturarComponent implements OnInit {
                   'Articulos Comprados': this.productos
                 }).then(resp => {
                   this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
-                    'Cantidad de Compras': totalComprasActualesCliente + this.productos.length
+                    'Cantidad de Compras': totalComprasActualesCliente
                   });
                 });
             });
