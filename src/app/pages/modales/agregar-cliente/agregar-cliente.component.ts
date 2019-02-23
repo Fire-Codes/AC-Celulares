@@ -32,7 +32,7 @@ export class AgregarClienteComponent implements OnInit {
   cedula = '';
   sexo = '';
   email = '';
-  departamento = '';
+  departamento = 'Chinandega';
   departamentos: string[] = [
     'Managua',
     'Boaco',
@@ -53,7 +53,7 @@ export class AgregarClienteComponent implements OnInit {
     'Región Autónoma de la Costa Caribe Sur (RAAS)'
   ];
   departamentosMunicipios: DepartamentosMunicipios[];
-  municipio = '';
+  municipio = 'Chichigalpa';
   direccion = '';
   id = '';
   nombreCompleto = '';
