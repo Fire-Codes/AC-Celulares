@@ -89,8 +89,8 @@
           <div class="input required-group">
             <input required type="text" aria-label="Primer Nombre" class="mb-3 form-control" placeholder="Primer Nombre"
               name="primerNombre" disabled [(ngModel)]="primerNombre" required>
-            <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control" placeholder="Segundo Nombre"
-              name="segundoNombre" disabled [(ngModel)]="segundoNombre" required>
+            <input required type="text" aria-label="Segundo Nombre" class="mb-3 form-control"
+              placeholder="Segundo Nombre" name="segundoNombre" disabled [(ngModel)]="segundoNombre" required>
           </div>
         </div>
       </div>
@@ -98,10 +98,10 @@
         <div class="form-group">
           <label class="text-warning">Apellidos</label>
           <div class="input required-group">
-            <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control" placeholder="Primer Apellido"
-              name="primerApellido" disabled [(ngModel)]="primerApellido" required>
-            <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control" placeholder="Segundo Apellido"
-              name="segundoApellido" disabled [(ngModel)]="segundoApellido" required>
+            <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control"
+              placeholder="Primer Apellido" name="primerApellido" disabled [(ngModel)]="primerApellido" required>
+            <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control"
+              placeholder="Segundo Apellido" name="segundoApellido" disabled [(ngModel)]="segundoApellido" required>
           </div>
         </div>
       </div>
@@ -126,14 +126,16 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <mat-form-field style="width: 100%;">
-          <input type="number" placeholder="Numero Telefónico" matInput required name="cliente.Telefono" [(ngModel)]="cliente.Telefono">
+          <input type="number" placeholder="Numero Telefónico" matInput required name="cliente.Telefono"
+            [(ngModel)]="cliente.Telefono">
         </mat-form-field>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <mat-form-field style="width: 100%;">
-          <input placeholder="Cédula" type="text" matInput name="cliente.Cedula" [(ngModel)]="cliente.Cedula" (keyup)="toUpper()">
+          <input placeholder="Cédula" type="text" matInput name="cliente.Cedula" [(ngModel)]="cliente.Cedula"
+            (keyup)="toUpper()">
         </mat-form-field>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -160,7 +162,8 @@
     <div class="row mt-3">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <mat-form-field style="width: 100%;">
-          <input matInput type="text" placeholder="Departamento" name="cliente.Departamento" [(ngModel)]="cliente.Departamento">
+          <input matInput type="text" placeholder="Departamento" name="cliente.Departamento"
+            [(ngModel)]="cliente.Departamento">
         </mat-form-field>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -170,12 +173,14 @@
       </div>
     </div>
     <mat-form-field style="width: 100%;">
-      <textarea required matInput placeholder="Dirección" name="cliente.Direccion" [(ngModel)]="cliente.Direccion"></textarea>
+      <textarea required matInput placeholder="Dirección" name="cliente.Direccion"
+        [(ngModel)]="cliente.Direccion"></textarea>
     </mat-form-field>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-    <button type="button" class="btn btn-warning" (click)="modal.close('Close click'); editarClientes()">Actualizar</button>
+    <button type="button" class="btn btn-warning"
+      (click)="modal.close('Close click'); editarClientes()">Actualizar</button>
   </div>
 </ng-template>
 
@@ -191,7 +196,8 @@
     <p class="text-light">¿Estás seguro que deseas eliminar el Cliente CLI00001?</p>
   </div>
   <div class="modal-footer bg-danger">
-    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Eliminar</button>
+    <button type="button" class="btn btn-light"
+      (click)="modal.close('Close click'); eliminarClientes()">Eliminar</button>
     <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
   </div>
 </ng-template>
@@ -218,8 +224,9 @@
 <div class="container mt-4">
   <div class="mb-4 slideInLeft">
     <div class="container-fluid bg-warning rounded-top p-4">
-      <div class="float-right"><button (click)='openVerticallyCentered(agregarCliente, null)' class="elevated text-center"
-          mat-fab color="accent"><i matListIcon class="fas fa-user-plus text-dark"></i></button></div>
+      <div class="float-right"><button (click)='openVerticallyCentered(agregarCliente, null)'
+          class="elevated text-center" mat-fab color="accent"><i matListIcon
+            class="fas fa-user-plus text-dark"></i></button></div>
       <mat-card-title class="ml-4 mt-4">
         Clientes
       </mat-card-title>
@@ -277,19 +284,24 @@
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let cliente">
           <div class="example-button-row">
-            <button mat-icon-button class="text-primary" matTooltip="Ver Cliente" (click)='openVerticallyCentered(verCliente, cliente)'>
+            <button mat-icon-button class="text-primary" matTooltip="Ver Cliente"
+              (click)='openVerticallyCentered(verCliente, cliente)'>
               <mat-icon>remove_red_eye</mat-icon>
             </button>
-            <button mat-icon-button color="accent" matTooltip="Editar Cliente" (click)='openVerticallyCentered(editarCliente, cliente)'>
+            <button mat-icon-button color="accent" matTooltip="Editar Cliente"
+              (click)='openVerticallyCentered(editarCliente, cliente)'>
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button class="text-secondary" matTooltip="Vender Productos" (click)='openVerticallyCentered(venderProductos, cliente)'>
+            <button mat-icon-button class="text-secondary" matTooltip="Vender Productos"
+              (click)='openVerticallyCentered(venderProductos, cliente)'>
               <mat-icon>add_shopping_cart</mat-icon>
             </button>
-            <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+            <button mat-icon-button color="warn" matTooltip="Eliminar Cliente"
+              (click)='openVerticallyCentered(eliminarCliente, cliente)'>
               <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras" (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+            <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras"
+              (click)='openVerticallyCentered(eliminarCliente, cliente)'>
               <mat-icon>history</mat-icon>
             </button>
           </div>

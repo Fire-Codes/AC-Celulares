@@ -105,6 +105,20 @@ export class TablaClientesComponent implements OnInit {
     }
   }
 
+  // funcion para eliminar el cliente
+  eliminarClientes() {
+    const contadorClientes = this.contadorClientes - 1;
+    this.fs.doc(`AC Celulares/Control/Clientes/${this.cliente.Id}`).delete().then(res => {
+      this.servicio.newToast(1, 'Eliminación de cliente correcta', 'El cliente se ha eliminado correctamente');
+      this.db.database.ref(`AC Celulares/Control/Clientes/${this.cliente.Id}`).remove();
+      // tslint:disable-next-line:max-line-length
+      this.db.database.ref('AC Celulares/Control').update({ 'Cantidad de Clientes': contadorClientes, 'Contador de Clientes': contadorClientes });
+      this.fs.doc('AC Celulares/Control').update({ 'Cantidad de Clientes': contadorClientes, 'Contador de Clientes': contadorClientes });
+    }).catch(err => {
+      this.servicio.newToast(0, 'Eliminación de cliente incorrecta', err);
+    });
+  }
+
   // funcion para editar los datos de un cliente
   editarClientes() {
     this.fs.doc(`AC Celulares/Control/Clientes/${this.cliente.Id}`).update(this.cliente)
