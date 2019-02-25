@@ -14,7 +14,6 @@ import { ServicioService } from './../../../servicios/servicio.service';
 
 // se añade la interfaz del producto Reservado
 import { ProductoReservado } from './../../../interfaces/producto-reservado';
-import { Timestamp } from '@google-cloud/firestore';
 import { Producto } from 'src/app/interfaces/producto';
 
 
