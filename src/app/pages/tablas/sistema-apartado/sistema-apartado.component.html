@@ -297,7 +297,11 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
       <tr mat-row *matRowDef="let productoReservado; columns: displayedColumns;"></tr>
     </table>
-
+    <div *ngIf="dataSource.data.length === 0" class="jumbotron">
+      <div class="display-3 text-center">
+        Aún no hay Productos! :(
+      </div>
+    </div>
     <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
   </div>
 </div>

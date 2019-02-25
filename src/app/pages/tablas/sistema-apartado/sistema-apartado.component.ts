@@ -96,7 +96,7 @@ export class SistemaApartadoComponent implements OnInit {
           this.db.database.ref(`AC Celulares/Control/Reservaciones/${this.servicio.tienda}/Reservas/${this.productoReservado.Id}`)
             .remove().then(resp => {
               // tslint:disable-next-line:max-line-length
-              this.servicio.newToast(1, 'Producto Eliminado de la Lista Correctamente', 'El producto se eliminó de la lista de reservaciones correctamente')
+              this.servicio.newToast(1, 'Producto Eliminado de la Lista Correctamente', 'El producto se eliminó de la lista de reservaciones correctamente');
             });
         }).catch(err => {
           this.servicio.newToast(0, 'Hubo un Error!', err);
