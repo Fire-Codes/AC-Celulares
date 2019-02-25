@@ -1,3 +1,303 @@
-<p>
-  sistema-apartado works!
-</p>
+<!--Comienzan los Modals-->
+
+<!--Ver productoReservado Modal-->
+<ng-template #verProductoReservado let-modal>
+  <div class="modal-header bg-primary">
+    <h4 class="modal-title text-light">Ver Detalles de productoReservado</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-primary">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="text-center text-white">
+          Informacion del Producto
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          ID Producto <br> {{productoReservado.Producto.Id}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Precio por Unidad <br> {{productoReservado.PrecioUnidad}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Cuota Inicial <br> {{(productoReservado.PrecioUnidad/2)+productoReservado.Interes}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Restante <br> {{productoReservado.Restante}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Fecha de Reservacion <br> {{extraerFechaReserva(productoReservado)}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Fecha de Retiro <br> {{extraerFechaRetiro(productoReservado)}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Tipo de Pago Efectuado <br> {{productoReservado.TipoPago}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          Interes <br> {{productoReservado.Interes}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="text-center text-white">
+          Informacion del Cliente
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Nombres <br> {{productoReservado.Cliente.Nombres}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Apellidos <br> {{productoReservado.Cliente.Apellidos}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Celular <br> {{productoReservado.Cliente.Telefono}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Tipo de Usuario <br> {{productoReservado.Cliente.Tipo}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Departamento <br> {{productoReservado.Cliente.Departamento}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Ciudad <br> {{productoReservado.Cliente.Ciudad}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Direccion <br> {{productoReservado.Cliente.Direccion}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-light">
+          Cédula <br> {{productoReservado.Cliente.Cedula}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="text-center text-white">
+          Informacion del Vendedor
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          ID del Vendedor <br> {{productoReservado.Vendedor.Correo}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="text-center text-white">
+          UserName <br> {{productoReservado.Vendedor.Username}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-primary">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<!--unArchivar productoReservados Modal-->
+<ng-template #unArchivar let-modal>
+  <div class="modal-header" style="background-color: orange;">
+    <h4 class="modal-title text-light">Vender Productos</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Este producto sera retirado de la lista de reservaciones para ser vendido. ¿Desea Proceder?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="modal.close('Close click'); unArchivarProductoReservado()">Vender Producto</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<!--Eliminar Producto Reservado-->
+<ng-template #eliminarProductoReservado let-modal>
+  <div class="modal-header bg-danger">
+    Eliminar Producto Reservado de la Lista
+  </div>
+  <div class="modal-body bg-danger">
+    ¿Estás seguro que deseas eliminar la reservación del producto {{productoReservado.Producto.Id}} de la lista?
+  </div>
+  <div class="modal-footer bg-danger">
+    <button type="button" class="btn btn-success"
+      (click)="modal.close('Close click'); eliminarProductoReservados()">Eliminar</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<!--Cancelar Reservacion de Produdcto-->
+<ng-template #cancelarReservacionProducto let-modal>
+  <div class="modal-header bg-danger">
+    Cancelar Reservación de Producto
+  </div>
+  <div class="modal-body bg-danger">
+    ¿Estás seguro que deseas cancelar la Reservacion del Producto {{productoReservado.Producto.Id}}?
+  </div>
+  <div class="modal-footer bg-danger">
+    <button type="button" class="btn btn-success" (click)="modal.close('Close click'); cancelarReservacion()">Cancelar
+      Reservacion</button>
+    <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
+  </div>
+</ng-template>
+
+
+
+<div class="container mt-4">
+  <div class="mb-4 slideInLeft">
+    <div class="container-fluid bg-secondary rounded-top p-4">
+      <mat-card-title class="ml-4 mt-4 text-light">
+        Productos Reservados
+      </mat-card-title>
+      <mat-form-field class="ml-4">
+        <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="table-hover" style="width: 100%;">
+
+      <!-- ID Column -->
+      <!--<ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+          <td mat-cell *matCellDef="let productoReservado"> {{productoReservado.Id}} </td>
+        </ng-container>-->
+
+      <!-- Telefono Column -->
+      <ng-container matColumnDef="Telefono">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+        <td mat-cell *matCellDef="let productoReservado"> {{productoReservado.Cliente.Telefono}} </td>
+      </ng-container>
+
+      <!-- Cliente Column -->
+      <ng-container matColumnDef="Cliente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+        <td mat-cell *matCellDef="let productoReservado">
+          {{productoReservado.Cliente.Id}}
+        </td>
+      </ng-container>
+
+      <!-- Restante Column -->
+      <ng-container matColumnDef="Restante">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Restante </th>
+        <td mat-cell *matCellDef="let productoReservado"> {{productoReservado.Restante}} </td>
+      </ng-container>
+
+      <!-- Estado Column -->
+      <ng-container matColumnDef="Estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+        <td mat-cell *matCellDef="let productoReservado"> {{productoReservado.Estado}} </td>
+      </ng-container>
+
+      <!-- Producto Column -->
+      <ng-container matColumnDef="Producto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Producto </th>
+        <td mat-cell *matCellDef="let productoReservado">
+          {{productoReservado.Producto.Nombre}}<br>{{productoReservado.Producto.Modelo}}
+        </td>
+      </ng-container>
+
+      <!-- Precio de Producto Column -->
+      <ng-container matColumnDef="precioProducto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio de Producto </th>
+        <td mat-cell *matCellDef="let productoReservado"> {{productoReservado.Producto.PVenta}} </td>
+      </ng-container>
+
+      <!-- Fecha de Retiro de Producto Column -->
+      <ng-container matColumnDef="fechaRetiro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Retiro </th>
+        <td mat-cell *matCellDef="let productoReservado">
+          {{extraerFechaRetiro(productoReservado)}}
+        </td>
+      </ng-container>
+
+      <!-- Fecha de Reserva de Producto Column -->
+      <ng-container matColumnDef="fechaReserva">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Reserva </th>
+        <td mat-cell *matCellDef="let productoReservado">
+          {{extraerFechaReserva(productoReservado)}}
+        </td>
+      </ng-container>
+
+      <!--Acciones Column-->
+      <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let productoReservado">
+          <div class="example-button-row">
+            <button mat-icon-button class="text-primary" matTooltip="Ver Producto Reservado"
+              (click)='openVerticallyCentered(verProductoReservado, productoReservado)'>
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Vender Producto Reservado"
+              (click)='openVerticallyCentered(unArchivar, productoReservado)'>
+              <mat-icon style="color: orange;">unarchive</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Eliminar Producto Reservado"
+              (click)='openVerticallyCentered(eliminarProductoReservado, productoReservado)'>
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Cancelar Reservacion de Producto"
+              (click)='openVerticallyCentered(cancelarReservacionProducto, productoReservado)'>
+              <mat-icon>block</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!--Aqui comienzan los TH-->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let productoReservado; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

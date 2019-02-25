@@ -198,7 +198,15 @@ export class ReservarProductoComponent implements OnInit {
           FechaReserva: fechaActual,
           FechaRetiro: fechaRetiro,
           Restante: this.restante,
-          Estado: 'Pendiente'
+          Estado: 'Pendiente',
+          DiaReserva: tiempo.getDate(),
+          MesReserva: tiempo.getMonth() + 1,
+          AnoReserva: tiempo.getFullYear(),
+          DiaRetiro: fechaRetiro.getDate(),
+          MesRetiro: fechaRetiro.getMonth() + 1,
+          AnoRetiro: fechaRetiro.getFullYear(),
+          // tslint:disable-next-line:max-line-length
+          Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`
         }).then(respons => {
           // tslint:disable-next-line:max-line-length
           this.db.database.ref(`AC Celulares/Control/Reservaciones/${this.servicio.tienda}/Reservas/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`).set({
@@ -211,7 +219,15 @@ export class ReservarProductoComponent implements OnInit {
             FechaReserva: `${fechaActual}`,
             FechaRetiro: `${fechaRetiro}`,
             Restante: this.restante,
-            Estado: 'Pendiente'
+            Estado: 'Pendiente',
+            DiaReserva: tiempo.getDate(),
+            MesReserva: tiempo.getMonth() + 1,
+            AnoReserva: tiempo.getFullYear(),
+            DiaRetiro: fechaRetiro.getDate(),
+            MesRetiro: fechaRetiro.getMonth() + 1,
+            AnoRetiro: fechaRetiro.getFullYear(),
+            // tslint:disable-next-line:max-line-length
+            Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`
           }).then(re => {
             // tslint:disable-next-line:max-line-length
             this.fs.doc<ProductoReservado>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Reservas/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
@@ -225,7 +241,15 @@ export class ReservarProductoComponent implements OnInit {
                 FechaReserva: fechaActual,
                 FechaRetiro: fechaRetiro,
                 Restante: this.restante,
-                Estado: 'Pendiente'
+                Estado: 'Pendiente',
+                DiaReserva: tiempo.getDate(),
+                MesReserva: tiempo.getMonth() + 1,
+                AnoReserva: tiempo.getFullYear(),
+                DiaRetiro: fechaRetiro.getDate(),
+                MesRetiro: fechaRetiro.getMonth() + 1,
+                AnoRetiro: fechaRetiro.getFullYear(),
+                // tslint:disable-next-line:max-line-length
+                Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`
               }).then((res) => {
                 this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).update({
                   Existencia: existenciasProducto - 1
@@ -245,7 +269,15 @@ export class ReservarProductoComponent implements OnInit {
                       FechaReserva: `${fechaActual}`,
                       FechaRetiro: `${fechaRetiro}`,
                       Restante: this.restante,
-                      Estado: 'Pendiente'
+                      Estado: 'Pendiente',
+                      DiaReserva: tiempo.getDate(),
+                      MesReserva: tiempo.getMonth() + 1,
+                      AnoReserva: tiempo.getFullYear(),
+                      DiaRetiro: fechaRetiro.getDate(),
+                      MesRetiro: fechaRetiro.getMonth() + 1,
+                      AnoRetiro: fechaRetiro.getFullYear(),
+                      // tslint:disable-next-line:max-line-length
+                      Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`
                     }).then(resp => {
                       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`).update({
                         Existencia: existenciasProducto - 1
