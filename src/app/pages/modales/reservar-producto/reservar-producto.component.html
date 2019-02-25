@@ -1,3 +1,117 @@
-<p>
-  reservar-producto works!
-</p>
+<!--Comienzan los modales-->
+
+<!--Agregar Cliente Modal-->
+<ng-template #agregarCliente let-modal>
+  <app-agregar-cliente (cerrarModalEvent)="modal.close('Close click')"></app-agregar-cliente>
+</ng-template>
+
+<div class="modal-header bg-secondary">
+  <h4 class="modal-title text-light">Reservar Producto</h4>
+  <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row mt-3">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
+          [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente"
+          name="valordebusquedaCliente">
+        <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
+          <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+            <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
+            <span>{{cliente.Nombres}}</span> |
+            <small>{{cliente.Tipo}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
+          [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor"
+          name="valordebusquedaVendedor">
+        <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
+          <mat-option *ngFor="let vendedor of vendedores | async" [value]="vendedor.Correo">
+            <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
+            <span>{{vendedor.Nombres}}</span> |
+            <small>{{vendedor.Tipo}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" disabled matInput placeholder="Producto Seleccionado" [(ngModel)]="producto.Id"
+          name="producto.Id">
+        <input *ngIf="!producto" disabled matInput placeholder="Producto Seleccionado">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" matInput type="number" placeholder="Stock" disabled [(ngModel)]="producto.Existencia"
+          name='producto.Existencia'>
+        <input *ngIf="!producto" matInput type="number" placeholder="Stock" disabled>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input *ngIf="producto" type="number" matInput placeholder="Precio C/U" [(ngModel)]="producto.PVenta"
+          name="productoSeleccionadoDescuento.PVenta" disabled="true">
+        <input *ngIf="!producto" type="number" matInput placeholder="Precio C/U" disabled="true">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input matInput [matDatepicker]="picker" placeholder="Fecha de Retiro de Producto" disabled name="fechaRetiro"
+          [(ngModel)]="fechaRetiro">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" touchUi #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field>
+        <mat-select (selectionChange)="calcularInteres()" placeholder="Tipo de Pago" name="tipoPago"
+          [(ngModel)]="tipoPago">
+          <mat-option value="Efectivo">
+            Efectivo
+          </mat-option>
+          <mat-option value="Tarjeta">
+            Tarjeta
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input matInput disabled type="number" name="interes" [(ngModel)]="interes" placeholder="Interés">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input type="number" matInput placeholder="Cuota de Reserva" name="cuotaReserva" [(ngModel)]="cuotaReserva"
+          (keyup)="calcularRestante()">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-form-field class="fullWidth">
+        <input type="number" matInput placeholder="Cantidad Restante" disabled name="restante" [(ngModel)]="restante">
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" (click)="openVerticallyCentered(agregarCliente)">Agregar
+    Cliente</button>
+  <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
+  <button type="button" class="btn btn-success" (click)="realizarReservacion()">Reservar</button>
+</div>

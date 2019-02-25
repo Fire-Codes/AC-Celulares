@@ -322,48 +322,8 @@
 
   <!--Reservar Producto Modal-->
   <ng-template #reservarProducto let-modal>
-    <div class="modal-header bg-secondary">
-      <h4 class="modal-title text-light">Reservar Producto</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body bg-secondary">
-      <form class="example-form">
-        <table class="example-full-width text-light" cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input matInput placeholder="Clave de Producto" disabled value="PROD00001">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input type="number" matInput placeholder="Cantidad de productos a reservar">
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input type="text" matInput placeholder="Buscar Cliente">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <span matPrefix>C$ &nbsp;</span>
-                <input type="text" matInput placeholder="Cuota de reserva">
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
-    <div class="modal-footer bg-secondary">
-      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Agregar Nuevo Cliente</button>
-      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-primary" (click)="modal.close('Close click')">Reservar</button>
-    </div>
+    <app-reservar-producto (cerrarModalVentaRapida)="modal.dismiss('Cross click')" [cliente]="null"
+      [producto]="producto"></app-reservar-producto>
   </ng-template>
 
   <!--Main Content-->

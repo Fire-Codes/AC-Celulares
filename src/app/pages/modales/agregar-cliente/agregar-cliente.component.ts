@@ -141,7 +141,8 @@ export class AgregarClienteComponent implements OnInit {
             PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
             Apellidos: this.primerApellido + ' ' + this.segundoApellido,
             Nombres: this.primerNombre + ' ' + this.segundoNombre,
-            'Cantidad de Compras': 0
+            'Cantidad de Compras': 0,
+            CantidadReservas: 0
           }).then((resp) => {
             this.servicio.newToast(1, 'Insercción Correcta', `El Cliente ${this.nombreCompleto} se agregó al sistema correctamente`);
             this.fs.doc<ControlTienda>('AC Celulares/Control').update({

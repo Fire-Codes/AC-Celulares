@@ -87,21 +87,23 @@ export class TablaClientesComponent implements OnInit {
   // funcion para abrir los modales de manera centrada
   openVerticallyCentered(content: string, cliente: Cliente) {
     this.ngbModal.open(content, { centered: true });
-    this.cliente = cliente;
-    this.cantidadDeComprasCliente = cliente['Cantidad de Compras'];
-    this.primerNombre = cliente['Primer Nombre'];
-    this.primerApellido = cliente['Primer Apellido'];
-    this.segundoNombre = cliente['Segundo Nombre'];
-    this.segundoApellido = cliente['Segundo Apellido'];
-    if (cliente.Cedula === null) {
-      this.tieneCedula = false;
-    } else {
-      this.tieneCedula = true;
-    }
-    if (cliente.Correo === null) {
-      this.tieneCorreo = false;
-    } else {
-      this.tieneCorreo = true;
+    if (!(cliente === null)) {
+      this.cliente = cliente;
+      this.cantidadDeComprasCliente = cliente['Cantidad de Compras'];
+      this.primerNombre = cliente['Primer Nombre'];
+      this.primerApellido = cliente['Primer Apellido'];
+      this.segundoNombre = cliente['Segundo Nombre'];
+      this.segundoApellido = cliente['Segundo Apellido'];
+      if (cliente.Cedula === null) {
+        this.tieneCedula = false;
+      } else {
+        this.tieneCedula = true;
+      }
+      if (cliente.Correo === null) {
+        this.tieneCorreo = false;
+      } else {
+        this.tieneCorreo = true;
+      }
     }
   }
 
