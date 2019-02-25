@@ -22,7 +22,6 @@ export class SeleccionarPlataformaComponent implements OnInit {
   // variables que contendran a que tienda pertenece
   tienda1 = false;
   tienda2 = false;
-  tienda3 = false;
 
   constructor(
     public nav: NavsideComponent,
@@ -34,7 +33,6 @@ export class SeleccionarPlataformaComponent implements OnInit {
       .subscribe((usuario: Action<DocumentSnapshot<Usuario>>) => {
         this.tienda1 = usuario.payload.data().Pertenece1;
         this.tienda2 = usuario.payload.data().Pertenece2;
-        this.tienda3 = usuario.payload.data().Pertenece3;
       });
   }
 
