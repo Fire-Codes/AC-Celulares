@@ -133,16 +133,14 @@ export class InventarioComponent implements OnInit {
 
     // se actualizan todos los datos
     /*const query = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
-    query.ref.where('Nombre', '==', 'Glass').get().then(datos => {
+    query.ref.where('PCompra', '>=', '').get().then(datos => {
       datos.docs.forEach((dato: QueryDocumentSnapshot<Producto>) => {
-        if (dato.data().PCompra === 0) {
-          this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${dato.data().Id}`)
-            .update({ PCompra: 20 }).then(res => {
-              console.warn(`Producto ${dato.data().Id} actualizado!`);
-            }).catch(err => {
-              console.error(`Producto ${dato.data().Id} error al actualizar!: ${err}`);
-            });
-        }
+        this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${dato.data().Id}`)
+          .update({ PCompra: parseInt(dato.data().PCompra.toString(), 2) }).then(res => {
+            console.warn(`Producto ${dato.data().Id} actualizado!`);
+          }).catch(err => {
+            console.error(`Producto ${dato.data().Id} error al actualizar!: ${err}`);
+          });
       });
     });*/
   }
