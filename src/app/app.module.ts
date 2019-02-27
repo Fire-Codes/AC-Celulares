@@ -53,6 +53,7 @@ import { VentaRapidaComponent } from './pages/modales/venta-rapida/venta-rapida.
 import { ReservarProductoComponent } from './pages/modales/reservar-producto/reservar-producto.component';
 import { SistemaApartadoComponent } from './pages/tablas/sistema-apartado/sistema-apartado.component';
 import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
+import { ImprimirComponent } from './pages/imprimir/imprimir.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { ProductosReservadosComponent } from './pages/productos-reservados/produ
     VentaRapidaComponent,
     ReservarProductoComponent,
     SistemaApartadoComponent,
-    ProductosReservadosComponent
+    ProductosReservadosComponent,
+    ImprimirComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +105,14 @@ import { ProductosReservadosComponent } from './pages/productos-reservados/produ
 
     NgBootstrapModule
   ],
-  providers: [ServicioService, NavsideComponent, FacturarComponent, SeleccionarProductoComponent, VentaRapidaComponent],
+  providers: [
+    ServicioService,
+    NavsideComponent,
+    FacturarComponent,
+    SeleccionarProductoComponent,
+    VentaRapidaComponent,
+    ImprimirComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
