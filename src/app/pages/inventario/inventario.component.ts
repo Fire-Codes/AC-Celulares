@@ -9,7 +9,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 // importacion de los componentes de firestore
 // tslint:disable-next-line:max-line-length
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection, Action, DocumentSnapshot, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection, Action, DocumentSnapshot, DocumentChangeAction, QueryDocumentSnapshot } from 'angularfire2/firestore';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 // importacion de la interfaz para el producto
@@ -58,7 +58,7 @@ export class InventarioComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Id', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'pCompra', 'pVenta', 'Acciones'];
+  displayedColumns: string[] = ['Id', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'PCompra', 'PVenta', 'Acciones'];
   dataSource: MatTableDataSource<Producto>;
 
   // se declaran las variables para agregar un nuevo producto
@@ -73,6 +73,9 @@ export class InventarioComponent implements OnInit {
   Estado = '';
   Descripcion = '';
   nuevaCategoria = '';
+
+  // se declara la variable para buscar entre los productos
+  valorBusqueda = '';
 
 
   constructor(
@@ -107,6 +110,7 @@ export class InventarioComponent implements OnInit {
       this.dataSource = new MatTableDataSource(documento);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.applyFilter();
       console.log(this.dataSource.data.length);
     });
   }
@@ -126,11 +130,26 @@ export class InventarioComponent implements OnInit {
     this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
       this.totalGeneralProductos = control.payload.data()['Cantidad Total de Productos'];
     });
+
+    // se actualizan todos los datos
+    /*const query = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
+    query.ref.where('Nombre', '==', 'Glass').get().then(datos => {
+      datos.docs.forEach((dato: QueryDocumentSnapshot<Producto>) => {
+        if (dato.data().PCompra === 0) {
+          this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${dato.data().Id}`)
+            .update({ PCompra: 20 }).then(res => {
+              console.warn(`Producto ${dato.data().Id} actualizado!`);
+            }).catch(err => {
+              console.error(`Producto ${dato.data().Id} error al actualizar!: ${err}`);
+            });
+        }
+      });
+    });*/
   }
 
   // funcion para buscar producto en la tabla
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+    this.dataSource.filter = this.valorBusqueda.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();

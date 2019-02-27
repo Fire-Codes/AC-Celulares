@@ -103,7 +103,7 @@ import { ProductosReservadosComponent } from './pages/productos-reservados/produ
 
     NgBootstrapModule
   ],
-  providers: [ServicioService, NavsideComponent, FacturarComponent, SeleccionarProductoComponent],
+  providers: [ServicioService, NavsideComponent, FacturarComponent, SeleccionarProductoComponent, VentaRapidaComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

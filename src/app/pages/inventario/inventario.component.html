@@ -301,12 +301,14 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Compra" [(ngModel)]="producto.PCompra" name="producto.PCompra">
+                <input type="number" matInput placeholder="Precio de Compra" [(ngModel)]="producto.PCompra"
+                  name="producto.PCompra">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Venta" [(ngModel)]="producto.PVenta" name="producto.PVenta">
+                <input type="number" matInput placeholder="Precio de Venta" [(ngModel)]="producto.PVenta"
+                  name="producto.PVenta">
               </mat-form-field>
             </td>
           </tr>
@@ -342,7 +344,8 @@
           </button>-->
         </div>
         <mat-form-field class="ml-4" *ngIf="hayDatos">
-          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
+          <input matInput color="warn" (keyup)="applyFilter()" name="valorBusqueda" [(ngModel)]="valorBusqueda"
+            placeholder="Buscar Producto">
         </mat-form-field>
       </div>
       <table *ngIf="hayDatos; else noHayDatos" mat-table [dataSource]="dataSource" matSort class="table-hover">
@@ -372,14 +375,14 @@
         </ng-container>
 
         <!-- Precio de Compra Column -->
-        <ng-container matColumnDef="pCompra">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
+        <ng-container matColumnDef="PCompra">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> PCompra </th>
           <td mat-cell *matCellDef="let producto" class="text-center text-primary"> {{producto.PCompra}} </td>
         </ng-container>
 
         <!-- Precio de Venta Column -->
-        <ng-container matColumnDef="pVenta">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
+        <ng-container matColumnDef="PVenta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> PVenta </th>
           <td mat-cell *matCellDef="let producto" class="text-center text-success"> {{producto.PVenta}} </td>
         </ng-container>
 
