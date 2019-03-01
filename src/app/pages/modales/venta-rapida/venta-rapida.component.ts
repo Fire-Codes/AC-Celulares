@@ -21,6 +21,7 @@ import { SeleccionarProductoComponent } from '../seleccionar-producto/selecciona
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { ControlTienda } from 'src/app/interfaces/control';
 import { HistorialCompra } from 'src/app/interfaces/historial-compra';
+import { Factura } from 'src/app/interfaces/factura';
 
 
 @Component({
@@ -72,6 +73,9 @@ export class VentaRapidaComponent implements OnInit {
   // variable que almacena el array de productos que se agregaran al mattable
   productos: ProductoFactura[];
 
+  // variable que contendra el tipo de pago a realizar
+  tipoPago = '';
+
   // variable que contiene los datos de la tabla y las columnas a ser mostradas
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['Producto', 'Modelo', 'Precio', 'Descuento', 'Cantidad', 'TotalCordoba', 'TotalDolar', 'Acciones'];
@@ -87,6 +91,7 @@ export class VentaRapidaComponent implements OnInit {
 
   // variable que es de tipo observable del matsort de la tabla
   @ViewChild(MatSort) sort: MatSort;
+  totalFacturas: number;
 
   constructor(
     public servicio: ServicioService,
@@ -98,6 +103,7 @@ export class VentaRapidaComponent implements OnInit {
     this.fs.doc('AC Celulares/Control').snapshotChanges()
       .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
         this.tipoCambioMoneda = control.payload.data()['Tipo de Cambio'];
+        this.totalFacturas = control.payload.data()['Cantidad Total de Facturas'];
       });
 
     // se inicializa el array a 0
@@ -134,18 +140,29 @@ export class VentaRapidaComponent implements OnInit {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar un Cliente y un Vendedor');
     } else if (this.productos.length === 0) {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar al menos 1 producto para poder facturarlo');
+    } else if (this.tipoPago === '') {
+      this.servicio.newToast(0, 'Error de Facturacion', 'Debe de Seleccionar el tipo de pago');
     } else {
       const tiempo = new Date();
       let totalCantidadComprasCliente = 0;
       let totalComprasActualesCliente = 0;
+      const interes = this.tipoPago === 'Efectivo' ? 0 : (this.totalCordoba() * 5) / 100;
+      const totalFacturas = this.totalFacturas + 1;
+      let cliente: Cliente;
+      let usuario: Usuario;
       this.productos.forEach(producto => {
         totalCantidadComprasCliente += producto.Cantidad;
       });
       // se leen las compras actuales del cliente
       this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
-        .subscribe(cliente => {
-          this.totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
-          totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+        .subscribe(clientes => {
+          this.totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'];
+          totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+          cliente = clientes.payload.data();
+        });
+      this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).snapshotChanges()
+        .subscribe(usuarios => {
+          usuario = usuarios.payload.data();
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
@@ -163,12 +180,37 @@ export class VentaRapidaComponent implements OnInit {
           Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
           // tslint:disable-next-line:max-line-length
           Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-          'Articulos Comprados': this.productos
+          'Articulos Comprados': this.productos,
+          Interes: interes
         }).then((res) => {
           console.log(totalComprasActualesCliente);
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
           }).then(respo => {
+            this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial de Facturas/FAC${totalFacturas}`).set({
+              Productos: this.productos,
+              Cliente: cliente,
+              Vendedor: usuario,
+              Hora: tiempo.getHours(),
+              Minuto: tiempo.getMinutes(),
+              Segundo: tiempo.getSeconds(),
+              Dia: tiempo.getDate(),
+              Mes: tiempo.getMonth(),
+              Ano: tiempo.getFullYear(),
+              Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+              Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+              Id: `FAC${totalFacturas}`,
+              NumeroFactura: totalFacturas,
+              TotalCordoba: this.totalCordoba(),
+              TotalDolar: this.totalDolar(),
+              Descuento: this.totalDescuento(),
+              Interes: interes,
+              TipoPago: this.tipoPago
+            }).then(respn => {
+              this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+                'Cantidad Total de Facturas': totalFacturas
+              });
+            });
             // tslint:disable-next-line:max-line-length
             this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
               .set({
@@ -185,7 +227,8 @@ export class VentaRapidaComponent implements OnInit {
                 Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
                 // tslint:disable-next-line:max-line-length
                 Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-                'Articulos Comprados': this.productos
+                'Articulos Comprados': this.productos,
+                Interes: interes
               }).then(resp => {
                 this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
                   'Cantidad de Compras': totalComprasActualesCliente
@@ -262,6 +305,9 @@ export class VentaRapidaComponent implements OnInit {
   }
   totalDolar() {
     return this.productos.map(t => t.TotalDolar).reduce((acc, value) => acc + value, 0);
+  }
+  totalDescuento() {
+    return this.productos.map(t => t.DescuentoPorUnidad).reduce((acc, value) => acc + value, 0);
   }
 
   // eliminar producto de la factura

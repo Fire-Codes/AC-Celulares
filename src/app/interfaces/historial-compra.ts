@@ -13,4 +13,5 @@ export interface HistorialCompra {
     Fecha: string;
     Tiempo: string;
     Id: string;
+    Interes: number;
 }

@@ -81,6 +81,9 @@ export class FacturarComponent implements OnInit {
   // variable que almacena la cantidad de unidades que se venderan
   cantidadVender = 0;
 
+  // variable que contendra el tipo de a utilizar
+  tipoPago = '';
+
   // variables que almacenan los documentos de firestore
   clientes: Observable<Cliente[]>;
   usuarios: Observable<Usuario[]>;
@@ -191,11 +194,14 @@ export class FacturarComponent implements OnInit {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar un Cliente y un Vendedor');
     } else if (this.productos.length === 0) {
       this.servicio.newToast(0, 'Error de Facturacion', 'Debe de ingresar al menos 1 producto para poder facturarlo');
+    } else if (this.tipoPago === '') {
+      this.servicio.newToast(0, 'Error de Facturacion', 'Debe de Seleccionar el tipo de pago');
     } else {
       const tiempo = new Date();
       let totalCantidadComprasCliente = 0;
       let totalComprasActualesCliente = 0;
       const totalFacturas = this.totalFacturas + 1;
+      const interes = this.tipoPago === 'Efectivo' ? 0 : (this.totalCordoba() * 5) / 100;
       let cliente: Cliente;
       let usuario: Usuario;
       this.productos.forEach(producto => {
@@ -215,7 +221,7 @@ export class FacturarComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
         .set({
-          'Tipo de Pago': 'Efectivo',
+          'Tipo de Pago': this.tipoPago,
           'Total Cordoba': this.totalCordoba(),
           'Total Dolar': this.totalDolar(),
           Hora: tiempo.getHours(),
@@ -228,10 +234,11 @@ export class FacturarComponent implements OnInit {
           Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
           // tslint:disable-next-line:max-line-length
           Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-          'Articulos Comprados': this.productos
+          'Articulos Comprados': this.productos,
+          Interes: interes
         }).then((res) => {
           console.log(totalComprasActualesCliente);
-          this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial Facturas/FAC${totalFacturas}`).set({
+          this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial de Facturas/FAC${totalFacturas}`).set({
             Productos: this.productos,
             Cliente: cliente,
             Vendedor: usuario,
@@ -247,9 +254,13 @@ export class FacturarComponent implements OnInit {
             NumeroFactura: totalFacturas,
             TotalCordoba: this.totalCordoba(),
             TotalDolar: this.totalDolar(),
-            Descuento: 0,
-            Interes: 0,
-            TipoPago: 'Efectivo'
+            Descuento: this.totalDescuento(),
+            Interes: interes,
+            TipoPago: this.tipoPago
+          }).then(respn => {
+            this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+              'Cantidad Total de Facturas': totalFacturas
+            });
           });
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
@@ -257,7 +268,7 @@ export class FacturarComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
               .set({
-                'Tipo de Pago': 'Efectivo',
+                'Tipo de Pago': this.tipoPago,
                 'Total Cordoba': this.totalCordoba(),
                 'Total Dolar': this.totalDolar(),
                 Hora: tiempo.getHours(),
@@ -270,7 +281,8 @@ export class FacturarComponent implements OnInit {
                 Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
                 // tslint:disable-next-line:max-line-length
                 Id: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-                'Articulos Comprados': this.productos
+                'Articulos Comprados': this.productos,
+                Interes: interes
               }).then(resp => {
                 this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
                   'Cantidad de Compras': totalComprasActualesCliente
@@ -298,6 +310,7 @@ export class FacturarComponent implements OnInit {
     this.cantidadVender = 0;
     this.precioFinal = 0;
     this.cantidadCalcularDescuento = 0;
+    this.tipoPago = '';
     this.cantidadDescuento = 0;
     this.productoSeleccionado = null;
     this.productos = [];
