@@ -17,6 +17,7 @@ import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { PagoServiciosComponent } from './pages/pago-servicios/pago-servicios.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
+import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'pagoservicios', component: PagoServiciosComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'sistemaApartado', component: ProductosReservadosComponent },
+  { path: 'imprimirFactura', component: ImprimirFacturaComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

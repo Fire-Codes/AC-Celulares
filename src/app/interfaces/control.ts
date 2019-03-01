@@ -6,4 +6,5 @@ export interface ControlTienda {
     'Contador de Clientes': number;
     'Departamentos y Municipios': DepartamentosMunicipios[];
     'Tipo de Cambio': number;
+    'Cantidad Total de Facturas': number;
 }

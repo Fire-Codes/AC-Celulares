@@ -1,3 +1,137 @@
-<p>
-  imprimir-factura works!
-</p>
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td class="title">
+              <img src="../../../../assets/Logotipo/ACCroquis.jpg" style="width:100px;">
+            </td>
+
+            <td>
+              Factura #: 123<br>
+              Creada: Febrero 26, 2019
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td>
+              AC Celular.<br>
+              Gas. UNO San Martín 20 Vrs. al Sur<br>
+              Chichigalpa, Chinandega<br>
+              accelulare@gmail.com<br>
+              23432739
+            </td>
+
+            <td>
+              Vendedor: Edycar Jesús Reyes Jiménez<br>
+              Cliente: Kevin Águilar<br>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="heading">
+      <td>
+        Método de Pago
+      </td>
+
+      <td>
+        Monto
+      </td>
+    </tr>
+
+    <tr class="details">
+      <td>
+        Efectivo
+      </td>
+
+      <td>
+        C$1000
+      </td>
+    </tr>
+
+    <tr class="heading">
+      <td>
+        Extras
+      </td>
+
+      <td>
+        Monto
+      </td>
+    </tr>
+
+    <tr class="details">
+      <td>
+        Interés
+      </td>
+
+      <td>
+        C$0
+      </td>
+    </tr>
+  </table>
+</div>
+<table class="table mx-auto" style="max-width: 100%; min-width: 80%;">
+  <thead>
+    <tr>
+      <th colspan="9">Descripción</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Monto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th colspan="9">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th colspan="9">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th colspan="9">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+<div class="invoice-box mt-5">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="information">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td style="max-width: 50px;">
+              <hr style="color: black; background-color: black;"><br>
+              <div class="text-center mt-0">AC CELULAR</div>
+            </td>
+
+            <td>
+              <b>SubTotal: C$300</b><br>
+              <b>Descuentos: C$0</b><br>
+              <b>Total: C$300</b>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="float-right">
+  <button (click)="navegar()" class="btn btn-primary m-3" id="btnRegresar">Regresar</button>
+  <button (click)="imprimir()" class="btn btn-warning m-3" id="btnImprimir">Imprimir</button>
+</div>

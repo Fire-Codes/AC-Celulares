@@ -1,3 +1,4 @@
+import { Factura } from './../../interfaces/factura';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
@@ -94,6 +95,9 @@ export class FacturarComponent implements OnInit {
   // variable que determinara si tienen o no datos el mattable
   hayDatosEnTabla = false;
 
+  // variable que contendra el total de facturas generadas
+  totalFacturas: number;
+
 
   constructor(
     public ngbModal: NgbModal,
@@ -107,6 +111,7 @@ export class FacturarComponent implements OnInit {
     this.fs.doc('AC Celulares/Control').snapshotChanges()
       .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
         this.tipoCambioMoneda = control.payload.data()['Tipo de Cambio'];
+        this.totalFacturas = control.payload.data()['Cantidad Total de Facturas'];
       });
 
     // se inicializa el array a 0
@@ -170,6 +175,14 @@ export class FacturarComponent implements OnInit {
   totalDolar() {
     return this.productos.map(t => t.TotalDolar).reduce((acc, value) => acc + value, 0);
   }
+  totalDescuento() {
+    return this.productos.map(t => t.DescuentoPorUnidad).reduce((acc, value) => acc + value, 0);
+  }
+
+  // imprimir
+  imprimir() {
+    this.servicio.navegar('imprimirFactura');
+  }
 
   // funcion para imprimir
   imprimirFactura() {
@@ -182,14 +195,22 @@ export class FacturarComponent implements OnInit {
       const tiempo = new Date();
       let totalCantidadComprasCliente = 0;
       let totalComprasActualesCliente = 0;
+      const totalFacturas = this.totalFacturas + 1;
+      let cliente: Cliente;
+      let usuario: Usuario;
       this.productos.forEach(producto => {
         totalCantidadComprasCliente += producto.Cantidad;
       });
       // se leen las compras actuales del cliente
       this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
-        .subscribe(cliente => {
-          this.totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'];
-          totalComprasActualesCliente = cliente.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+        .subscribe(clientes => {
+          this.totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'];
+          totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+          cliente = clientes.payload.data();
+        });
+      this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).snapshotChanges()
+        .subscribe(usuarios => {
+          usuario = usuarios.payload.data();
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
@@ -210,6 +231,26 @@ export class FacturarComponent implements OnInit {
           'Articulos Comprados': this.productos
         }).then((res) => {
           console.log(totalComprasActualesCliente);
+          this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial Facturas/FAC${totalFacturas}`).set({
+            Productos: this.productos,
+            Cliente: cliente,
+            Vendedor: usuario,
+            Hora: tiempo.getHours(),
+            Minuto: tiempo.getMinutes(),
+            Segundo: tiempo.getSeconds(),
+            Dia: tiempo.getDate(),
+            Mes: tiempo.getMonth(),
+            Ano: tiempo.getFullYear(),
+            Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+            Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+            Id: `FAC${totalFacturas}`,
+            NumeroFactura: totalFacturas,
+            TotalCordoba: this.totalCordoba(),
+            TotalDolar: this.totalDolar(),
+            Descuento: 0,
+            Interes: 0,
+            TipoPago: 'Efectivo'
+          });
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
           }).then(respo => {

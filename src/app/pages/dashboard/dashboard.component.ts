@@ -45,6 +45,8 @@ export class DashboardComponent implements OnInit {
     public servicio: ServicioService
   ) {
 
+    this.nav.mostrarNav = true;
+
     // le asigna el valor a la plataforma segun la tienda en la que se encuentra
     switch (this.servicio.tienda) {
       case 'Tienda Principal':
