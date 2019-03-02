@@ -54,6 +54,7 @@ import { ReservarProductoComponent } from './pages/modales/reservar-producto/res
 import { SistemaApartadoComponent } from './pages/tablas/sistema-apartado/sistema-apartado.component';
 import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
 import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
+import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/i
     ReservarProductoComponent,
     SistemaApartadoComponent,
     ProductosReservadosComponent,
-    ImprimirFacturaComponent
+    ImprimirFacturaComponent,
+    ImprimirInventarioComponent
   ],
   imports: [
     BrowserModule,
