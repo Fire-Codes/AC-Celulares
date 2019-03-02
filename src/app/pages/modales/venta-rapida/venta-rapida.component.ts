@@ -22,6 +22,7 @@ import { MatTableDataSource, MatSort } from '@angular/material';
 import { ControlTienda } from 'src/app/interfaces/control';
 import { HistorialCompra } from 'src/app/interfaces/historial-compra';
 import { Factura } from 'src/app/interfaces/factura';
+import { ImprimirFacturaComponent } from '../../impresiones/imprimir-factura/imprimir-factura.component';
 
 
 @Component({
@@ -93,11 +94,15 @@ export class VentaRapidaComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   totalFacturas: number;
 
+  // variable que se enviara al componente de imprimir la factura a un dado caso que asi saea
+  facturaImprimir: Factura = null;
+
   constructor(
     public servicio: ServicioService,
     public fs: AngularFirestore,
     public db: AngularFireDatabase,
-    public ngbModal: NgbModal
+    public ngbModal: NgbModal,
+    public factura: ImprimirFacturaComponent
   ) {
     // se inicializa la variable de tipo de cambio de moneda
     this.fs.doc('AC Celulares/Control').snapshotChanges()
@@ -150,6 +155,7 @@ export class VentaRapidaComponent implements OnInit {
       const totalFacturas = this.totalFacturas + 1;
       let cliente: Cliente;
       let usuario: Usuario;
+      console.log('El producto que hay en imprimir es: ' + JSON.stringify(this.factura.facturaImprimir));
       this.productos.forEach(producto => {
         totalCantidadComprasCliente += producto.Cantidad;
       });
@@ -183,6 +189,26 @@ export class VentaRapidaComponent implements OnInit {
           'Articulos Comprados': this.productos,
           Interes: interes
         }).then((res) => {
+          this.servicio.facturaImprimir = {
+            Productos: this.productos,
+            Cliente: cliente,
+            Vendedor: usuario,
+            Hora: tiempo.getHours(),
+            Minuto: tiempo.getMinutes(),
+            Segundo: tiempo.getSeconds(),
+            Dia: tiempo.getDate(),
+            Mes: tiempo.getMonth(),
+            Ano: tiempo.getFullYear(),
+            Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+            Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+            Id: `FAC${totalFacturas}`,
+            NumeroFactura: totalFacturas,
+            TotalCordoba: this.totalCordoba(),
+            TotalDolar: this.totalDolar(),
+            Descuento: this.totalDescuento(),
+            Interes: interes,
+            TipoPago: this.tipoPago
+          };
           console.log(totalComprasActualesCliente);
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
@@ -243,10 +269,13 @@ export class VentaRapidaComponent implements OnInit {
           this.servicio.newToast(0, 'Error de Venta', err);
         });
     }
+  }
+
+  // funcion para redireccionar a imprimir las facturas
+  imprimirFacturass() {
     setTimeout(() => {
-      // return xepOnline.Formatter.Format('content', { render: 'download' });
-      // window.print();
-    }, 1000);
+      this.servicio.navegar('imprimirFactura');
+    }, 2000);
   }
 
   // funcion que se ejecutara una vez qu la factura se haya pagado

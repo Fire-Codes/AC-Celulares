@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ServicioService } from 'src/app/servicios/servicio.service';
 import { NavsideComponent } from '../../navside/navside.component';
+
+// se importa la interfaz de tipo factura
+import { Factura } from './../../../interfaces/factura';
+
+// se importa el servicio
 
 @Component({
   selector: 'app-imprimir-factura',
@@ -9,10 +14,15 @@ import { NavsideComponent } from '../../navside/navside.component';
 })
 export class ImprimirFacturaComponent implements OnInit {
 
+  // variable qu contendra la factura que se le pase por parametro
+  public facturaImprimir: Factura = this.servicio.facturaImprimir;
+
   constructor(
     public servicio: ServicioService,
     public nav: NavsideComponent
-  ) { }
+  ) {
+    console.log(JSON.stringify(this.facturaImprimir));
+  }
 
   ngOnInit() {
     this.nav.mostrarNav = false;
@@ -21,7 +31,7 @@ export class ImprimirFacturaComponent implements OnInit {
 
   // navegar
   navegar() {
-    this.servicio.navegar('dashboard');
+    this.servicio.navegar('facturar');
   }
 
   // imprimir
@@ -33,5 +43,10 @@ export class ImprimirFacturaComponent implements OnInit {
     window.print();
     btnRegresar.hidden = false;
     btnImprimir.hidden = false;
+  }
+
+  // calcular el total de la factura sin descuentos
+  totalSinDescuento(): number {
+    return this.facturaImprimir.Productos.map(t => t.Precio).reduce((acc, value) => acc + value, 0);
   }
 }

@@ -9,8 +9,8 @@
             </td>
 
             <td>
-              Factura #: 123<br>
-              Creada: Febrero 26, 2019
+              Factura #: {{facturaImprimir.NumeroFactura}}<br>
+              Creada: {{facturaImprimir.Fecha}}
             </td>
           </tr>
         </table>
@@ -30,8 +30,8 @@
             </td>
 
             <td>
-              Vendedor: Edycar Jesús Reyes Jiménez<br>
-              Cliente: Kevin Águilar<br>
+              Vendedor: {{facturaImprimir.Vendedor.Nombres}} {{facturaImprimir.Vendedor.Apellidos}}<br>
+              Cliente: {{facturaImprimir.Cliente.NombreCompleto}}<br>
             </td>
           </tr>
         </table>
@@ -50,11 +50,11 @@
 
     <tr class="details">
       <td>
-        Efectivo
+        {{facturaImprimir.TipoPago}}
       </td>
 
       <td>
-        C$1000
+        C${{totalSinDescuento()}}
       </td>
     </tr>
 
@@ -74,7 +74,7 @@
       </td>
 
       <td>
-        C$0
+        C${{facturaImprimir.Interes}}
       </td>
     </tr>
   </table>
@@ -82,30 +82,18 @@
 <table class="table mx-auto" style="max-width: 100%; min-width: 80%;">
   <thead>
     <tr>
-      <th colspan="9">Descripción</th>
+      <th>Descripción</th>
       <th>Cantidad</th>
       <th>Precio</th>
       <th>Monto</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th colspan="9">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th colspan="9">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th colspan="9">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+    <tr *ngFor="let producto of facturaImprimir.Productos">
+      <td>{{producto.Producto}} {{producto.Marca}} {{producto.Modelo}}</td>
+      <td>{{producto.Cantidad}}</td>
+      <td>{{producto.Precio}}</td>
+      <td>{{producto.Precio * producto.Cantidad}}</td>
     </tr>
   </tbody>
 </table>
@@ -121,9 +109,9 @@
             </td>
 
             <td>
-              <b>SubTotal: C$300</b><br>
-              <b>Descuentos: C$0</b><br>
-              <b>Total: C$300</b>
+              <b>SubTotal: C${{totalSinDescuento()}}</b><br>
+              <b>Descuentos: C${{facturaImprimir.Descuento}}</b><br>
+              <b>Total: C${{totalSinDescuento() - facturaImprimir.Descuento}}</b>
             </td>
           </tr>
         </table>

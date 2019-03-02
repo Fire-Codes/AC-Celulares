@@ -6,6 +6,23 @@
     (cerrarModalSeleccionarProductos)="modal.close('Close click')"></app-seleccionar-producto>
 </ng-template>
 
+<!--Imprimir Factura Modal-->
+<ng-template #imprimirFacturas let-modal>
+  <div class="modal-header bg-danger">
+    <h4 class="modal-title text-light">Imprimir Factura</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    ¿Desea Imprimir la Factura de esta venta?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+    <button type="button" class="btn btn-success" (click)="modal.close('Close click'); imprimirFacturass()">Si</button>
+  </div>
+</ng-template>
+
 <!--Eliminar Producto Modal-->
 <ng-template #eliminarProducto let-modal>
   <div class="modal-header bg-danger">
@@ -300,5 +317,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
-  <button type="button" class="btn btn-success" (click)="imprimirFactura()">Vender</button>
+  <button type="button" class="btn btn-success"
+    (click)="imprimirFactura(); openVerticallyCentered(imprimirFacturas,null); cerrarModal()">Vender</button>
 </div>

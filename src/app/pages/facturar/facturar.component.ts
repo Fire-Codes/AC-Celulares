@@ -6,6 +6,9 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 // importacion del componente del NavSide
 import { NavsideComponent } from '../navside/navside.component';
 
+// importacion del componente para imprimir la factura
+import { ImprimirFacturaComponent } from '../impresiones/imprimir-factura/imprimir-factura.component';
+
 // importacion del servicio
 import { ServicioService } from 'src/app/servicios/servicio.service';
 
@@ -101,13 +104,17 @@ export class FacturarComponent implements OnInit {
   // variable que contendra el total de facturas generadas
   totalFacturas: number;
 
+  // variable que se enviara al componente de imprimir la factura a un dado caso que asi saea
+  facturaImprimir: Factura = null;
+
 
   constructor(
     public ngbModal: NgbModal,
     public fs: AngularFirestore,
     public servicio: ServicioService,
     public nav: NavsideComponent,
-    public db: AngularFireDatabase
+    public db: AngularFireDatabase,
+    public factura: ImprimirFacturaComponent
   ) {
 
     // se inicializa la variable de tipo de cambio de moneda
@@ -123,6 +130,7 @@ export class FacturarComponent implements OnInit {
 
     // Se asigna el array de productos al contenido de la tabla
     this.productosFactura = new MatTableDataSource(this.productos);
+    this.nav.mostrarNav = true;
   }
 
   ngOnInit() {
@@ -182,12 +190,8 @@ export class FacturarComponent implements OnInit {
     return this.productos.map(t => t.DescuentoPorUnidad).reduce((acc, value) => acc + value, 0);
   }
 
-  // imprimir
-  imprimir() {
-    this.servicio.navegar('imprimirFactura');
-  }
 
-  // funcion para imprimir
+  // funcion para vender la factura
   imprimirFactura() {
     // this.nav.mostrarNav = false;
     if ((this.valordebusquedaCliente === '') || (this.valordebusquedaVendedor === '')) {
@@ -237,6 +241,26 @@ export class FacturarComponent implements OnInit {
           'Articulos Comprados': this.productos,
           Interes: interes
         }).then((res) => {
+          this.servicio.facturaImprimir = {
+            Productos: this.productos,
+            Cliente: cliente,
+            Vendedor: usuario,
+            Hora: tiempo.getHours(),
+            Minuto: tiempo.getMinutes(),
+            Segundo: tiempo.getSeconds(),
+            Dia: tiempo.getDate(),
+            Mes: tiempo.getMonth(),
+            Ano: tiempo.getFullYear(),
+            Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+            Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+            Id: `FAC${totalFacturas}`,
+            NumeroFactura: totalFacturas,
+            TotalCordoba: this.totalCordoba(),
+            TotalDolar: this.totalDolar(),
+            Descuento: this.totalDescuento(),
+            Interes: interes,
+            TipoPago: this.tipoPago
+          };
           console.log(totalComprasActualesCliente);
           this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial de Facturas/FAC${totalFacturas}`).set({
             Productos: this.productos,
@@ -297,10 +321,13 @@ export class FacturarComponent implements OnInit {
           this.servicio.newToast(0, 'Error de Venta', err);
         });
     }
+  }
+
+  // funcion para redireccionar a imprimir las facturas
+  imprimirFacturass() {
     setTimeout(() => {
-      // return xepOnline.Formatter.Format('content', { render: 'download' });
-      // window.print();
-    }, 1000);
+      this.servicio.navegar('imprimirFactura');
+    }, 2000);
   }
 
   // funcion que se ejecutara una vez qu la factura se haya pagado

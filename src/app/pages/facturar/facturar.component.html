@@ -164,6 +164,24 @@
     </app-seleccionar-producto-descuento>
   </ng-template>
 
+  <!--Imprimir Factura Modal-->
+  <ng-template #imprimirFacturas let-modal>
+    <div class="modal-header bg-danger">
+      <h4 class="modal-title text-light">Imprimir Factura</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      ¿Desea Imprimir la Factura de esta venta?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+      <button type="button" class="btn btn-success"
+        (click)="modal.close('Close click'); imprimirFacturass()">Si</button>
+    </div>
+  </ng-template>
+
   <nav class="navbar navbar-dark bg-dark elevated shake">
     <div class="container slideInLeft">
       <a class="navbar-brand text-light">Facturar</a>
@@ -328,8 +346,8 @@
     <div class="mb-4 slideInLeft">
       <div class="container-fluid rounded-top p-4" style="background-color: #009688;">
         <div class="float-right">
-          <button (click)="imprimirFactura()" class="elevated text-center" matTooltip="Vender Productos" mat-fab
-            style="background-color: #02756a;">
+          <button (click)="imprimirFactura(); openVerticallyCentered(imprimirFacturas,null)"
+            class="elevated text-center" matTooltip="Vender Productos" mat-fab style="background-color: #02756a;">
             <mat-icon class="text-light">attach_money</mat-icon>
           </button>
         </div>
@@ -424,5 +442,4 @@
       </table>
     </div>
   </div>
-  <button (click)="imprimir()">Imprimir</button>
 </body>

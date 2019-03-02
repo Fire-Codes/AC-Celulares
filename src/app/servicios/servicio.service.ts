@@ -21,11 +21,13 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable, Subscription } from 'rxjs';
+import { Factura } from '../interfaces/factura';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioService {
+  public facturaImprimir: Factura = null;
   Usuarios: AngularFirestoreCollection<Usuario>;
   public tienda: string;
   constructor(

@@ -35,7 +35,6 @@
 }
 
 .invoice-box table tr.heading td {
-  background: #eee;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
 }
@@ -44,16 +43,11 @@
   padding-bottom: 20px;
 }
 
-.invoice-box table tr.item td {
-  border-bottom: 1px solid #eee;
-}
-
 .invoice-box table tr.item.last td {
   border-bottom: none;
 }
 
 .invoice-box table tr.total td:nth-child(2) {
-  border-top: 2px solid #eee;
   font-weight: bold;
 }
 
