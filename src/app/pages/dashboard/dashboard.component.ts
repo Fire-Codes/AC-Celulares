@@ -39,17 +39,33 @@ export class DashboardComponent implements OnInit {
   // variable que contendra todos los dias de la semana
   diasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-  @ViewChild('graficoPastelCanvas') graficoPastelCanvas;
-  @ViewChild('graficoBarraCanvas') graficoBarraCanvas;
-  @ViewChild('graficoLineaCanvas') graficoLineaCanvas;
+  @ViewChild('graficoPastelCanvas') graficoDiaCanvas;
+  @ViewChild('graficoBarraCanvas') graficoSemanaCanvas;
+  @ViewChild('graficoLineaCanvas') graficoAnualCanvas;
 
-  graficoPastelChart: any;
-  graficoBarraChart: any;
-  graficoLineaChart: any;
+  graficoDiaChart: any;
+  graficoSemanaChart: any;
+  graficoAnualChart: any;
 
+  // variables que contendran los datos que se enviaran a firestore cada vez que alguien se meta al dashboard o inicie sesion
   pushVentasSemana: TipoProductos;
-  pushVentasMensuales: VentasMensuales;
+  pushVentasMensuales: TipoProductos;
   pushVentasDiarias: VentasDiarias;
+
+  // variables que contendra los datos del grafico semanal
+  public datosSemanaFirestore: TipoProductos;
+  public datosSemanaLocal: TipoProductos;
+  public totalVentasSemana = 0;
+
+  // variables que contendran los datos del grafico anual
+  public datosAnualFirestore: TipoProductos;
+  public datosAnualesLocal: TipoProductos;
+  public totalVentasAnual = 0;
+
+  // variables que contendran los datos del grafico diario
+  public datosDiarioFirestore: VentasDiarias;
+  public datosDiarioLocal: number[];
+  public totalVentasDia = 0;
 
 
 
@@ -60,6 +76,45 @@ export class DashboardComponent implements OnInit {
     public db: AngularFireDatabase
   ) {
 
+    const tiempo = new Date();
+
+    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+      .snapshotChanges().subscribe(semana => {
+        this.datosSemanaFirestore = semana.payload.data();
+        this.datosSemanaLocal = this.datosSemanaFirestore;
+        this.totalVentasSemana = semana.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoSemana();
+        }, 1000);
+      });
+
+    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+      .snapshotChanges().subscribe(anuales => {
+        this.datosAnualFirestore = anuales.payload.data();
+        this.datosAnualesLocal = this.datosAnualFirestore;
+        this.totalVentasAnual = anuales.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoAnual();
+        }, 1000);
+      });
+
+    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+      .snapshotChanges().subscribe(diario => {
+        this.datosDiarioFirestore = diario.payload.data();
+        this.datosDiarioLocal = this.datosDiarioFirestore.Datos;
+        this.totalVentasDia = diario.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoDiario();
+        }, 1000);
+      });
+
+
+    // se generan las variables para posteriormente mandarlas a llamar desde su respectivo grafico
     this.pushVentasSemana = {
       TotalVentas: 0,
       Accesorios: [0, 0, 0, 0, 0, 0, 0],
@@ -69,110 +124,16 @@ export class DashboardComponent implements OnInit {
       Herramientas: [0, 0, 0, 0, 0, 0, 0]
     };
     this.pushVentasMensuales = {
-      TotalVentasAnuales: 0,
-      Enero: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Febrero: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Marzo: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Abril: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Mayo: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Junio: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Julio: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Agosto: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Septiembre: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Octubre: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Noviembre: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      Diciembre: {
-        TotalVentas: 0,
-        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      }
+      TotalVentas: 0,
+      Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     };
     this.pushVentasDiarias = {
-      Accesorios: 0,
-      Repuestos: 0,
-      Celulares: 0,
-      Servicio: 0,
-      Herramientas: 0
+      Datos: [0, 0, 0, 0, 0],
+      TotalVentas: 0
     };
 
     this.nav.mostrarNav = true;
@@ -192,11 +153,6 @@ export class DashboardComponent implements OnInit {
         this.plataforma = '';
         break;
     }
-
-    // se muestra el numero de la semana
-    console.warn('El numero de Semana actual es: ' + this.servicio.extraerNumeroSemana());
-
-
     // mostrar el navside
     this.nav.mostrarNav = true;
 
@@ -207,7 +163,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     const tiempo = new Date();
 
-    // se suben los datos a firestore
+    // se realizan las tomas de decisiones y se suben los datos a firestore para el grafico semanal y su correcto funcionamiento
     if (this.servicio.extraerNumeroSemana() === 52) {
       // tslint:disable-next-line:max-line-length
       this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
@@ -237,13 +193,15 @@ export class DashboardComponent implements OnInit {
         });
     }
 
+    // se actualizan los datos del año siguiente al actual para su mejor funcionamiento
     // tslint:disable-next-line:max-line-length
-    this.fs.doc<VentasMensuales>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales)
+    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales)
       .then(res => {
         // tslint:disable-next-line:max-line-length
         this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales);
       });
 
+    // se realizan las tomas de deciiones y se suben los datos a firestore para el grafico anual y su correcto funcionamiento
     if ((tiempo.getMonth() === 11) && (tiempo.getDate() === 31)) {
       // tslint:disable-next-line:max-line-length
       this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias)
@@ -274,66 +232,57 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    this.graficoPastelChart = new Chart(this.graficoPastelCanvas.nativeElement, {
+  }
 
-      type: 'doughnut',
-      data: {
-        labels: [
-          'Accesorios',
-          'Repuestos',
-          'Celulares',
-          'Servicio',
-          'Herramientas'
-        ],
-        datasets: [{
-          data: this.pushVentasDiarias,
-          backgroundColor: [
-            '#007bff',
-            '#28a745',
-            '#17a2b8',
-            '#ffc107',
-            '#dc3545'
-          ],
-          hoverBackgroundColor: [
-            '#007bff',
-            '#28a745',
-            '#17a2b8',
-            '#ffc107',
-            '#dc3545'
-          ]
-        }
-        ]
+  // funcion para extraer la fecha y la hora a cada segundo
+  extraerFechaHora() {
+    setInterval(() => {
+      const fechaHora = new Date();
+      if ((fechaHora.getHours() >= 0) && (fechaHora.getHours() <= 12)) {
+        // tslint:disable-next-line:max-line-length
+        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours()}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} AM`;
+      } else if (fechaHora.getHours() > 12) {
+        // tslint:disable-next-line:max-line-length
+        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours() - 12}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} PM`;
       }
-    });
+    }, 1000);
+  }
 
-    this.graficoBarraChart = new Chart(this.graficoBarraCanvas.nativeElement, {
+  // funcion para generar el grafico de la semana actual
+  generarGraficoSemana() {
+    this.graficoSemanaChart = new Chart(this.graficoSemanaCanvas.nativeElement, {
       type: 'bar',
       data: {
         labels: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
         datasets: [
           {
             label: 'Accesorios',
-            data: [10, 11, 12, 13, 14, 15, 16],
+            data: this.datosSemanaLocal.Accesorios,
+            // data: this.pushVentasSemana.Accesorios,
             backgroundColor: '#007bff'
           },
           {
             label: 'Repuestos',
-            data: [20, 25, 30, 35, 40, 45, 50],
+            data: this.datosSemanaLocal.Repuestos,
+            // data: this.pushVentasSemana.Repuestos,
             backgroundColor: '#28a745'
           },
           {
             label: 'Celulares',
-            data: [33, 34, 36, 37, 39, 47, 9],
+            data: this.datosSemanaLocal.Celulares,
+            // data: this.pushVentasSemana.Celulares,
             backgroundColor: '#17a2b8'
           },
           {
             label: 'Servicio',
-            data: [44, 46, 48, 52, 54, 100, 56],
+            data: this.datosSemanaLocal.Servicio,
+            // data: this.pushVentasSemana.Servicio,
             backgroundColor: '#ffc107'
           },
           {
             label: 'Herramientas',
-            data: [130, 3, 200, 29, 23, 8, 22],
+            data: this.datosSemanaLocal.Herramientas,
+            // data: this.pushVentasSemana.Herramientas,
             backgroundColor: '#dc3545'
           }
         ]
@@ -348,7 +297,11 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
-    this.graficoLineaChart = new Chart(this.graficoLineaCanvas.nativeElement, {
+  }
+
+  // funcion para generar el grafico anual actual
+  generarGraficoAnual() {
+    this.graficoAnualChart = new Chart(this.graficoAnualCanvas.nativeElement, {
       type: 'line',
       data: {
         labels: [
@@ -368,31 +321,31 @@ export class DashboardComponent implements OnInit {
         datasets: [
           {
             label: 'Accesorios',
-            data: [10, 11, 12, 13, 14, 15, 16, 10, 11, 12, 13, 14],
+            data: this.datosAnualesLocal.Accesorios,
             borderColor: '#007bff',
             fill: false
           },
           {
             label: 'Repuestos',
-            data: [20, 25, 30, 35, 40, 45, 50, 20, 25, 30, 35, 40],
+            data: this.datosAnualesLocal.Repuestos,
             borderColor: '#28a745',
             fill: false
           },
           {
             label: 'Celulares',
-            data: [33, 34, 36, 37, 39, 47, 9, 33, 34, 36, 37, 39],
+            data: this.datosAnualesLocal.Celulares,
             borderColor: '#17a2b8',
             fill: false
           },
           {
             label: 'Servicio',
-            data: [44, 46, 48, 52, 54, 100, 56, 44, 46, 48, 52, 54],
+            data: this.datosAnualesLocal.Servicio,
             borderColor: '#ffc107',
             fill: false
           },
           {
             label: 'Herramientas',
-            data: [130, 3, 200, 29, 23, 8, 22, 130, 3, 200, 29, 23],
+            data: this.datosAnualesLocal.Herramientas,
             borderColor: '#dc3545',
             fill: false
           }
@@ -410,17 +363,38 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // funcion para extraer la fecha y la hora a cada segundo
-  extraerFechaHora() {
-    setInterval(() => {
-      const fechaHora = new Date();
-      if ((fechaHora.getHours() >= 0) && (fechaHora.getHours() <= 12)) {
-        // tslint:disable-next-line:max-line-length
-        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours()}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} AM`;
-      } else if (fechaHora.getHours() > 12) {
-        // tslint:disable-next-line:max-line-length
-        this.fechaHora = `${this.diasSemana[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.meses[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours() - 12}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} PM`;
+  // funcion para generar el grafico del dia actual
+  generarGraficoDiario() {
+    this.graficoDiaChart = new Chart(this.graficoDiaCanvas.nativeElement, {
+
+      type: 'doughnut',
+      data: {
+        labels: [
+          'Accesorios',
+          'Repuestos',
+          'Celulares',
+          'Servicio',
+          'Herramientas'
+        ],
+        datasets: [{
+          data: this.datosDiarioLocal,
+          backgroundColor: [
+            '#007bff',
+            '#28a745',
+            '#17a2b8',
+            '#ffc107',
+            '#dc3545'
+          ],
+          hoverBackgroundColor: [
+            '#007bff',
+            '#28a745',
+            '#17a2b8',
+            '#ffc107',
+            '#dc3545'
+          ]
+        }
+        ]
       }
-    }, 1000);
+    });
   }
 }
