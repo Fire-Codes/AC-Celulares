@@ -53,19 +53,34 @@ export class DashboardComponent implements OnInit {
   pushVentasDiarias: VentasDiarias;
 
   // variables que contendra los datos del grafico semanal
-  public datosSemanaFirestore: TipoProductos;
-  public datosSemanaLocal: TipoProductos;
+  public datosVentasSemanaFirestore: TipoProductos;
+  public datosVentasSemanaLocal: TipoProductos;
   public totalVentasSemana = 0;
 
   // variables que contendran los datos del grafico anual
-  public datosAnualFirestore: TipoProductos;
-  public datosAnualesLocal: TipoProductos;
+  public datosVentasAnualFirestore: TipoProductos;
+  public datosVentasAnualesLocal: TipoProductos;
   public totalVentasAnual = 0;
 
   // variables que contendran los datos del grafico diario
-  public datosDiarioFirestore: VentasDiarias;
-  public datosDiarioLocal: number[];
+  public datosVentasDiarioFirestore: VentasDiarias;
+  public datosVentasDiarioLocal: number[];
   public totalVentasDia = 0;
+
+  // variable que contendra los datos del grafico de las ganancias semanales
+  public datosGananciasSemanaFirestore: TipoProductos;
+  public datosGananciasSemanaLocal: TipoProductos;
+  public totalGananciasSemana = 0;
+
+  // variables que contendra los datos del grafico de las ganancias anuales
+  public datosGananciasAnualFirestore: TipoProductos;
+  public datosGananciasAnualesLocal: TipoProductos;
+  public totalGananciasAnual = 0;
+
+  // variables que contendran los datlos del grafico de ganancias diarias
+  public datosGananciasDiarioFirestore: VentasDiarias;
+  public datosGananciasDiarioLocal: number[];
+  public totalGananciasDia = 0;
 
 
 
@@ -82,8 +97,8 @@ export class DashboardComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
       .snapshotChanges().subscribe(semana => {
-        this.datosSemanaFirestore = semana.payload.data();
-        this.datosSemanaLocal = this.datosSemanaFirestore;
+        this.datosVentasSemanaFirestore = semana.payload.data();
+        this.datosVentasSemanaLocal = this.datosVentasSemanaFirestore;
         this.totalVentasSemana = semana.payload.data().TotalVentas;
         setTimeout(() => {
           this.generarGraficoSemana();
@@ -93,8 +108,8 @@ export class DashboardComponent implements OnInit {
     // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
     this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
       .snapshotChanges().subscribe(anuales => {
-        this.datosAnualFirestore = anuales.payload.data();
-        this.datosAnualesLocal = this.datosAnualFirestore;
+        this.datosVentasAnualFirestore = anuales.payload.data();
+        this.datosVentasAnualesLocal = this.datosVentasAnualFirestore;
         this.totalVentasAnual = anuales.payload.data().TotalVentas;
         setTimeout(() => {
           this.generarGraficoAnual();
@@ -105,8 +120,8 @@ export class DashboardComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
       .snapshotChanges().subscribe(diario => {
-        this.datosDiarioFirestore = diario.payload.data();
-        this.datosDiarioLocal = this.datosDiarioFirestore.Datos;
+        this.datosVentasDiarioFirestore = diario.payload.data();
+        this.datosVentasDiarioLocal = this.datosVentasDiarioFirestore.Datos;
         this.totalVentasDia = diario.payload.data().TotalVentas;
         setTimeout(() => {
           this.generarGraficoDiario();
@@ -257,31 +272,31 @@ export class DashboardComponent implements OnInit {
         datasets: [
           {
             label: 'Accesorios',
-            data: this.datosSemanaLocal.Accesorios,
+            data: this.datosVentasSemanaLocal.Accesorios,
             // data: this.pushVentasSemana.Accesorios,
             backgroundColor: '#007bff'
           },
           {
             label: 'Repuestos',
-            data: this.datosSemanaLocal.Repuestos,
+            data: this.datosVentasSemanaLocal.Repuestos,
             // data: this.pushVentasSemana.Repuestos,
             backgroundColor: '#28a745'
           },
           {
             label: 'Celulares',
-            data: this.datosSemanaLocal.Celulares,
+            data: this.datosVentasSemanaLocal.Celulares,
             // data: this.pushVentasSemana.Celulares,
             backgroundColor: '#17a2b8'
           },
           {
             label: 'Servicio',
-            data: this.datosSemanaLocal.Servicio,
+            data: this.datosVentasSemanaLocal.Servicio,
             // data: this.pushVentasSemana.Servicio,
             backgroundColor: '#ffc107'
           },
           {
             label: 'Herramientas',
-            data: this.datosSemanaLocal.Herramientas,
+            data: this.datosVentasSemanaLocal.Herramientas,
             // data: this.pushVentasSemana.Herramientas,
             backgroundColor: '#dc3545'
           }
@@ -321,31 +336,31 @@ export class DashboardComponent implements OnInit {
         datasets: [
           {
             label: 'Accesorios',
-            data: this.datosAnualesLocal.Accesorios,
+            data: this.datosVentasAnualesLocal.Accesorios,
             borderColor: '#007bff',
             fill: false
           },
           {
             label: 'Repuestos',
-            data: this.datosAnualesLocal.Repuestos,
+            data: this.datosVentasAnualesLocal.Repuestos,
             borderColor: '#28a745',
             fill: false
           },
           {
             label: 'Celulares',
-            data: this.datosAnualesLocal.Celulares,
+            data: this.datosVentasAnualesLocal.Celulares,
             borderColor: '#17a2b8',
             fill: false
           },
           {
             label: 'Servicio',
-            data: this.datosAnualesLocal.Servicio,
+            data: this.datosVentasAnualesLocal.Servicio,
             borderColor: '#ffc107',
             fill: false
           },
           {
             label: 'Herramientas',
-            data: this.datosAnualesLocal.Herramientas,
+            data: this.datosVentasAnualesLocal.Herramientas,
             borderColor: '#dc3545',
             fill: false
           }
@@ -377,7 +392,7 @@ export class DashboardComponent implements OnInit {
           'Herramientas'
         ],
         datasets: [{
-          data: this.datosDiarioLocal,
+          data: this.datosVentasDiarioLocal,
           backgroundColor: [
             '#007bff',
             '#28a745',
