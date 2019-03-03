@@ -39,18 +39,37 @@ export class DashboardComponent implements OnInit {
   // variable que contendra todos los dias de la semana
   diasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-  @ViewChild('graficoPastelCanvas') graficoDiaCanvas;
-  @ViewChild('graficoBarraCanvas') graficoSemanaCanvas;
-  @ViewChild('graficoLineaCanvas') graficoAnualCanvas;
+  // variables de tipo document observable para los graficos de las ventas
+  @ViewChild('graficoVentasDiaCanvas') graficoVentasDiaCanvas;
+  @ViewChild('graficoVentasSemanaCanvas') graficoVentasSemanaCanvas;
+  @ViewChild('graficoVentasAnualCanvas') graficoVentasAnualCanvas;
 
-  graficoDiaChart: any;
-  graficoSemanaChart: any;
-  graficoAnualChart: any;
+  // variables que contendran el contenido del grafico para las ventas
+  graficoVentasDiaChart: any;
+  graficoVentasSemanaChart: any;
+  graficoVentasAnualChart: any;
 
-  // variables que contendran los datos que se enviaran a firestore cada vez que alguien se meta al dashboard o inicie sesion
+  // variables de tipo document observable para los graficos de las ganancias
+  @ViewChild('graficoGananciasDiaCanvas') graficoGananciasDiaCanvas;
+  @ViewChild('graficoGananciasSemanaCanvas') graficoGananciasSemanaCanvas;
+  @ViewChild('graficoGananciasAnualCanvas') graficoGananciasAnualCanvas;
+
+  // variables que contendran el contenido del grafico para las ganancias
+  graficoGananciasDiaChart: any;
+  graficoGananciasSemanaChart: any;
+  graficoGananciasAnualChart: any;
+
+  // tslint:disable-next-line:max-line-length
+  // variables que contendran los datos que se enviaran a firestore cada vez que alguien se meta al dashboard o inicie sesion para las ventas
   pushVentasSemana: TipoProductos;
   pushVentasMensuales: TipoProductos;
   pushVentasDiarias: VentasDiarias;
+
+  // tslint:disable-next-line:max-line-length
+  // variables que contendran los datos que se enviaran a firestore cada vez que alguien se meta al dashboard o inicie sesion para las ganancias
+  pushGananciasSemana: TipoProductos;
+  pushGananciasMensuales: TipoProductos;
+  pushGananciasDiarias: VentasDiarias;
 
   // variables que contendra los datos del grafico semanal
   public datosVentasSemanaFirestore: TipoProductos;
@@ -93,7 +112,7 @@ export class DashboardComponent implements OnInit {
 
     const tiempo = new Date();
 
-    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente para las ventas
     // tslint:disable-next-line:max-line-length
     this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
       .snapshotChanges().subscribe(semana => {
@@ -101,22 +120,22 @@ export class DashboardComponent implements OnInit {
         this.datosVentasSemanaLocal = this.datosVentasSemanaFirestore;
         this.totalVentasSemana = semana.payload.data().TotalVentas;
         setTimeout(() => {
-          this.generarGraficoSemana();
+          this.generarGraficoVentasSemana();
         }, 1000);
       });
 
-    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente para las ventas
     this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
       .snapshotChanges().subscribe(anuales => {
         this.datosVentasAnualFirestore = anuales.payload.data();
         this.datosVentasAnualesLocal = this.datosVentasAnualFirestore;
         this.totalVentasAnual = anuales.payload.data().TotalVentas;
         setTimeout(() => {
-          this.generarGraficoAnual();
+          this.generarGraficoVentasAnual();
         }, 1000);
       });
 
-    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente
+    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente para las ventas
     // tslint:disable-next-line:max-line-length
     this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
       .snapshotChanges().subscribe(diario => {
@@ -124,12 +143,47 @@ export class DashboardComponent implements OnInit {
         this.datosVentasDiarioLocal = this.datosVentasDiarioFirestore.Datos;
         this.totalVentasDia = diario.payload.data().TotalVentas;
         setTimeout(() => {
-          this.generarGraficoDiario();
+          this.generarGraficoVentasDiario();
+        }, 1000);
+      });
+
+    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente para las ganancias
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+      .snapshotChanges().subscribe(semana => {
+        this.datosGananciasSemanaFirestore = semana.payload.data();
+        this.datosGananciasSemanaLocal = this.datosGananciasSemanaFirestore;
+        this.totalGananciasSemana = semana.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoGananciasSemana();
+        }, 1000);
+      });
+
+    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente para las ganancias
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+      .snapshotChanges().subscribe(anuales => {
+        this.datosGananciasAnualFirestore = anuales.payload.data();
+        this.datosGananciasAnualesLocal = this.datosGananciasAnualFirestore;
+        this.totalGananciasAnual = anuales.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoGananciasAnual();
+        }, 1000);
+      });
+
+    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente para las ganancias
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+      .snapshotChanges().subscribe(diario => {
+        this.datosGananciasDiarioFirestore = diario.payload.data();
+        this.datosGananciasDiarioLocal = this.datosGananciasDiarioFirestore.Datos;
+        this.totalGananciasDia = diario.payload.data().TotalVentas;
+        setTimeout(() => {
+          this.generarGraficoGananciasDiario();
         }, 1000);
       });
 
 
-    // se generan las variables para posteriormente mandarlas a llamar desde su respectivo grafico
+    // se generan las variables de ventas para posteriormente mandarlas a llamar desde su respectivo grafico
     this.pushVentasSemana = {
       TotalVentas: 0,
       Accesorios: [0, 0, 0, 0, 0, 0, 0],
@@ -147,6 +201,28 @@ export class DashboardComponent implements OnInit {
       Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     };
     this.pushVentasDiarias = {
+      Datos: [0, 0, 0, 0, 0],
+      TotalVentas: 0
+    };
+
+    // se generan las variables de ganancias para posteriormente mandarlas a llamar desde su respectivo grafico
+    this.pushGananciasSemana = {
+      TotalVentas: 0,
+      Accesorios: [0, 0, 0, 0, 0, 0, 0],
+      Repuestos: [0, 0, 0, 0, 0, 0, 0],
+      Celulares: [0, 0, 0, 0, 0, 0, 0],
+      Servicio: [0, 0, 0, 0, 0, 0, 0],
+      Herramientas: [0, 0, 0, 0, 0, 0, 0]
+    };
+    this.pushGananciasMensuales = {
+      TotalVentas: 0,
+      Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    };
+    this.pushGananciasDiarias = {
       Datos: [0, 0, 0, 0, 0],
       TotalVentas: 0
     };
@@ -180,11 +256,13 @@ export class DashboardComponent implements OnInit {
 
     // se realizan las tomas de decisiones y se suben los datos a firestore para el grafico semanal y su correcto funcionamiento
     if (this.servicio.extraerNumeroSemana() === 52) {
+
+      // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana);
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushVentasSemana)
@@ -192,58 +270,143 @@ export class DashboardComponent implements OnInit {
           // tslint:disable-next-line:max-line-length
           this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushVentasSemana);
         });
-    } else if (this.servicio.extraerNumeroSemana() === 53) {
+
+      // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana);
+        });
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushGananciasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushGananciasSemana);
+        });
+    } else if (this.servicio.extraerNumeroSemana() === 53) {
+
+      // para las ventas
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana);
+        });
+
+      // para las ganancias
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana);
         });
     } else {
+
+      // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushVentasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushVentasSemana);
+        });
+
+      // para las ganancias
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushGananciasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushGananciasSemana);
         });
     }
 
     // se actualizan los datos del año siguiente al actual para su mejor funcionamiento
+    // para las ventas
     // tslint:disable-next-line:max-line-length
-    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales)
+    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushVentasMensuales)
       .then(res => {
         // tslint:disable-next-line:max-line-length
-        this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales);
+        this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushVentasMensuales);
       });
+
+    // para las ganancias
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushGananciasMensuales)
+      .then(res => {
+        // tslint:disable-next-line:max-line-length
+        this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushGananciasMensuales);
+      });
+
 
     // se realizan las tomas de deciiones y se suben los datos a firestore para el grafico anual y su correcto funcionamiento
     if ((tiempo.getMonth() === 11) && (tiempo.getDate() === 31)) {
+
+      // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
         });
+
+      // para las ganancias
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
+        });
+
     } else if (((tiempo.getMonth() === 2) && (tiempo.getDate() === 28)) || ((tiempo.getMonth() === 2) && (tiempo.getDate() === 29))) {
+
+      // para las ventas
       // tslint:disable-next-line:max-line-length
       this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
           this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
         });
-    } else if ((tiempo.getDate() === 30) || (tiempo.getDate() === 31)) {
+
+      // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
+        });
+    } else if ((tiempo.getDate() === 30) || (tiempo.getDate() === 31)) {
+
+      // para las ventas
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+        });
+
+      // para las ganancias
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
         });
     } else {
+
+      // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias);
+        });
+
+      // para las ganancias
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias);
         });
     }
 
@@ -263,9 +426,9 @@ export class DashboardComponent implements OnInit {
     }, 1000);
   }
 
-  // funcion para generar el grafico de la semana actual
-  generarGraficoSemana() {
-    this.graficoSemanaChart = new Chart(this.graficoSemanaCanvas.nativeElement, {
+  // funcion para generar el grafico de la semana actual para las ventas
+  generarGraficoVentasSemana() {
+    this.graficoVentasSemanaChart = new Chart(this.graficoVentasSemanaCanvas.nativeElement, {
       type: 'bar',
       data: {
         labels: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -314,9 +477,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // funcion para generar el grafico anual actual
-  generarGraficoAnual() {
-    this.graficoAnualChart = new Chart(this.graficoAnualCanvas.nativeElement, {
+  // funcion para generar el grafico anual actual para las ventas
+  generarGraficoVentasAnual() {
+    this.graficoVentasAnualChart = new Chart(this.graficoVentasAnualCanvas.nativeElement, {
       type: 'line',
       data: {
         labels: [
@@ -378,9 +541,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // funcion para generar el grafico del dia actual
-  generarGraficoDiario() {
-    this.graficoDiaChart = new Chart(this.graficoDiaCanvas.nativeElement, {
+  // funcion para generar el grafico del dia actual para las ventas
+  generarGraficoVentasDiario() {
+    this.graficoVentasDiaChart = new Chart(this.graficoVentasDiaCanvas.nativeElement, {
 
       type: 'doughnut',
       data: {
@@ -393,6 +556,156 @@ export class DashboardComponent implements OnInit {
         ],
         datasets: [{
           data: this.datosVentasDiarioLocal,
+          backgroundColor: [
+            '#007bff',
+            '#28a745',
+            '#17a2b8',
+            '#ffc107',
+            '#dc3545'
+          ],
+          hoverBackgroundColor: [
+            '#007bff',
+            '#28a745',
+            '#17a2b8',
+            '#ffc107',
+            '#dc3545'
+          ]
+        }
+        ]
+      }
+    });
+  }
+
+  // funcion para generar el grafico de la semana actual para las ganancias
+  generarGraficoGananciasSemana() {
+    this.graficoGananciasSemanaChart = new Chart(this.graficoGananciasSemanaCanvas.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        datasets: [
+          {
+            label: 'Accesorios',
+            data: this.datosGananciasSemanaLocal.Accesorios,
+            // data: this.pushVentasSemana.Accesorios,
+            backgroundColor: '#007bff'
+          },
+          {
+            label: 'Repuestos',
+            data: this.datosGananciasSemanaLocal.Repuestos,
+            // data: this.pushVentasSemana.Repuestos,
+            backgroundColor: '#28a745'
+          },
+          {
+            label: 'Celulares',
+            data: this.datosGananciasSemanaLocal.Celulares,
+            // data: this.pushVentasSemana.Celulares,
+            backgroundColor: '#17a2b8'
+          },
+          {
+            label: 'Servicio',
+            data: this.datosGananciasSemanaLocal.Servicio,
+            // data: this.pushVentasSemana.Servicio,
+            backgroundColor: '#ffc107'
+          },
+          {
+            label: 'Herramientas',
+            data: this.datosGananciasSemanaLocal.Herramientas,
+            // data: this.pushVentasSemana.Herramientas,
+            backgroundColor: '#dc3545'
+          }
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  // funcion para generar el grafico anual actual para las ganancias
+  generarGraficoGananciasAnual() {
+    this.graficoGananciasAnualChart = new Chart(this.graficoGananciasAnualCanvas.nativeElement, {
+      type: 'line',
+      data: {
+        labels: [
+          'Enero',
+          'Febrero',
+          'Marzo',
+          'Abril',
+          'Mayo',
+          'Junio',
+          'Julio',
+          'Agosto',
+          'Septiembre',
+          'Octubre',
+          'Noviembre',
+          'Diciembre'
+        ],
+        datasets: [
+          {
+            label: 'Accesorios',
+            data: this.datosGananciasAnualesLocal.Accesorios,
+            borderColor: '#007bff',
+            fill: false
+          },
+          {
+            label: 'Repuestos',
+            data: this.datosGananciasAnualesLocal.Repuestos,
+            borderColor: '#28a745',
+            fill: false
+          },
+          {
+            label: 'Celulares',
+            data: this.datosGananciasAnualesLocal.Celulares,
+            borderColor: '#17a2b8',
+            fill: false
+          },
+          {
+            label: 'Servicio',
+            data: this.datosGananciasAnualesLocal.Servicio,
+            borderColor: '#ffc107',
+            fill: false
+          },
+          {
+            label: 'Herramientas',
+            data: this.datosGananciasAnualesLocal.Herramientas,
+            borderColor: '#dc3545',
+            fill: false
+          }
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  // funcion para generar el grafico del dia actual para las ganancias
+  generarGraficoGananciasDiario() {
+    this.graficoGananciasDiaChart = new Chart(this.graficoGananciasDiaCanvas.nativeElement, {
+
+      type: 'doughnut',
+      data: {
+        labels: [
+          'Accesorios',
+          'Repuestos',
+          'Celulares',
+          'Servicio',
+          'Herramientas'
+        ],
+        datasets: [{
+          data: this.datosGananciasDiarioLocal,
           backgroundColor: [
             '#007bff',
             '#28a745',

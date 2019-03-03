@@ -8,92 +8,185 @@
 </nav>
 
 <body>
-  <div class="container pt-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">
-          <div class="card bg-danger bounceIn text-white text-center p-3 mt-3 elevated">
-            <div class="card-header text-center">
-              <div class="card-icon elevated text-center text-dark card bg-warning bounceIn p-1">
-                <i style="font-size: 2rem;" class="fas fa-calendar-day m-3"></i>
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Ventas">
+      <div class="container pt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <div class="card bg-danger bounceIn text-white text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-dark card bg-warning bounceIn p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar-day m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ventas del Día.</p>
+                  <footer class="text-white">
+                    <b>
+                      C${{totalVentasDia}}
+                    </b>
+                  </footer>
+                </blockquote>
               </div>
             </div>
-            <blockquote class="blockquote mb-0">
-              <p>Ventas del Día.</p>
-              <footer class="text-white">
-                <b>
-                  C${{totalVentasDia}}
-                </b>
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-        <div class="col-sm">
-          <div class="card bg-primary bounceIn text-white text-center p-3 mt-3 elevated">
-            <div class="card-header text-center">
-              <div class="card-icon elevated text-center text-light card bg-secondary p-1">
-                <i style="font-size: 2rem;" class="fas fa-calendar-week m-3"></i>
+            <div class="col-sm">
+              <div class="card bg-primary bounceIn text-white text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-light card bg-secondary p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar-week m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ventas Semanales.</p>
+                  <footer class="text-white">
+                    <b>
+                      C${{totalVentasSemana}}
+                    </b>
+                  </footer>
+                </blockquote>
               </div>
             </div>
-            <blockquote class="blockquote mb-0">
-              <p>Ventas Semanales.</p>
-              <footer class="text-white">
-                <b>
-                  C${{totalVentasSemana}}
-                </b>
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-        <div class="col-sm">
-          <div class=" text-dark card bg-warning bounceIn text-center p-3 mt-3 elevated">
-            <div class="card-header text-center">
-              <div class="card-icon elevated text-center text-light card bg-dark p-1">
-                <i style="font-size: 2rem;" class="fas fa-calendar m-3"></i>
+            <div class="col-sm">
+              <div class=" text-dark card bg-warning bounceIn text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-light card bg-dark p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ventas del Año.</p>
+                  <footer>
+                    <b class="text-dark fixe-bottom">
+                      C${{totalVentasAnual}}
+                    </b>
+                  </footer>
+                </blockquote>
               </div>
             </div>
-            <blockquote class="blockquote mb-0">
-              <p>Ventas del Año.</p>
-              <footer>
-                <b class="text-dark fixe-bottom">
-                  C${{totalVentasAnual}}
-                </b>
-              </footer>
-            </blockquote>
+          </div>
+          <div class="mt-4 mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Porcentajes del total de ventas del Día.
+                </div>
+              </mat-card-title>
+              <canvas #graficoVentasDiaCanvas></canvas>
+            </mat-card>
+          </div>
+          <div class=" mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Totales de Ventas en la Semana.
+                </div>
+                <canvas #graficoVentasSemanaCanvas></canvas>
+              </mat-card-title>
+            </mat-card>
+          </div>
+          <div class=" mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Totales de Ventas en el Año.
+                </div>
+                <canvas #graficoVentasAnualCanvas></canvas>
+              </mat-card-title>
+            </mat-card>
+          </div>
+          <app-tabla-clientes></app-tabla-clientes>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Ganancias">
+      <div class="container pt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <div class="card bg-danger bounceIn text-white text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-dark card bg-warning bounceIn p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar-day m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ganancias del Día.</p>
+                  <footer class="text-white">
+                    <b>
+                      C${{totalGananciasDia}}
+                    </b>
+                  </footer>
+                </blockquote>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card bg-primary bounceIn text-white text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-light card bg-secondary p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar-week m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ganancias Semanales.</p>
+                  <footer class="text-white">
+                    <b>
+                      C${{totalGananciasSemana}}
+                    </b>
+                  </footer>
+                </blockquote>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class=" text-dark card bg-warning bounceIn text-center p-3 mt-3 elevated">
+                <div class="card-header text-center">
+                  <div class="card-icon elevated text-center text-light card bg-dark p-1">
+                    <i style="font-size: 2rem;" class="fas fa-calendar m-3"></i>
+                  </div>
+                </div>
+                <blockquote class="blockquote mb-0">
+                  <p>Ganancias del Año.</p>
+                  <footer>
+                    <b class="text-dark fixe-bottom">
+                      C${{totalGananciasAnual}}
+                    </b>
+                  </footer>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Porcentajes del total de Ganancias del Día.
+                </div>
+              </mat-card-title>
+              <canvas #graficoGananciasDiaCanvas></canvas>
+            </mat-card>
+          </div>
+          <div class=" mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Totales de Ganancias en la Semana.
+                </div>
+                <canvas #graficoGananciasSemanaCanvas></canvas>
+              </mat-card-title>
+            </mat-card>
+          </div>
+          <div class=" mb-4">
+            <mat-card class="elevated bounceIn">
+              <mat-card-title>
+                <div class="text-dark">
+                  Totales de Ganancias en el Año.
+                </div>
+                <canvas #graficoGananciasAnualCanvas></canvas>
+              </mat-card-title>
+            </mat-card>
           </div>
         </div>
       </div>
-      <div class="mt-4 mb-4">
-        <mat-card class="elevated bounceIn">
-          <mat-card-title>
-            <div class="text-dark">
-              Porcentajes del total de ventas del Día.
-            </div>
-          </mat-card-title>
-          <canvas #graficoPastelCanvas></canvas>
-        </mat-card>
-      </div>
-      <div class=" mb-4">
-        <mat-card class="elevated bounceIn">
-          <mat-card-title>
-            <div class="text-dark">
-              Totales de Ventas en la Semana.
-            </div>
-            <canvas #graficoBarraCanvas></canvas>
-          </mat-card-title>
-        </mat-card>
-      </div>
-      <div class=" mb-4">
-        <mat-card class="elevated bounceIn">
-          <mat-card-title>
-            <div class="text-dark">
-              Totales de Ventas en el Año.
-            </div>
-            <canvas #graficoLineaCanvas></canvas>
-          </mat-card-title>
-        </mat-card>
-      </div>
-      <app-tabla-clientes></app-tabla-clientes>
-    </div>
-  </div>
+    </mat-tab>
+  </mat-tab-group>
 </body>
