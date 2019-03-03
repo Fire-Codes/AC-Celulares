@@ -9,6 +9,15 @@ import { Chart } from 'chart.js';
 // importacoin del servicio
 import { ServicioService } from '../../servicios/servicio.service';
 
+// se importa los componentes de la base de datos
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+// importacion de las interfaces
+import { VentasMensuales } from './../../interfaces/ventas/mes/ventas-mensuales';
+import { VentasDiarias } from './../../interfaces/ventas/dia/ventas-diarias';
+import { TipoProductos } from './../../interfaces/ventas/tipo-productos';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -38,12 +47,133 @@ export class DashboardComponent implements OnInit {
   graficoBarraChart: any;
   graficoLineaChart: any;
 
+  pushVentasSemana: TipoProductos;
+  pushVentasMensuales: VentasMensuales;
+  pushVentasDiarias: VentasDiarias;
+
 
 
   constructor(
     public nav: NavsideComponent,
-    public servicio: ServicioService
+    public servicio: ServicioService,
+    public fs: AngularFirestore,
+    public db: AngularFireDatabase
   ) {
+
+    this.pushVentasSemana = {
+      TotalVentas: 0,
+      Accesorios: [0, 0, 0, 0, 0, 0, 0],
+      Repuestos: [0, 0, 0, 0, 0, 0, 0],
+      Celulares: [0, 0, 0, 0, 0, 0, 0],
+      Servicio: [0, 0, 0, 0, 0, 0, 0],
+      Herramientas: [0, 0, 0, 0, 0, 0, 0]
+    };
+    this.pushVentasMensuales = {
+      TotalVentasAnuales: 0,
+      Enero: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Febrero: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Marzo: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Abril: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Mayo: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Junio: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Julio: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Agosto: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Septiembre: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Octubre: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Noviembre: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      Diciembre: {
+        TotalVentas: 0,
+        Accesorios: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Repuestos: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Celulares: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Servicio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        Herramientas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    };
+    this.pushVentasDiarias = {
+      Accesorios: 0,
+      Repuestos: 0,
+      Celulares: 0,
+      Servicio: 0,
+      Herramientas: 0
+    };
 
     this.nav.mostrarNav = true;
 
@@ -63,6 +193,10 @@ export class DashboardComponent implements OnInit {
         break;
     }
 
+    // se muestra el numero de la semana
+    console.warn('El numero de Semana actual es: ' + this.servicio.extraerNumeroSemana());
+
+
     // mostrar el navside
     this.nav.mostrarNav = true;
 
@@ -71,6 +205,75 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    const tiempo = new Date();
+
+    // se suben los datos a firestore
+    if (this.servicio.extraerNumeroSemana() === 52) {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
+        });
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushVentasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushVentasSemana);
+        });
+    } else if (this.servicio.extraerNumeroSemana() === 53) {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
+        });
+    } else {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana);
+        });
+    }
+
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<VentasMensuales>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales)
+      .then(res => {
+        // tslint:disable-next-line:max-line-length
+        this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales);
+      });
+
+    if ((tiempo.getMonth() === 11) && (tiempo.getDate() === 31)) {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias);
+        });
+    } else if (((tiempo.getMonth() === 2) && (tiempo.getDate() === 28)) || ((tiempo.getMonth() === 2) && (tiempo.getDate() === 29))) {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Marzo-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+        });
+    } else if ((tiempo.getDate() === 30) || (tiempo.getDate() === 31)) {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+        });
+    } else {
+      // tslint:disable-next-line:max-line-length
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias)
+        .then(res => {
+          // tslint:disable-next-line:max-line-length
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias);
+        });
+    }
+
     this.graficoPastelChart = new Chart(this.graficoPastelCanvas.nativeElement, {
 
       type: 'doughnut',
@@ -83,8 +286,7 @@ export class DashboardComponent implements OnInit {
           'Herramientas'
         ],
         datasets: [{
-          label: 'Lunes',
-          data: [10, 20, 30, 40, 50],
+          data: this.pushVentasDiarias,
           backgroundColor: [
             '#007bff',
             '#28a745',
@@ -107,7 +309,7 @@ export class DashboardComponent implements OnInit {
     this.graficoBarraChart = new Chart(this.graficoBarraCanvas.nativeElement, {
       type: 'bar',
       data: {
-        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+        labels: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
         datasets: [
           {
             label: 'Accesorios',

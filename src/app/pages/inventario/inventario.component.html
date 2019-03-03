@@ -336,12 +336,10 @@
           <button (click)='openVerticallyCentered(agregarProducto,producto)' class="elevated text-center bg-info mr-3"
             matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
-          <!--<button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab *ngIf="hayDatos">
-            <mat-icon>archive</mat-icon>
-          </button>-->
-          <!--<button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab *ngIf="hayDatos">
+          <button (click)="imprimirInventario()" class="elevated text-center bg-info"
+            matTooltip="Imprimir Inventario o Exportar a PDF" mat-fab *ngIf="hayDatos">
             <mat-icon>print</mat-icon>
-          </button>-->
+          </button>
         </div>
         <mat-form-field class="ml-4" *ngIf="hayDatos">
           <input matInput color="warn" (keyup)="applyFilter()" name="valorBusqueda" [(ngModel)]="valorBusqueda"

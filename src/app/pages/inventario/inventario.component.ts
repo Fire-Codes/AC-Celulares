@@ -111,7 +111,7 @@ export class InventarioComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.applyFilter();
-      console.log(this.dataSource.data.length);
+      this.servicio.inventarioImprimir = this.dataSource.data;
     });
   }
 
@@ -143,6 +143,11 @@ export class InventarioComponent implements OnInit {
           });
       });
     });*/
+  }
+
+  // funcion para imprimir el inventario
+  imprimirInventario() {
+    this.servicio.navegar('imprimirInventario');
   }
 
   // funcion para buscar producto en la tabla
