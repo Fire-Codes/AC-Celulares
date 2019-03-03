@@ -8,4 +8,5 @@ export interface ProductoFactura {
     TotalCordoba: number;
     TotalDolar: number;
     Marca: string;
+    Categoria: string;
 }

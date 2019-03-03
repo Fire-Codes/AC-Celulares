@@ -86,7 +86,7 @@
           </tr>
         </table>
         <div class="row">
-          <div class="col-10">
+          <div class="col-12">
             <mat-form-field style="width: 100%;">
               <mat-select placeholder="Categoria" required [(ngModel)]="Categoria" name="Categoria">
                 <mat-option *ngFor="let categoria of categorias" [value]="categoria">
@@ -95,12 +95,12 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-2">
+          <!--<div class="col-2">
             <button mat-icon-button matTooltip="Agregar una Nueva Categoria" class="text-success mx-auto"
               (click)='openVerticallyCentered(agregarCategorias, producto)'>
               <mat-icon>add_circle</mat-icon>
             </button>
-          </div>
+          </div>-->
         </div>
       </form>
     </div>
@@ -392,7 +392,7 @@
 
         <!-- Categoria Column -->
         <ng-container matColumnDef="Categoria">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Catégoria </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
           <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Categoria}} </td>
         </ng-container>
 
