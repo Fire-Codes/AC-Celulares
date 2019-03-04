@@ -26,10 +26,12 @@
       <div class="form-group">
         <label class="text-warning">Apellidos</label>
         <div class="input required-group">
-          <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control" placeholder="Primer Apellido"
-            name="primerApellido" [(ngModel)]="primerApellido" (keyup)="toUpper()" required>
-          <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control" placeholder="Segundo Apellido"
-            name="segundoApellido" [(ngModel)]="segundoApellido" (keyup)="toUpper()" required>
+          <input required type="text" aria-label="Primer Apellido" class="mb-3 form-control"
+            placeholder="Primer Apellido" name="primerApellido" [(ngModel)]="primerApellido" (keyup)="toUpper()"
+            required>
+          <input required type="text" aria-label="Segundo Apellido" class="mb-3 form-control"
+            placeholder="Segundo Apellido" name="segundoApellido" [(ngModel)]="segundoApellido" (keyup)="toUpper()"
+            required>
         </div>
       </div>
     </div>
@@ -89,7 +91,7 @@
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
         <mat-select required placeholder="Departamento" name="departamento" [(ngModel)]="departamento">
-          <mat-option *ngFor="let departamento of departamentos" value="departamento">
+          <mat-option *ngFor="let departamento of departamentos" [value]="departamento">
             {{departamento}}
           </mat-option>
         </mat-select>
@@ -98,8 +100,10 @@
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <mat-form-field style="width: 100%;">
         <mat-select required placeholder="Municipio" name="municipio" [(ngModel)]="municipio">
-          <mat-optgroup class="text-primary" *ngFor="let departamento of departamentosMunicipios" [label]="departamento.NombreDepartamento">
-            <mat-option class="text-secondary" *ngFor="let municipio of departamento.MunicipiosDepartamento" [value]="municipio.NombreMunicipio">
+          <mat-optgroup class="text-primary" *ngFor="let departamento of departamentosMunicipios"
+            [label]="departamento.NombreDepartamento">
+            <mat-option class="text-secondary" *ngFor="let municipio of departamento.MunicipiosDepartamento"
+              [value]="municipio.NombreMunicipio">
               {{municipio.NombreMunicipio}}
             </mat-option>
           </mat-optgroup>

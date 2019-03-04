@@ -1,25 +1,23 @@
-<div class="jumbotron hero-technology full-screen-hero" style="width: auto; height: auto;">
-  <div class="box">
-    <div id="form_login">
-      <div class="card mb-4 mr-4 elevated bounceIn" style="width: 18rem;">
+<div class="d-flex justify-content-center align-items-center jumbotron hero-technology full-screen-hero"
+  style="width: auto; height: auto;">
+  <div class="row d-flex justify-content-center align-items-center">
+    <div *ngIf="tienda1" class="col-sm-6 col-md-6 col-lg-6">
+      <div class="card mx-auto shadow-lg bg-white bounceIn" style="width: 18rem;">
         <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
         <div class="card-body text-center">
           <h5 class="card-title">AC Celulares</h5>
-          <a href="#" class="btn btn-warning elevated">Seleccionar <i class="fas fa-arrow-right"></i></a>
+          <button (click)="seleccionarTienda('Tienda Principal')" class="btn btn-warning elevated">Seleccionar <i
+              class="fas fa-arrow-right"></i></button>
         </div>
       </div>
-      <div class="card mb-4 mr-4 elevated bounceIn" style="width: 18rem;">
+    </div>
+    <div *ngIf="tienda2" class="col-sm-6 col-md-6 col-lg-6">
+      <div class="card mx-auto shadow-lg bg-white bounceIn" style="width: 18rem;">
         <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
         <div class="card-body text-center">
           <h5 class="card-title">AC Celulares 2</h5>
-          <a href="#" class="btn btn-warning elevated">Seleccionar <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="card mb-4 mr-4 elevated bounceIn" style="width: 18rem;">
-        <img src="../../../assets/Login/mainBackgroundLogin.jpg" class="card-img-top" alt="...">
-        <div class="card-body text-center">
-          <h5 class="card-title">ACR Motos</h5>
-          <a href="#" class="btn btn-warning elevated">Seleccionar <i class="fas fa-arrow-right"></i></a>
+          <button (click)="seleccionarTienda('Tienda 2')" class="btn btn-warning elevated">Seleccionar <i
+              class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </div>

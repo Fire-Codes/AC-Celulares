@@ -6,6 +6,13 @@
 
 <body>
   <!--Comienzan los Modals-->
+
+  <!--Venta Rapida modal-->
+  <ng-template #ventaRapida let-modal>
+    <app-venta-rapida [producto]="producto" [cliente]="null" (cerrarModalVentaRapida)="modal.dismiss('Cross click')">
+    </app-venta-rapida>
+  </ng-template>
+
   <!--Agregar nuevo producto modal-->
   <ng-template #agregarProducto let-modal>
     <div class="modal-header bg-info">
@@ -50,12 +57,14 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Descripción" required [(ngModel)]="Descripcion" name="Descripcion"></textarea>
+                <textarea matInput placeholder="Descripción" required [(ngModel)]="Descripcion"
+                  name="Descripcion"></textarea>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Existencia" matInput required [(ngModel)]="Existencia" name="Existencia">
+                <input type="number" placeholder="Existencia" matInput required [(ngModel)]="Existencia"
+                  name="Existencia">
               </mat-form-field>
             </td>
           </tr>
@@ -65,7 +74,8 @@
           <tr>
             <td>
               <mat-form-field>
-                <input type="number" placeholder="Precio de Compra" matInput required [(ngModel)]="PCompra" name="PCompra">
+                <input type="number" placeholder="Precio de Compra" matInput required [(ngModel)]="PCompra"
+                  name="PCompra">
               </mat-form-field>
             </td>
             <td>
@@ -76,7 +86,7 @@
           </tr>
         </table>
         <div class="row">
-          <div class="col-10">
+          <div class="col-12">
             <mat-form-field style="width: 100%;">
               <mat-select placeholder="Categoria" required [(ngModel)]="Categoria" name="Categoria">
                 <mat-option *ngFor="let categoria of categorias" [value]="categoria">
@@ -85,11 +95,12 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-2">
-            <button mat-icon-button matTooltip="Agregar una Nueva Categoria" class="text-success mx-auto" (click)='openVerticallyCentered(agregarCategorias, producto)'>
+          <!--<div class="col-2">
+            <button mat-icon-button matTooltip="Agregar una Nueva Categoria" class="text-success mx-auto"
+              (click)='openVerticallyCentered(agregarCategorias, producto)'>
               <mat-icon>add_circle</mat-icon>
             </button>
-          </div>
+          </div>-->
         </div>
       </form>
     </div>
@@ -118,7 +129,8 @@
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input type="number" matInput placeholder="Nueva Cantidad" [(ngModel)]="producto.Existencia" name="producto.Existencia">
+                <input type="number" matInput placeholder="Cantidad a Agregar" [(ngModel)]="nuevaExistencia"
+                  name="nuevaExistencia">
               </mat-form-field>
             </td>
           </tr>
@@ -127,7 +139,8 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); editarProductos()">Agregar</button>
+      <button type="button" class="btn btn-success"
+        (click)="modal.close('Close click'); agregarExistencia()">Agregar</button>
     </div>
   </ng-template>
   <!--Agregar Categorias Modal-->
@@ -145,7 +158,8 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-success" (click)="modal.close('Close click'); agregarCategoria()">Agregar</button>
+      <button type="button" class="btn btn-success"
+        (click)="modal.close('Close click'); agregarCategoria()">Agregar</button>
     </div>
   </ng-template>
 
@@ -218,7 +232,8 @@
       <p class="text-light">¿Estás seguro que deseas eliminar el producto {{producto.Id}}</p>
     </div>
     <div class="modal-footer bg-danger">
-      <button type="button" class="btn btn-light" (click)="modal.close('Close click'); eliminarProductos()">Eliminar</button>
+      <button type="button" class="btn btn-light"
+        (click)="modal.close('Close click'); eliminarProductos()">Eliminar</button>
       <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
@@ -233,11 +248,20 @@
     </div>
     <div class="modal-body">
       <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="ID" disabled [(ngModel)]="producto.Id" name="producto.Id">
-        </mat-form-field>
-
         <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="ID" disabled [(ngModel)]="producto.Id" name="producto.Id">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input type="number" matInput placeholder="Existencias" [(ngModel)]="producto.Existencia"
+                  name="producto.Existencia">
+              </mat-form-field>
+            </td>
+          </tr>
           <tr>
             <td>
               <mat-form-field class="example-full-width">
@@ -268,7 +292,8 @@
 
         <p>
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descripción" [(ngModel)]="producto.Descripcion" name="producto.Descripcion"></textarea>
+            <textarea matInput placeholder="Descripción" [(ngModel)]="producto.Descripcion"
+              name="producto.Descripcion"></textarea>
           </mat-form-field>
         </p>
 
@@ -276,12 +301,14 @@
           <tr>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Compra" [(ngModel)]="producto.PCompra" name="producto.PCompra">
+                <input type="number" matInput placeholder="Precio de Compra" [(ngModel)]="producto.PCompra"
+                  name="producto.PCompra">
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Precio de Venta" [(ngModel)]="producto.PVenta" name="producto.PVenta">
+                <input type="number" matInput placeholder="Precio de Venta" [(ngModel)]="producto.PVenta"
+                  name="producto.PVenta">
               </mat-form-field>
             </td>
           </tr>
@@ -289,55 +316,16 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-warning" (click)="editarProductos(); modal.close('Close click')">Actualizar</button>
+      <button type="button" class="btn btn-warning"
+        (click)="editarProductos(); modal.close('Close click')">Actualizar</button>
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
     </div>
   </ng-template>
 
   <!--Reservar Producto Modal-->
   <ng-template #reservarProducto let-modal>
-    <div class="modal-header bg-secondary">
-      <h4 class="modal-title text-light">Reservar Producto</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body bg-secondary">
-      <form class="example-form">
-        <table class="example-full-width text-light" cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input matInput placeholder="Clave de Producto" disabled value="PROD00001">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input type="number" matInput placeholder="Cantidad de productos a reservar">
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <input type="text" matInput placeholder="Buscar Cliente">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width m-2">
-                <span matPrefix>C$ &nbsp;</span>
-                <input type="text" matInput placeholder="Cuota de reserva">
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
-    <div class="modal-footer bg-secondary">
-      <button type="button" class="btn btn-warning" (click)="modal.close('Close click')">Agregar Nuevo Cliente</button>
-      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-      <button type="button" class="btn btn-primary" (click)="modal.close('Close click')">Reservar</button>
-    </div>
+    <app-reservar-producto (cerrarModalVentaRapida)="modal.dismiss('Cross click')" [cliente]="null"
+      [producto]="producto"></app-reservar-producto>
   </ng-template>
 
   <!--Main Content-->
@@ -348,15 +336,14 @@
           <button (click)='openVerticallyCentered(agregarProducto,producto)' class="elevated text-center bg-info mr-3"
             matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
-          <!--<button class="elevated text-center bg-info mr-3" matTooltip="Productos Reservados" mat-fab *ngIf="hayDatos">
-            <mat-icon>archive</mat-icon>
-          </button>-->
-          <!--<button class="elevated text-center bg-info" matTooltip="Exportar Inventario a PDF" mat-fab *ngIf="hayDatos">
+          <button (click)="imprimirInventario()" class="elevated text-center bg-info"
+            matTooltip="Imprimir Inventario o Exportar a PDF" mat-fab *ngIf="hayDatos">
             <mat-icon>print</mat-icon>
-          </button>-->
+          </button>
         </div>
         <mat-form-field class="ml-4" *ngIf="hayDatos">
-          <input matInput color="warn" (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
+          <input matInput color="warn" (keyup)="applyFilter()" name="valorBusqueda" [(ngModel)]="valorBusqueda"
+            placeholder="Buscar Producto">
         </mat-form-field>
       </div>
       <table *ngIf="hayDatos; else noHayDatos" mat-table [dataSource]="dataSource" matSort class="table-hover">
@@ -386,14 +373,14 @@
         </ng-container>
 
         <!-- Precio de Compra Column -->
-        <ng-container matColumnDef="pCompra">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
+        <ng-container matColumnDef="PCompra">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> PCompra </th>
           <td mat-cell *matCellDef="let producto" class="text-center text-primary"> {{producto.PCompra}} </td>
         </ng-container>
 
         <!-- Precio de Venta Column -->
-        <ng-container matColumnDef="pVenta">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
+        <ng-container matColumnDef="PVenta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> PVenta </th>
           <td mat-cell *matCellDef="let producto" class="text-center text-success"> {{producto.PVenta}} </td>
         </ng-container>
 
@@ -405,7 +392,7 @@
 
         <!-- Categoria Column -->
         <ng-container matColumnDef="Categoria">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Catégoria </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
           <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Categoria}} </td>
         </ng-container>
 
@@ -414,20 +401,28 @@
           <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
           <td mat-cell *matCellDef="let producto" class="text-center">
             <div class="example-button-row">
-              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success" (click)='openVerticallyCentered(agregarExistencias, producto)'>
+              <button mat-icon-button matTooltip="Agregar Existencia" class="text-success"
+                (click)='openVerticallyCentered(agregarExistencias, producto)'>
                 <mat-icon>add_circle</mat-icon>
               </button>
-              <button mat-icon-button color="warn" matTooltip="Eliminar Producto" (click)='openVerticallyCentered(eliminarProducto, producto)'>
+              <button mat-icon-button color="warn" matTooltip="Eliminar Producto"
+                (click)='openVerticallyCentered(eliminarProducto, producto)'>
                 <mat-icon>delete</mat-icon>
               </button>
-              <button mat-icon-button color="accent" matTooltip="Editar Producto" (click)='openVerticallyCentered(editarProducto, producto)'>
+              <button mat-icon-button color="accent" matTooltip="Editar Producto"
+                (click)='openVerticallyCentered(editarProducto, producto)'>
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button class="text-primary" matTooltip="Ver Producto" (click)='openVerticallyCentered(verProducto, producto)'>
+              <button mat-icon-button class="text-primary" matTooltip="Ver Producto"
+                (click)='openVerticallyCentered(verProducto, producto)'>
                 <mat-icon>remove_red_eye</mat-icon>
               </button>
-              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto" (click)='openVerticallyCentered(reservarProducto, producto)'>
-                <mat-icon>archive</mat-icon>
+              <button mat-icon-button class="text-secondary" matTooltip="Reservar Producto"
+                (click)='openVerticallyCentered(reservarProducto, producto)'>
+                <mat-icon>bookmark</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, producto)'>
+                <mat-icon style="color: orange;">offline_bolt</mat-icon>
               </button>
             </div>
           </td>
@@ -437,7 +432,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
         <tr mat-row *matRowDef="let producto; columns: displayedColumns;"></tr>
       </table>
-      <mat-paginator *ngIf="hayDatos" class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+      <mat-paginator *ngIf="hayDatos" class="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons>
+      </mat-paginator>
       <ng-template #noHayDatos>
         <div class="jumbotron">
           <div class="display-3 text-center">
