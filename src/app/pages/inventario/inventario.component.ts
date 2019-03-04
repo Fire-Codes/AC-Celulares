@@ -95,7 +95,7 @@ export class InventarioComponent implements OnInit {
         this.categorias = documento.payload.data().Categorias;
         this.hayDatos = this.totalProductos <= 0 ? false : true;
         this.contador = this.totalProductos <= 0 ? 0 : documento.payload.data().Contador;
-        console.log(this.contador + 1);
+        // console.log(this.contador + 1);
       });
 
     // se extrae la cantidad general de productos de las 3 tiendas
@@ -137,9 +137,9 @@ export class InventarioComponent implements OnInit {
       datos.docs.forEach((dato: QueryDocumentSnapshot<Producto>) => {
         this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${dato.data().Id}`)
           .update({ PCompra: parseInt(dato.data().PCompra.toString(), 2) }).then(res => {
-            console.warn(`Producto ${dato.data().Id} actualizado!`);
+            // console.warn(`Producto ${dato.data().Id} actualizado!`);
           }).catch(err => {
-            console.error(`Producto ${dato.data().Id} error al actualizar!: ${err}`);
+            // console.error(`Producto ${dato.data().Id} error al actualizar!: ${err}`);
           });
       });
     });*/
@@ -172,10 +172,10 @@ export class InventarioComponent implements OnInit {
     this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
       .snapshotChanges().subscribe((producto: Action<DocumentSnapshot<Producto>>) => {
         anteriorExistencia = producto.payload.data().Existencia;
-        console.log(anteriorExistencia);
+        // console.log(anteriorExistencia);
       });
     setTimeout(() => {
-      console.log(this.nuevaExistencia);
+      // console.log(this.nuevaExistencia);
       this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
         .update({ Existencia: anteriorExistencia + this.nuevaExistencia }).then(resp => {
           this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
@@ -213,18 +213,18 @@ export class InventarioComponent implements OnInit {
           'Cantidad de Productos': totalproductos,
           Contador: totalproductos <= 0 ? 0 : this.contador
         }).then(resp => {
-          console.warn('Cantidad de productos actualizada correctamente' + resp);
+          // console.warn('Cantidad de productos actualizada correctamente' + resp);
         }).catch(err => {
-          console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+          // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
         });
 
         // se actualizan los productos generales de las 3 tiendas
         this.fs.doc<ControlTienda>('AC Celulares/Control').update({
           'Cantidad Total de Productos': totalGeneralProductos
         }).then(resp => {
-          console.warn('Cantidad de productos actualizada correctamente' + resp);
+          // console.warn('Cantidad de productos actualizada correctamente' + resp);
         }).catch(err => {
-          console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+          // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
         });
 
       }).catch(err => {
@@ -273,19 +273,19 @@ export class InventarioComponent implements OnInit {
         'Cantidad de Productos': totalproductos,
         Contador: contador
       }).then(resp => {
-        console.warn('Cantidad de productos actualizada correctamente' + resp);
+        // console.warn('Cantidad de productos actualizada correctamente' + resp);
         this.reiniciarInputs();
       }).catch(err => {
-        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
 
       // se actualiza el total general de productos de las 3 tiendas
       this.fs.doc<ControlTienda>('AC Celulares/Control').update({
         'Cantidad Total de Productos': totalGeneralProductos
       }).then(resp => {
-        console.warn('Cantidad de productos actualizada correctamente' + resp);
+        // console.warn('Cantidad de productos actualizada correctamente' + resp);
       }).catch(err => {
-        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
 
     }).catch(err => {
@@ -315,10 +315,10 @@ export class InventarioComponent implements OnInit {
         'Cantidad de Productos': totalproductos,
         Contador: contador
       }).then(resp => {
-        console.warn('Cantidad de productos actualizada correctamente' + resp);
+        // console.warn('Cantidad de productos actualizada correctamente' + resp);
         this.reiniciarInputs();
       }).catch(err => {
-        console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
 
       // se actualiza el total general de productos de las 3 tiendas
@@ -327,7 +327,7 @@ export class InventarioComponent implements OnInit {
       });
 
     }).catch(err => {
-      console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+      // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
     });
   }
 

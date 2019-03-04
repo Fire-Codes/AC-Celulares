@@ -48,7 +48,7 @@ export class SeleccionarProductoComponent implements OnInit {
       this.productos = new MatTableDataSource(documento);
       this.productos.sort = this.sort;
       this.productos.paginator = this.paginator;
-      console.log(this.productos.data.length);
+      // console.log(this.productos.data.length);
     });
   }
 

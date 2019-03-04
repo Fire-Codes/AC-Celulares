@@ -191,7 +191,8 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <mat-form-field style="width: 100%;">
-          <input matInput type="number" placeholder="Productos Reservados Actualmente" name="cliente.CantidadReservas" [(ngModel)]="cliente.CantidadReservas" disabled>
+          <input matInput type="number" placeholder="Productos Reservados Actualmente" name="cliente.CantidadReservas"
+            [(ngModel)]="cliente.CantidadReservas" disabled>
         </mat-form-field>
       </div>
     </div>
@@ -315,15 +316,15 @@
               (click)='openVerticallyCentered(editarCliente, cliente)'>
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, cliente)'>
+            <!--<button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, cliente)'>
               <mat-icon style="color: orange;">offline_bolt</mat-icon>
-            </button>
+            </button>-->
             <button mat-icon-button color="warn" matTooltip="Eliminar Cliente"
               (click)='openVerticallyCentered(eliminarCliente, cliente)'>
               <mat-icon>delete</mat-icon>
             </button>
             <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras"
-              (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+              (click)='verHistorialComprasCliente(cliente)'>
               <mat-icon>history</mat-icon>
             </button>
           </div>

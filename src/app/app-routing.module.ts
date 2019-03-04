@@ -19,6 +19,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
 import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
 import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
+import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'sistemaApartado', component: ProductosReservadosComponent },
   { path: 'imprimirFactura', component: ImprimirFacturaComponent },
   { path: 'imprimirInventario', component: ImprimirInventarioComponent },
+  { path: 'detallesCompra', component: DetallesCompraComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
