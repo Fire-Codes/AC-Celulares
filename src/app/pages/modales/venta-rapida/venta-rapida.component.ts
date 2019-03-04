@@ -1,4 +1,3 @@
-import { FacturarComponent } from './../../facturar/facturar.component';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -14,15 +13,30 @@ import { ServicioService } from 'src/app/servicios/servicio.service';
 // importacion del angular NgBootstrapModule
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-// importacion de los componentes de la base de datos
-import { AngularFirestore, Action, DocumentSnapshot } from 'angularfire2/firestore';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { SeleccionarProductoComponent } from '../seleccionar-producto/seleccionar-producto.component';
+// se importa el componente de matsort y mattabledatasource
 import { MatTableDataSource, MatSort } from '@angular/material';
+
+// se importa el componente de factura
+import { FacturarComponent } from './../../facturar/facturar.component';
+
+// se importa el componente para imprimir factura
+import { ImprimirFacturaComponent } from '../../impresiones/imprimir-factura/imprimir-factura.component';
+
+// se importa el componente para seleccionar los productos
+import { SeleccionarProductoComponent } from '../seleccionar-producto/seleccionar-producto.component';
+
+// se importan las interfaces
+import { TipoProductos } from 'src/app/interfaces/ventas/tipo-productos';
+import { VentasDiarias } from 'src/app/interfaces/ventas/dia/ventas-diarias';
 import { ControlTienda } from 'src/app/interfaces/control';
 import { HistorialCompra } from 'src/app/interfaces/historial-compra';
 import { Factura } from 'src/app/interfaces/factura';
-import { ImprimirFacturaComponent } from '../../impresiones/imprimir-factura/imprimir-factura.component';
+
+// importacion de los componentes de la base de datos
+import { AngularFirestore, Action, DocumentSnapshot } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+
 
 
 @Component({
@@ -97,6 +111,36 @@ export class VentaRapidaComponent implements OnInit {
   // variable que se enviara al componente de imprimir la factura a un dado caso que asi saea
   facturaImprimir: Factura = null;
 
+  // variables que contendra los datos del grafico semanal
+  public datosVentasSemanaFirestore: TipoProductos;
+  public datosVentasSemanaLocal: TipoProductos;
+  public totalVentasSemana = 0;
+
+  // variables que contendran los datos del grafico anual
+  public datosVentasAnualFirestore: TipoProductos;
+  public datosVentasAnualesLocal: TipoProductos;
+  public totalVentasAnual = 0;
+
+  // variables que contendran los datos del grafico diario
+  public datosVentasDiarioFirestore: VentasDiarias;
+  public datosVentasDiarioLocal: number[];
+  public totalVentasDia = 0;
+
+  // variable que contendra los datos del grafico de las ganancias semanales
+  public datosGananciasSemanaFirestore: TipoProductos;
+  public datosGananciasSemanaLocal: TipoProductos;
+  public totalGananciasSemana = 0;
+
+  // variables que contendra los datos del grafico de las ganancias anuales
+  public datosGananciasAnualFirestore: TipoProductos;
+  public datosGananciasAnualesLocal: TipoProductos;
+  public totalGananciasAnual = 0;
+
+  // variables que contendran los datlos del grafico de ganancias diarias
+  public datosGananciasDiarioFirestore: VentasDiarias;
+  public datosGananciasDiarioLocal: number[];
+  public totalGananciasDia = 0;
+
   constructor(
     public servicio: ServicioService,
     public fs: AngularFirestore,
@@ -104,6 +148,63 @@ export class VentaRapidaComponent implements OnInit {
     public ngbModal: NgbModal,
     public factura: ImprimirFacturaComponent
   ) {
+
+    // se define la variable para extraer el tiempo
+    const tiempo = new Date();
+
+    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente para las ventas
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+      .snapshotChanges().subscribe(semana => {
+        this.datosVentasSemanaFirestore = semana.payload.data();
+        this.datosVentasSemanaLocal = this.datosVentasSemanaFirestore;
+        this.totalVentasSemana = semana.payload.data().TotalVentas;
+      });
+
+    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente para las ventas
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+      .snapshotChanges().subscribe(anuales => {
+        this.datosVentasAnualFirestore = anuales.payload.data();
+        this.datosVentasAnualesLocal = this.datosVentasAnualFirestore;
+        this.totalVentasAnual = anuales.payload.data().TotalVentas;
+      });
+
+    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente para las ventas
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+      .snapshotChanges().subscribe(diario => {
+        this.datosVentasDiarioFirestore = diario.payload.data();
+        this.datosVentasDiarioLocal = this.datosVentasDiarioFirestore.Datos;
+        this.totalVentasDia = diario.payload.data().TotalVentas;
+      });
+
+    // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente para las ganancias
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+      .snapshotChanges().subscribe(semana => {
+        this.datosGananciasSemanaFirestore = semana.payload.data();
+        this.datosGananciasSemanaLocal = this.datosGananciasSemanaFirestore;
+        this.totalGananciasSemana = semana.payload.data().TotalVentas;
+      });
+
+    // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente para las ganancias
+    this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+      .snapshotChanges().subscribe(anuales => {
+        this.datosGananciasAnualFirestore = anuales.payload.data();
+        this.datosGananciasAnualesLocal = this.datosGananciasAnualFirestore;
+        this.totalGananciasAnual = anuales.payload.data().TotalVentas;
+      });
+
+    // se extraen los datos de firestore del dia actual para mostrar en los graficos diarios correctamente para las ganancias
+    // tslint:disable-next-line:max-line-length
+    this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+      .snapshotChanges().subscribe(diario => {
+        this.datosGananciasDiarioFirestore = diario.payload.data();
+        this.datosGananciasDiarioLocal = this.datosGananciasDiarioFirestore.Datos;
+        this.totalGananciasDia = diario.payload.data().TotalVentas;
+      });
+
+
     // se inicializa la variable de tipo de cambio de moneda
     this.fs.doc('AC Celulares/Control').snapshotChanges()
       .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
@@ -158,6 +259,466 @@ export class VentaRapidaComponent implements OnInit {
       console.log('El producto que hay en imprimir es: ' + JSON.stringify(this.factura.facturaImprimir));
       this.productos.forEach(producto => {
         totalCantidadComprasCliente += producto.Cantidad;
+        switch (producto.Categoria) {
+          case 'Accesorio':
+
+            // para las ventas
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasDiarioLocal[0] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasDia += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosVentasDiarioLocal,
+                TotalVentas: this.totalVentasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosVentasDiarioLocal,
+                    TotalVentas: this.totalVentasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasSemanaLocal.Accesorios[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasSemana += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalVentasSemana,
+                Accesorios: this.datosVentasSemanaLocal.Accesorios
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalVentasSemana,
+                    Accesorios: this.datosVentasSemanaLocal.Accesorios
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasAnualesLocal.Accesorios[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasAnual += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Accesorios: this.datosVentasAnualesLocal.Accesorios,
+                TotalVentas: this.totalVentasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Accesorios: this.datosVentasAnualesLocal.Accesorios,
+                    TotalVentas: this.totalVentasAnual
+                  });
+              });
+
+            // para las ganancias
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasDiarioLocal[0] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasDia += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosGananciasDiarioLocal,
+                TotalVentas: this.totalGananciasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosGananciasDiarioLocal,
+                    TotalVentas: this.totalGananciasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasSemanaLocal.Accesorios[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasSemana += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalGananciasSemana,
+                Accesorios: this.datosGananciasSemanaLocal.Accesorios
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalGananciasSemana,
+                    Accesorios: this.datosGananciasSemanaLocal.Accesorios
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasAnualesLocal.Accesorios[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasAnual += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Accesorios: this.datosGananciasAnualesLocal.Accesorios,
+                TotalVentas: this.totalGananciasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Accesorios: this.datosGananciasAnualesLocal.Accesorios,
+                    TotalVentas: this.totalGananciasAnual
+                  });
+              });
+            break;
+          case 'Repuesto':
+
+            // para las ventas
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasDiarioLocal[1] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasDia += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosVentasDiarioLocal,
+                TotalVentas: this.totalVentasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosVentasDiarioLocal,
+                    TotalVentas: this.totalVentasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasSemanaLocal.Repuestos[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasSemana += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalVentasSemana,
+                Repuestos: this.datosVentasSemanaLocal.Repuestos
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalVentasSemana,
+                    Repuestos: this.datosVentasSemanaLocal.Repuestos
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasAnualesLocal.Repuestos[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasAnual += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Repuestos: this.datosVentasAnualesLocal.Repuestos,
+                TotalVentas: this.totalVentasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Repuestos: this.datosVentasAnualesLocal.Repuestos,
+                    TotalVentas: this.totalVentasAnual
+                  });
+              });
+
+            // para las ganancias
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasDiarioLocal[1] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasDia += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosGananciasDiarioLocal,
+                TotalVentas: this.totalGananciasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosGananciasDiarioLocal,
+                    TotalVentas: this.totalGananciasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasSemanaLocal.Repuestos[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasSemana += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalGananciasSemana,
+                Repuestos: this.datosGananciasSemanaLocal.Repuestos
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalGananciasSemana,
+                    Repuestos: this.datosGananciasSemanaLocal.Repuestos
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasAnualesLocal.Repuestos[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasAnual += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Repuestos: this.datosGananciasAnualesLocal.Repuestos,
+                TotalVentas: this.totalGananciasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Repuestos: this.datosGananciasAnualesLocal.Repuestos,
+                    TotalVentas: this.totalGananciasAnual
+                  });
+              });
+            break;
+          case 'Celular':
+
+            // para las ventas
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasDiarioLocal[2] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasDia += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosVentasDiarioLocal,
+                TotalVentas: this.totalVentasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosVentasDiarioLocal,
+                    TotalVentas: this.totalVentasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasSemanaLocal.Celulares[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasSemana += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalVentasSemana,
+                Celulares: this.datosVentasSemanaLocal.Celulares
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalVentasSemana,
+                    Celulares: this.datosVentasSemanaLocal.Celulares
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasAnualesLocal.Celulares[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasAnual += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Celulares: this.datosVentasAnualesLocal.Celulares,
+                TotalVentas: this.totalVentasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Celulares: this.datosVentasAnualesLocal.Celulares,
+                    TotalVentas: this.totalVentasAnual
+                  });
+              });
+
+            // para las ganancias
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasDiarioLocal[2] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasDia += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosGananciasDiarioLocal,
+                TotalVentas: this.totalGananciasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosGananciasDiarioLocal,
+                    TotalVentas: this.totalGananciasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasSemanaLocal.Celulares[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasSemana += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalGananciasSemana,
+                Celulares: this.datosGananciasSemanaLocal.Celulares
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalGananciasSemana,
+                    Celulares: this.datosGananciasSemanaLocal.Celulares
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasAnualesLocal.Celulares[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasAnual += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Celulares: this.datosGananciasAnualesLocal.Celulares,
+                TotalVentas: this.totalGananciasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Celulares: this.datosGananciasAnualesLocal.Celulares,
+                    TotalVentas: this.totalGananciasAnual
+                  });
+              });
+            break;
+          case 'Herramienta':
+
+            // para las ventas
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasDiarioLocal[4] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasDia += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosVentasDiarioLocal,
+                TotalVentas: this.totalVentasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosVentasDiarioLocal,
+                    TotalVentas: this.totalVentasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasSemanaLocal.Herramientas[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasSemana += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalVentasSemana,
+                Herramientas: this.datosVentasSemanaLocal.Herramientas
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalVentasSemana,
+                    Herramientas: this.datosVentasSemanaLocal.Herramientas
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosVentasAnualesLocal.Herramientas[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalVentasAnual += this.tipoPago === 'Efectivo' ? producto.TotalCordoba : producto.TotalCordoba + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Herramientas: this.datosVentasAnualesLocal.Herramientas,
+                TotalVentas: this.totalVentasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Herramientas: this.datosVentasAnualesLocal.Herramientas,
+                    TotalVentas: this.totalVentasAnual
+                  });
+              });
+
+            // para las ganancias
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasDiarioLocal[4] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasDia += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<VentasDiarias>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+              .update({
+                Datos: this.datosGananciasDiarioLocal,
+                TotalVentas: this.totalGananciasDia
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`)
+                  .update({
+                    Datos: this.datosGananciasDiarioLocal,
+                    TotalVentas: this.totalGananciasDia
+                  });
+              });
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasSemanaLocal.Herramientas[tiempo.getDay()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasSemana += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore de la semana actual para mostrarlo en los graficos correctamente
+            // tslint:disable-next-line:max-line-length
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+              .update({
+                TotalVentas: this.totalGananciasSemana,
+                Herramientas: this.datosGananciasSemanaLocal.Herramientas
+              }).then(resp => {
+                // tslint:disable-next-line:max-line-length
+                this.db.database.ref(`AC Celulares/Control/Gananacias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`)
+                  .update({
+                    TotalVentas: this.totalGananciasSemana,
+                    Herramientas: this.datosGananciasSemanaLocal.Herramientas
+                  });
+              });
+
+            // tslint:disable-next-line:max-line-length
+            this.datosGananciasAnualesLocal.Herramientas[tiempo.getMonth()] += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+            // tslint:disable-next-line:max-line-length
+            this.totalGananciasAnual += this.tipoPago === 'Efectivo' ? producto.PVenta - producto.PCompra : (producto.PVenta - producto.PCompra) + ((producto.TotalCordoba * 5) / 100);
+
+            // se extraen los datos de firestore del mes actual para mostrar en los graficos anuales correctamente
+            this.fs.doc<TipoProductos>(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+              .update({
+                Herramientas: this.datosGananciasAnualesLocal.Herramientas,
+                TotalVentas: this.totalGananciasAnual
+              }).then(resp => {
+                this.db.database.ref(`AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`)
+                  .update({
+                    Herramientas: this.datosGananciasAnualesLocal.Herramientas,
+                    TotalVentas: this.totalGananciasAnual
+                  });
+              });
+            break;
+          default:
+            break;
+        }
       });
       // se leen las compras actuales del cliente
       this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
@@ -319,7 +880,7 @@ export class VentaRapidaComponent implements OnInit {
         Marca: this.producto.Marca,
         Categoria: this.producto.Categoria,
         PCompra: this.producto.PCompra,
-        PVenta: this.producto.PCompra
+        PVenta: this.producto.PVenta
       });
       this.productosFactura = new MatTableDataSource(this.productos);
       this.producto = null;
