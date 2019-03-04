@@ -259,10 +259,10 @@ export class DashboardComponent implements OnInit {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushVentasSemana)
@@ -273,10 +273,10 @@ export class DashboardComponent implements OnInit {
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushGananciasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushGananciasSemana);
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana53`).set(this.pushGananciasSemana)
@@ -288,53 +288,53 @@ export class DashboardComponent implements OnInit {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushVentasSemana);
         });
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushGananciasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana1`).set(this.pushGananciasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno() + 1}/Datos/Semana1`).set(this.pushGananciasSemana);
         });
     } else {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushVentasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushVentasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushVentasSemana);
         });
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushGananciasSemana)
+      this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushGananciasSemana)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana()}`).set(this.pushGananciasSemana);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Semanales/${this.servicio.extraerAno()}/Datos/Semana${this.servicio.extraerNumeroSemana() + 1}`).set(this.pushGananciasSemana);
         });
     }
 
     // se actualizan los datos del año siguiente al actual para su mejor funcionamiento
     // para las ventas
     // tslint:disable-next-line:max-line-length
-    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushVentasMensuales)
+    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales)
       .then(res => {
         // tslint:disable-next-line:max-line-length
-        this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushVentasMensuales);
+        this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushVentasMensuales);
       });
 
     // para las ganancias
     // tslint:disable-next-line:max-line-length
-    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushGananciasMensuales)
+    this.fs.doc<TipoProductos>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushGananciasMensuales)
       .then(res => {
         // tslint:disable-next-line:max-line-length
-        this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno()}`).set(this.pushGananciasMensuales);
+        this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Anuales/${this.servicio.extraerAno() + 1}`).set(this.pushGananciasMensuales);
       });
 
 
@@ -343,18 +343,18 @@ export class DashboardComponent implements OnInit {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushVentasDiarias);
         });
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushGananciasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-Enero-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno() + 1}/Datos/1-Enero-${tiempo.getFullYear() + 1}`).set(this.pushGananciasDiarias);
         });
 
     } else if (((tiempo.getMonth() === 2) && (tiempo.getDate() === 28)) || ((tiempo.getMonth() === 2) && (tiempo.getDate() === 29))) {
@@ -378,35 +378,35 @@ export class DashboardComponent implements OnInit {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushVentasDiarias);
         });
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/1-${this.meses[tiempo.getMonth() + 1]}-${tiempo.getFullYear()}`).set(this.pushGananciasDiarias);
         });
     } else {
 
       // para las ventas
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ventas/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushVentasDiarias);
         });
 
       // para las ganancias
       // tslint:disable-next-line:max-line-length
-      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias)
+      this.fs.doc<VentasDiarias>(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias)
         .then(res => {
           // tslint:disable-next-line:max-line-length
-          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate()}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias);
+          this.db.database.ref(`/AC Celulares/Control/Ganancias/${this.servicio.tienda}/Diarias/${this.servicio.extraerAno()}/Datos/${tiempo.getDate() + 1}-${this.servicio.meses[tiempo.getMonth()]}-${this.servicio.extraerAno()}`).set(this.pushGananciasDiarias);
         });
     }
 

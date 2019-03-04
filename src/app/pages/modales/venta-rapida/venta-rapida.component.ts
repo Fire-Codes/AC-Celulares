@@ -317,7 +317,9 @@ export class VentaRapidaComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         TotalDolar: Math.round(((this.cantidadVender * this.precioFinal) / this.tipoCambioMoneda) * 100) / 100,
         Marca: this.producto.Marca,
-        Categoria: this.producto.Categoria
+        Categoria: this.producto.Categoria,
+        PCompra: this.producto.PCompra,
+        PVenta: this.producto.PCompra
       });
       this.productosFactura = new MatTableDataSource(this.productos);
       this.producto = null;

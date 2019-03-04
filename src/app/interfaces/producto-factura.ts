@@ -9,4 +9,6 @@ export interface ProductoFactura {
     TotalDolar: number;
     Marca: string;
     Categoria: string;
+    PCompra: number;
+    PVenta: number;
 }
