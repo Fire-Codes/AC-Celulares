@@ -9,6 +9,7 @@ export interface Cliente {
     Cedula: string;
     Direccion: string;
     'Cantidad de Compras': number;
+    CantidadReservas: number;
     Nombres: string;
     Apellidos: string;
     Sexo: string;

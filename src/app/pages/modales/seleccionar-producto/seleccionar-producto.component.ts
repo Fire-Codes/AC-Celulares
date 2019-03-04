@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Producto } from 'src/app/interfaces/producto';
 import { FacturarComponent } from './../../facturar/facturar.component';
+import { VentaRapidaComponent } from '../venta-rapida/venta-rapida.component';
 
 // se importa el servicio
 import { ServicioService } from './../../../servicios/servicio.service';
@@ -16,6 +17,10 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection,
   styleUrls: ['./seleccionar-producto.component.scss']
 })
 export class SeleccionarProductoComponent implements OnInit {
+
+  // variables que determinaran de donde es que se manda a llamar al componente
+  @Input() venta: boolean = null;
+  @Input() facturar: boolean = null;
 
   // variables de tipo observer para paginator y sort
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,10 +38,11 @@ export class SeleccionarProductoComponent implements OnInit {
   constructor(
     public fs: AngularFirestore,
     public servicio: ServicioService,
-    public factura: FacturarComponent
+    public factura: FacturarComponent,
+    public ventaRapida: VentaRapidaComponent
   ) {
     // Se extraen todos los productos ingresados
-    this.coleccionDeProductos = this.fs.collection<Producto>('AC Celulares/Control/Inventario/Tienda Principal/Productos');
+    this.coleccionDeProductos = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
     this.coleccionDeProductos.valueChanges().subscribe(documento => {
       // Assign the data to the data source for the table to render
       this.productos = new MatTableDataSource(documento);
@@ -65,7 +71,14 @@ export class SeleccionarProductoComponent implements OnInit {
 
   // funcion para seleccionar el producto
   seleccionarProducto(producto: Producto) {
-    this.factura.productoSeleccionado = producto;
+
+    if (this.venta == null) {
+      this.factura.productoSeleccionado = producto;
+      this.factura.precioFinal = producto.PVenta;
+    } else if (this.facturar == null) {
+      this.ventaRapida.producto = producto;
+      this.ventaRapida.precioFinal = producto.PVenta;
+    }
     this.cerrarModal();
   }
 

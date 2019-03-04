@@ -87,22 +87,38 @@ export class TablaClientesComponent implements OnInit {
   // funcion para abrir los modales de manera centrada
   openVerticallyCentered(content: string, cliente: Cliente) {
     this.ngbModal.open(content, { centered: true });
-    this.cliente = cliente;
-    this.cantidadDeComprasCliente = cliente['Cantidad de Compras'];
-    this.primerNombre = cliente['Primer Nombre'];
-    this.primerApellido = cliente['Primer Apellido'];
-    this.segundoNombre = cliente['Segundo Nombre'];
-    this.segundoApellido = cliente['Segundo Apellido'];
-    if (cliente.Cedula === null) {
-      this.tieneCedula = false;
-    } else {
-      this.tieneCedula = true;
+    if (!(cliente === null)) {
+      this.cliente = cliente;
+      this.cantidadDeComprasCliente = cliente['Cantidad de Compras'];
+      this.primerNombre = cliente['Primer Nombre'];
+      this.primerApellido = cliente['Primer Apellido'];
+      this.segundoNombre = cliente['Segundo Nombre'];
+      this.segundoApellido = cliente['Segundo Apellido'];
+      if (cliente.Cedula === null) {
+        this.tieneCedula = false;
+      } else {
+        this.tieneCedula = true;
+      }
+      if (cliente.Correo === null) {
+        this.tieneCorreo = false;
+      } else {
+        this.tieneCorreo = true;
+      }
     }
-    if (cliente.Correo === null) {
-      this.tieneCorreo = false;
-    } else {
-      this.tieneCorreo = true;
-    }
+  }
+
+  // funcion para eliminar el cliente
+  eliminarClientes() {
+    const contadorClientes = this.contadorClientes - 1;
+    this.fs.doc(`AC Celulares/Control/Clientes/${this.cliente.Id}`).delete().then(res => {
+      this.servicio.newToast(1, 'Eliminación de cliente correcta', 'El cliente se ha eliminado correctamente');
+      this.db.database.ref(`AC Celulares/Control/Clientes/${this.cliente.Id}`).remove();
+      // tslint:disable-next-line:max-line-length
+      this.db.database.ref('AC Celulares/Control').update({ 'Cantidad de Clientes': contadorClientes, 'Contador de Clientes': contadorClientes });
+      this.fs.doc('AC Celulares/Control').update({ 'Cantidad de Clientes': contadorClientes, 'Contador de Clientes': contadorClientes });
+    }).catch(err => {
+      this.servicio.newToast(0, 'Eliminación de cliente incorrecta', err);
+    });
   }
 
   // funcion para editar los datos de un cliente
