@@ -47,7 +47,14 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgregarClienteComponent } from './pages/modales/agregar-cliente/agregar-cliente.component';
 import { TablaClientesComponent } from './pages/tablas/tabla-clientes/tabla-clientes.component';
 import { SeleccionarProductoComponent } from './pages/modales/seleccionar-producto/seleccionar-producto.component';
+// tslint:disable-next-line:max-line-length
 import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccionar-producto-descuento/seleccionar-producto-descuento.component';
+import { VentaRapidaComponent } from './pages/modales/venta-rapida/venta-rapida.component';
+import { ReservarProductoComponent } from './pages/modales/reservar-producto/reservar-producto.component';
+import { SistemaApartadoComponent } from './pages/tablas/sistema-apartado/sistema-apartado.component';
+import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
+import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
+import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +77,13 @@ import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccion
     AgregarClienteComponent,
     TablaClientesComponent,
     SeleccionarProductoComponent,
-    SeleccionarProductoDescuentoComponent
+    SeleccionarProductoDescuentoComponent,
+    VentaRapidaComponent,
+    ReservarProductoComponent,
+    SistemaApartadoComponent,
+    ProductosReservadosComponent,
+    ImprimirFacturaComponent,
+    ImprimirInventarioComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +107,14 @@ import { SeleccionarProductoDescuentoComponent } from './pages/modales/seleccion
 
     NgBootstrapModule
   ],
-  providers: [ServicioService, NavsideComponent],
+  providers: [
+    ServicioService,
+    NavsideComponent,
+    FacturarComponent,
+    SeleccionarProductoComponent,
+    VentaRapidaComponent,
+    ImprimirFacturaComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

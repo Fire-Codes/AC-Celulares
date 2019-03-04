@@ -4,7 +4,6 @@ export interface Usuario {
     Correo: string;
     Pertenece1: boolean;
     Pertenece2: boolean;
-    Pertenece3: boolean;
     Tipo: string;
     UID: string;
     Username: string;

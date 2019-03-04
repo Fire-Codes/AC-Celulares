@@ -1,0 +1,47 @@
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td class="title">
+              <img src="../../../../assets/Logotipo/ACCroquis.jpg" style="width:100px;">
+            </td>
+
+            <div class="float-right">
+              Fecha: {{fecha()}}<br>
+              <button (click)="navegar()" class="btn btn-primary m-3" id="btnRegresar">Regresar</button>
+              <button (click)="imprimir()" class="btn btn-warning m-3" id="btnImprimir">Imprimir</button>
+            </div>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<table class="table mx-auto" style="max-width: 100%; min-width: 80%;">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Marca</th>
+      <th>Modelo</th>
+      <th>Categoría</th>
+      <th>Existencia</th>
+      <th>Precio de Compra</th>
+      <th>Precio de Venta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let producto of imprimirInventario">
+      <td>{{producto.Id}}</td>
+      <td>{{producto.Nombre}}</td>
+      <td>{{producto.Marca}}</td>
+      <td>{{producto.Modelo}}</td>
+      <td>{{producto.Categoria}}</td>
+      <td>{{producto.Existencia}}</td>
+      <td>{{producto.PCompra}}</td>
+      <td>{{producto.PVenta}}</td>
+    </tr>
+  </tbody>
+</table>
