@@ -769,7 +769,7 @@ export class VentaRapidaComponent implements OnInit {
           'Articulos Comprados': this.productos,
           Interes: interes
         }).then((res) => {
-          console.log(totalComprasActualesCliente);
+          // console.log(totalComprasActualesCliente);
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
           }).then(respo => {
@@ -916,9 +916,9 @@ export class VentaRapidaComponent implements OnInit {
     this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`).snapshotChanges()
       .subscribe(product => {
         cantidadAnterior = product.payload.data().Existencia;
-        console.log(product.payload.data().Existencia);
+        // console.log(product.payload.data().Existencia);
       });
-    console.log(cantidadAnterior);
+    // console.log(cantidadAnterior);
     setTimeout(() => {
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });

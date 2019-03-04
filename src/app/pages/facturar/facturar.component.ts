@@ -807,7 +807,7 @@ export class FacturarComponent implements OnInit {
             Interes: interes,
             TipoPago: this.tipoPago
           };
-          console.log(totalComprasActualesCliente);
+          // console.log(totalComprasActualesCliente);
           this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial de Facturas/FAC${totalFacturas}`).set({
             Productos: this.productos,
             Cliente: cliente,
@@ -961,9 +961,9 @@ export class FacturarComponent implements OnInit {
     this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`).snapshotChanges()
       .subscribe(product => {
         cantidadAnterior = product.payload.data().Existencia;
-        console.log(product.payload.data().Existencia);
+        // console.log(product.payload.data().Existencia);
       });
-    console.log(cantidadAnterior);
+    // console.log(cantidadAnterior);
     setTimeout(() => {
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });

@@ -60,7 +60,7 @@ export class TablaClientesComponent implements OnInit {
     this.fs.doc('AC Celulares/Control').snapshotChanges()
       .subscribe((control: Action<DocumentSnapshot<ControlTienda>>) => {
         this.contadorClientes = control.payload.data()['Contador de Clientes'];
-        console.log('Cantidad de Clientes almacenados actualmente: ' + this.contadorClientes);
+        // console.log('Cantidad de Clientes almacenados actualmente: ' + this.contadorClientes);
       });
 
     // se extraen todos los clientes ingresados para guardarlos en la variable que contendra los clientes en la tabla

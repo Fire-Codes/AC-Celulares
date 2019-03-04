@@ -77,9 +77,9 @@ export class DetallesCreditoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.cliente);
-    console.log(typeof (this.cliente));
-    console.log(this.cliente.Cedula.toString());
+    // console.log(this.cliente);
+    // console.log(typeof (this.cliente));
+    // console.log(this.cliente.Cedula.toString());
     if (this.cliente.Tipo === 'Premium') {
       this.esClientePremium = true;
     } else {
