@@ -316,15 +316,15 @@
               (click)='openVerticallyCentered(editarCliente, cliente)'>
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, cliente)'>
+            <!--<button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, cliente)'>
               <mat-icon style="color: orange;">offline_bolt</mat-icon>
-            </button>
+            </button>-->
             <button mat-icon-button color="warn" matTooltip="Eliminar Cliente"
               (click)='openVerticallyCentered(eliminarCliente, cliente)'>
               <mat-icon>delete</mat-icon>
             </button>
             <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras"
-              (click)='verHistorialComprasCliente()'>
+              (click)='verHistorialComprasCliente(cliente)'>
               <mat-icon>history</mat-icon>
             </button>
           </div>

@@ -771,9 +771,9 @@ export class FacturarComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
         .set({
-          'Tipo de Pago': this.tipoPago,
-          'Total Cordoba': this.totalCordoba(),
-          'Total Dolar': this.totalDolar(),
+          TipoPago: this.tipoPago,
+          TotalCordoba: this.totalCordoba(),
+          TotalDolar: this.totalDolar(),
           Hora: tiempo.getHours(),
           Minuto: tiempo.getMinutes(),
           Segundo: tiempo.getSeconds(),
@@ -838,9 +838,9 @@ export class FacturarComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
               .set({
-                'Tipo de Pago': this.tipoPago,
-                'Total Cordoba': this.totalCordoba(),
-                'Total Dolar': this.totalDolar(),
+                TipoPago: this.tipoPago,
+                TotalCordoba: this.totalCordoba(),
+                TotalDolar: this.totalDolar(),
                 Hora: tiempo.getHours(),
                 Minuto: tiempo.getMinutes(),
                 Segundo: tiempo.getSeconds(),
