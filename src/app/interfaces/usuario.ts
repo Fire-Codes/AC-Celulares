@@ -20,4 +20,8 @@ export interface Usuario {
     'Segundo Nombre': string;
     'Primer Apellido': string;
     'Segundo Apellido': string;
+    TotalAcumulado: number;
+    Ventas: number;
+    Flasheos: number;
+    Reparaciones: number;
 }

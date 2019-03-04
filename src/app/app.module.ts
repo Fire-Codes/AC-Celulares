@@ -59,6 +59,8 @@ import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-invent
 import { TablaHistorialComprasClienteComponent } from './pages/tablas/tabla-historial-compras-cliente/tabla-historial-compras-cliente.component';
 import { ProductosCompradosComponent } from './pages/modales/productos-comprados/productos-comprados.component';
 import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra.component';
+import { ServiciosTecnicosComponent } from './pages/tablas/servicios-tecnicos/servicios-tecnicos.component';
+import { PedidosComponent } from './pages/pedidos/pedidos.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,9 @@ import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra
     ImprimirInventarioComponent,
     TablaHistorialComprasClienteComponent,
     ProductosCompradosComponent,
-    DetallesCompraComponent
+    DetallesCompraComponent,
+    ServiciosTecnicosComponent,
+    PedidosComponent
   ],
   imports: [
     BrowserModule,
