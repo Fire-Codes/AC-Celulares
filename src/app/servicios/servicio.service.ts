@@ -32,6 +32,9 @@ export class ServicioService {
   // variable que contendra temporalmente el inventario a imprimir
   public inventarioImprimir: Producto[] = [];
 
+  // variable que contendra al cliente al cual se veran sus compras
+  public ClienteVerCompras: Cliente = null;
+
   // variable que contendra el arreglo de usuarios
   Usuarios: AngularFirestoreCollection<Usuario>;
 

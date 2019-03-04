@@ -28,11 +28,11 @@ export class DetallesCreditoComponent implements OnInit {
   // variables de input, output y eventemitter
   // variable que contendra los datos del cliente que se pasaron desde el router
   @Input() cliente: UserData = null;
-  @Input() mostrarDetallesCliente: boolean = false;
+  @Input() mostrarDetallesCliente = false;
   @Output() cerrarDetalles = new EventEmitter();
 
   // variable que establece el tipo de cliente ingresado 'Premium' || 'Estándar'
-  esClientePremium: boolean = false;
+  esClientePremium = false;
 
   // variable que almacena los tipos de zapatos en el caso para el historial de abonos
   folders: Section[] = [
@@ -61,7 +61,7 @@ export class DetallesCreditoComponent implements OnInit {
   ];
 
   // variable que contendra los datos del cliente que se pasaron desde el router
-  //cliente: any;
+  // cliente: any;
 
   constructor(
     public servicio: ServicioService,
@@ -80,7 +80,7 @@ export class DetallesCreditoComponent implements OnInit {
     console.log(this.cliente);
     console.log(typeof (this.cliente));
     console.log(this.cliente.Cedula.toString());
-    if (this.cliente.Tipo == 'Premium') {
+    if (this.cliente.Tipo === 'Premium') {
       this.esClientePremium = true;
     } else {
       this.esClientePremium = false;
@@ -96,7 +96,7 @@ export class DetallesCreditoComponent implements OnInit {
     this.ngbModal.open(content, { centered: true });
   }
 
-  //onCerrarDetalles fn
+  // onCerrarDetalles fn
   onCerrarDetalles() {
     this.cerrarDetalles.emit();
   }

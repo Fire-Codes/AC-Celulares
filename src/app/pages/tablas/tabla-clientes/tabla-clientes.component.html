@@ -191,7 +191,8 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
         <mat-form-field style="width: 100%;">
-          <input matInput type="number" placeholder="Productos Reservados Actualmente" name="cliente.CantidadReservas" [(ngModel)]="cliente.CantidadReservas" disabled>
+          <input matInput type="number" placeholder="Productos Reservados Actualmente" name="cliente.CantidadReservas"
+            [(ngModel)]="cliente.CantidadReservas" disabled>
         </mat-form-field>
       </div>
     </div>
@@ -323,7 +324,7 @@
               <mat-icon>delete</mat-icon>
             </button>
             <button mat-icon-button class="text-info" matTooltip="Ver Historial de Compras"
-              (click)='openVerticallyCentered(eliminarCliente, cliente)'>
+              (click)='verHistorialComprasCliente()'>
               <mat-icon>history</mat-icon>
             </button>
           </div>

@@ -84,6 +84,15 @@ export class TablaClientesComponent implements OnInit {
     }
   }
 
+  // funcion para ver el historial de compras
+  verHistorialComprasCliente(cliente: Cliente) {
+    // se asigna el cliente de la tabla a la variable de servicio para ver sus datos posteriormente
+    this.servicio.ClienteVerCompras = cliente;
+
+    // se navega al componente para ver los detalles de compra
+    this.servicio.navegar('detallesCompra');
+  }
+
   // funcion para abrir los modales de manera centrada
   openVerticallyCentered(content: string, cliente: Cliente) {
     this.ngbModal.open(content, { centered: true });
