@@ -58,7 +58,7 @@ export class InventarioComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Id', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'PCompra', 'PVenta', 'Acciones'];
+  displayedColumns: string[] = ['Id', 'Nombre', 'Marca', 'Modelo', 'Categoria', 'Existencia', 'PCompra', 'PVenta', 'Proveedor', 'Acciones'];
   dataSource: MatTableDataSource<Producto>;
 
   // se declaran las variables para agregar un nuevo producto
@@ -178,27 +178,29 @@ export class InventarioComponent implements OnInit {
 
   // funcion para agregar nueva existencia
   agregarExistencia() {
-    this.reiniciarInputs();
-    this.proveedor = this.producto.Proveedor;
-    let anteriorExistencia = 0;
-    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
-      .snapshotChanges().subscribe((producto: Action<DocumentSnapshot<Producto>>) => {
-        anteriorExistencia = producto.payload.data().Existencia;
-        // console.log(anteriorExistencia);
-      });
-    setTimeout(() => {
-      // console.log(this.nuevaExistencia);
-      this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
-        .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
-          this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
+    if ((this.proveedor === '') || (this.nuevaExistencia === 0)) {
+      this.servicio.newToast(0, 'Debe rellenar los campos', 'Debe seleccionar un proveedor y/o ingresar una nueva cantidad diferente de 0');
+    } else {
+      let anteriorExistencia = 0;
+      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+        .snapshotChanges().subscribe((producto: Action<DocumentSnapshot<Producto>>) => {
+          anteriorExistencia = producto.payload.data().Existencia;
+          // console.log(anteriorExistencia);
         });
-      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
-        .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
-          this.nuevaExistencia = 0;
-        }).then(res => {
-          this.reiniciarInputs();
-        });
-    }, 2000);
+      setTimeout(() => {
+        // console.log(this.nuevaExistencia);
+        this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+          .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
+            this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
+          });
+        this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+          .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
+            this.nuevaExistencia = 0;
+          }).then(res => {
+            this.reiniciarInputs();
+          });
+      }, 2000);
+    }
   }
 
   // funcion para editar los datos de un producto
