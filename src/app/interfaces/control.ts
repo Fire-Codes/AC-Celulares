@@ -7,4 +7,5 @@ export interface ControlTienda {
     'Departamentos y Municipios': DepartamentosMunicipios[];
     'Tipo de Cambio': number;
     'Cantidad Total de Facturas': number;
+    'Cantidad Total de Servicios': number;
 }
