@@ -468,6 +468,15 @@ export class ServiciosTecnicosComponent implements OnInit {
     }, 2000);
   }
 
+  // funcion para eliminar el servicio
+  eliminarServicio() {
+    this.fs.doc(`/AC Celulares/Control/Servicios/${this.servicioVender.Id}`).delete().then(res => {
+      this.servicio.newToast(1, 'Servicio Eliminado', `El servicio ${this.servicioVender.Id} se ha eliminado correctamente`);
+    }).catch(err => {
+      this.servicio.newToast(0, 'Hubo un Error!', err);
+    });
+  }
+
   // funcion para reiniciar inputs
   reiniciarInputs() {
     this.reiniciarId();
