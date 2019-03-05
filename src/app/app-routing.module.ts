@@ -20,6 +20,7 @@ import { ProductosReservadosComponent } from './pages/productos-reservados/produ
 import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
 import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
 import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra.component';
+import { PedidosComponent } from './pages/pedidos/pedidos.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'imprimirFactura', component: ImprimirFacturaComponent },
   { path: 'imprimirInventario', component: ImprimirInventarioComponent },
   { path: 'detallesCompra', component: DetallesCompraComponent },
+  { path: 'pedidos', component: PedidosComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

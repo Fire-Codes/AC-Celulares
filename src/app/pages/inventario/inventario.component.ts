@@ -73,9 +73,16 @@ export class InventarioComponent implements OnInit {
   Estado = '';
   Descripcion = '';
   nuevaCategoria = '';
+  proveedor = '';
+
+  // variable que contendra todos los proveedores
+  Proveedores: string[] = [];
 
   // se declara la variable para buscar entre los productos
   valorBusqueda = '';
+
+  // variable que contendra el nuevo proveedor
+  nuevoProveedor = '';
 
 
   constructor(
@@ -101,6 +108,7 @@ export class InventarioComponent implements OnInit {
     // se extrae la cantidad general de productos de las 3 tiendas
     this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
       this.totalGeneralProductos = control.payload.data()['Cantidad Total de Productos'];
+      this.Proveedores = control.payload.data().Proveedores;
     });
 
     // Se extraen todos los productos ingresados
@@ -130,6 +138,8 @@ export class InventarioComponent implements OnInit {
     this.fs.doc<ControlTienda>('AC Celulares/Control').snapshotChanges().subscribe(control => {
       this.totalGeneralProductos = control.payload.data()['Cantidad Total de Productos'];
     });
+
+    // this.agregarProveedoresTodosLosProductos();
 
     // se actualizan todos los datos
     /*const query = this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`);
@@ -168,6 +178,8 @@ export class InventarioComponent implements OnInit {
 
   // funcion para agregar nueva existencia
   agregarExistencia() {
+    this.reiniciarInputs();
+    this.proveedor = this.producto.Proveedor;
     let anteriorExistencia = 0;
     this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
       .snapshotChanges().subscribe((producto: Action<DocumentSnapshot<Producto>>) => {
@@ -176,13 +188,15 @@ export class InventarioComponent implements OnInit {
       });
     setTimeout(() => {
       // console.log(this.nuevaExistencia);
-      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
-        .update({ Existencia: anteriorExistencia + this.nuevaExistencia }).then(resp => {
+      this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
+        .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
           this.servicio.newToast(1, 'Modificacion Correcta', `El Producto ${this.producto.Id} se ha modificado con éxito`);
         });
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.producto.Id}`)
-        .update({ Existencia: anteriorExistencia + this.nuevaExistencia }).then(resp => {
+        .update({ Existencia: anteriorExistencia + this.nuevaExistencia, Proveedor: this.proveedor }).then(resp => {
           this.nuevaExistencia = 0;
+        }).then(res => {
+          this.reiniciarInputs();
         });
     }, 2000);
   }
@@ -249,9 +263,25 @@ export class InventarioComponent implements OnInit {
       });
   }
 
+  // funcion para agregar los proveedores a todos los productos
+  agregarProveedoresTodosLosProductos() {
+    // tslint:disable-next-line:max-line-length
+    this.fs.collection<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos`).valueChanges().subscribe(productos => {
+      productos.forEach(producto => {
+        const proveedor = this.Proveedores[Math.round(Math.random() * 6)];
+        this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${producto.Id}`).update({
+          Proveedor: proveedor
+        }).then(resp => {
+          console.warn(producto.Id + ' Actualizado correctamente con el proveedor: ' + proveedor);
+        }).catch(err => {
+          console.error('Error: ' + err);
+        });
+      });
+    });
+  }
   // funcion para agregar un nuevo producto
   agregarProductos() {
-    this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
+    this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
       Id: this.Id,
       Nombre: this.Nombre,
       Marca: this.Marca,
@@ -261,7 +291,8 @@ export class InventarioComponent implements OnInit {
       PCompra: this.PCompra,
       PVenta: this.PVenta,
       Estado: 'Disponible',
-      Descripcion: this.Descripcion
+      Descripcion: this.Descripcion,
+      Proveedor: this.proveedor
     }).then(response => {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
@@ -303,7 +334,8 @@ export class InventarioComponent implements OnInit {
       PCompra: this.PCompra,
       PVenta: this.PVenta,
       Estado: 'Disponible',
-      Descripcion: this.Descripcion
+      Descripcion: this.Descripcion,
+      Proveedor: this.proveedor
     }).then(response => {
       const totalproductos = this.totalProductos + 1;
       const contador = this.contador + 1;
@@ -361,6 +393,36 @@ export class InventarioComponent implements OnInit {
     this.nuevaCategoria = '';
   }
 
+  // agregar proveedor
+  agregarProveedores() {
+    // tslint:disable-next-line:prefer-const
+    let nuevoArray = this.Proveedores;
+    let parecidas = 0;
+    nuevoArray.forEach(proveedor => {
+      if (proveedor.toLowerCase() === this.nuevoProveedor.toLowerCase()) {
+        parecidas += 1;
+      }
+    });
+    if (parecidas > 0) {
+      this.servicio.newToast(0, 'Inserccion Incorrecta', 'Ya existe un proveedor con este nombre');
+    } else {
+      nuevoArray.push(this.nuevoProveedor);
+      this.fs.doc<ControlTienda>(`AC Celulares/Control`).update({
+        Proveedores: nuevoArray
+      }).then(response => {
+        this.servicio.newToast(1, 'Inserccion Correcta', 'El nuevo proveedor de productos se agrego correctamente');
+      }).catch(err => {
+        this.servicio.newToast(0, 'Inserccion Incorrecta', err);
+      });
+
+      // integracion con el realtime database
+      this.db.database.ref(`AC Celulares/Control`).update({
+        Proveedores: nuevoArray
+      });
+    }
+    this.nuevoProveedor = '';
+  }
+
   // funcion para reiniciar todos los inputs
   reiniciarInputs() {
     this.Id = '';
@@ -376,6 +438,7 @@ export class InventarioComponent implements OnInit {
     this.PCompra = 0;
     this.PVenta = 0;
     this.nuevaCategoria = '';
+    this.proveedor = '';
   }
 
   // funcion para agregar un nuevo id

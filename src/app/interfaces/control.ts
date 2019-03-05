@@ -8,4 +8,5 @@ export interface ControlTienda {
     'Tipo de Cambio': number;
     'Cantidad Total de Facturas': number;
     'Cantidad Total de Servicios': number;
+    Proveedores: string[];
 }
