@@ -362,6 +362,23 @@
               </mat-form-field>
             </td>
           </tr>
+          <tr>
+            <div class="row">
+              <div class="col-10">
+                <mat-form-field style="width: 100%;">
+                  <mat-select name="proveedor" [(ngModel)]="producto.Proveedor" placeholder="Seleccionar Proveedor">
+                    <mat-option *ngFor="let proveedors of Proveedores" [value]="proveedors">{{proveedors}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-2">
+                <button mat-icon-button matTooltip="Agregar un nuevo Proveedor" class="text-success mx-auto"
+                  (click)='openVerticallyCentered(agregarProveedor, producto)'>
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+          </tr>
         </table>
       </form>
     </div>
@@ -416,11 +433,11 @@
           <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Modelo}} </td>
         </ng-container>
 
-         <!-- Proveedor Column -->
-         <ng-container matColumnDef="Proveedor">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </th>
-            <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Proveedor}} </td>
-          </ng-container>
+        <!-- Proveedor Column -->
+        <ng-container matColumnDef="Proveedor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </th>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Proveedor}} </td>
+        </ng-container>
 
         <!-- Existencia Column -->
         <ng-container matColumnDef="Existencia">

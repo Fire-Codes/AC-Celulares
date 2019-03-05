@@ -21,6 +21,7 @@ import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/i
 import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
 import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra.component';
 import { PedidosComponent } from './pages/pedidos/pedidos.component';
+import { HistorialFacturasComponent } from './pages/historial-facturas/historial-facturas.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'imprimirInventario', component: ImprimirInventarioComponent },
   { path: 'detallesCompra', component: DetallesCompraComponent },
   { path: 'pedidos', component: PedidosComponent },
+  { path: 'historialFacturas', component: HistorialFacturasComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

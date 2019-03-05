@@ -283,86 +283,92 @@ export class InventarioComponent implements OnInit {
   }
   // funcion para agregar un nuevo producto
   agregarProductos() {
-    this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
-      Id: this.Id,
-      Nombre: this.Nombre,
-      Marca: this.Marca,
-      Categoria: this.Categoria,
-      Modelo: this.Modelo,
-      Existencia: this.Existencia,
-      PCompra: this.PCompra,
-      PVenta: this.PVenta,
-      Estado: 'Disponible',
-      Descripcion: this.Descripcion,
-      Proveedor: this.proveedor
-    }).then(response => {
-      const totalproductos = this.totalProductos + 1;
-      const contador = this.contador + 1;
-      const totalGeneralProductos = this.totalGeneralProductos + 1;
-      this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+    // tslint:disable-next-line:max-line-length
+    if ((this.Descripcion === '') || (this.Nombre === '') || (this.Marca === '') || (this.Categoria === '') || (this.PCompra === 0) || (this.PVenta === 0) || (this.proveedor === '')) {
+      // tslint:disable-next-line:max-line-length
+      this.servicio.newToast(0, 'Debe rellenar todos los campos', 'Debe de rellenar todos los campos obligatorios para poder agregar el producto a la base de datos');
+    } else {
+      this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
+        Id: this.Id,
+        Nombre: this.Nombre,
+        Marca: this.Marca,
+        Categoria: this.Categoria,
+        Modelo: this.Modelo,
+        Existencia: this.Existencia,
+        PCompra: this.PCompra,
+        PVenta: this.PVenta,
+        Estado: 'Disponible',
+        Descripcion: this.Descripcion,
+        Proveedor: this.proveedor
+      }).then(response => {
+        const totalproductos = this.totalProductos + 1;
+        const contador = this.contador + 1;
+        const totalGeneralProductos = this.totalGeneralProductos + 1;
+        this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
 
-      // se actualiza el total de productos de dicha tienda
-      this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
-        'Cantidad de Productos': totalproductos,
-        Contador: contador
-      }).then(resp => {
-        // console.warn('Cantidad de productos actualizada correctamente' + resp);
-        this.reiniciarInputs();
+        // se actualiza el total de productos de dicha tienda
+        this.fs.doc(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
+          'Cantidad de Productos': totalproductos,
+          Contador: contador
+        }).then(resp => {
+          // console.warn('Cantidad de productos actualizada correctamente' + resp);
+          this.reiniciarInputs();
+        }).catch(err => {
+          // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        });
+
+        // se actualiza el total general de productos de las 3 tiendas
+        this.fs.doc<ControlTienda>('AC Celulares/Control').update({
+          'Cantidad Total de Productos': totalGeneralProductos
+        }).then(resp => {
+          // console.warn('Cantidad de productos actualizada correctamente' + resp);
+        }).catch(err => {
+          // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        });
+
+      }).catch(err => {
+        this.servicio.newToast(0, 'Insercción Incorrecta', err);
+      });
+
+      // integracion con el realtime database
+      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
+        Id: this.Id,
+        Nombre: this.Nombre,
+        Marca: this.Marca,
+        Categoria: this.Categoria,
+        Modelo: this.Modelo,
+        Existencia: this.Existencia,
+        PCompra: this.PCompra,
+        PVenta: this.PVenta,
+        Estado: 'Disponible',
+        Descripcion: this.Descripcion,
+        Proveedor: this.proveedor
+      }).then(response => {
+        const totalproductos = this.totalProductos + 1;
+        const contador = this.contador + 1;
+        const totalGeneralProductos = this.totalGeneralProductos + 1;
+        this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
+
+        // se actualiza el total de productos de dicha tienda
+        this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
+          'Cantidad de Productos': totalproductos,
+          Contador: contador
+        }).then(resp => {
+          // console.warn('Cantidad de productos actualizada correctamente' + resp);
+          this.reiniciarInputs();
+        }).catch(err => {
+          // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
+        });
+
+        // se actualiza el total general de productos de las 3 tiendas
+        this.db.database.ref(`AC Celulares/Control`).update({
+          'Cantidad Total de Productos': totalGeneralProductos
+        });
+
       }).catch(err => {
         // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
       });
-
-      // se actualiza el total general de productos de las 3 tiendas
-      this.fs.doc<ControlTienda>('AC Celulares/Control').update({
-        'Cantidad Total de Productos': totalGeneralProductos
-      }).then(resp => {
-        // console.warn('Cantidad de productos actualizada correctamente' + resp);
-      }).catch(err => {
-        // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
-      });
-
-    }).catch(err => {
-      this.servicio.newToast(0, 'Insercción Incorrecta', err);
-    });
-
-    // integracion con el realtime database
-    this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${this.Id}`).set({
-      Id: this.Id,
-      Nombre: this.Nombre,
-      Marca: this.Marca,
-      Categoria: this.Categoria,
-      Modelo: this.Modelo,
-      Existencia: this.Existencia,
-      PCompra: this.PCompra,
-      PVenta: this.PVenta,
-      Estado: 'Disponible',
-      Descripcion: this.Descripcion,
-      Proveedor: this.proveedor
-    }).then(response => {
-      const totalproductos = this.totalProductos + 1;
-      const contador = this.contador + 1;
-      const totalGeneralProductos = this.totalGeneralProductos + 1;
-      this.servicio.newToast(1, 'Insercción Correcta', 'El producto se agregó correctamente.');
-
-      // se actualiza el total de productos de dicha tienda
-      this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}`).update({
-        'Cantidad de Productos': totalproductos,
-        Contador: contador
-      }).then(resp => {
-        // console.warn('Cantidad de productos actualizada correctamente' + resp);
-        this.reiniciarInputs();
-      }).catch(err => {
-        // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
-      });
-
-      // se actualiza el total general de productos de las 3 tiendas
-      this.db.database.ref(`AC Celulares/Control`).update({
-        'Cantidad Total de Productos': totalGeneralProductos
-      });
-
-    }).catch(err => {
-      // console.error('Hubo un error al actualizar la cantidad de productos: ' + err);
-    });
+    }
   }
 
   // funcion para agregar una nueva categoria de productos

@@ -1,9 +1,20 @@
-<mat-list>
-  <h3 mat-subheader>Productos</h3>
-  <mat-list-item *ngFor="let articulo of articulos">
-    <mat-icon mat-list-icon>folder</mat-icon>
-    <h4 mat-line>{{articulo.Cantidad}} - {{articulo.Producto}} {{articulo.Marca}} {{articulo.Modelo}}</h4>
-    <p mat-line> {{articulo.TotalCordoba}} </p>
-    <mat-divider></mat-divider>
-  </mat-list-item>
-</mat-list>
+<div class="modal-header">
+  <h4 class="modal-title text-Dark">Productos Comprados</h4>
+  <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <mat-list>
+    <h3 mat-subheader>Productos</h3>
+    <mat-list-item *ngFor="let articulo of articulos">
+      <mat-icon mat-list-icon>folder</mat-icon>
+      <h4 mat-line>{{articulo.Cantidad}} - {{articulo.Producto}} {{articulo.Marca}} {{articulo.Modelo}}</h4>
+      <p mat-line> {{articulo.TotalCordoba}} </p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
+</div>

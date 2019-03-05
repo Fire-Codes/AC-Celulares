@@ -883,6 +883,11 @@ export class FacturarComponent implements OnInit {
     }, 2000);
   }
 
+  // funcion para ver el historial de facturas
+  verHistorualFacturas() {
+    this.servicio.navegar('historialFacturas');
+  }
+
   // funcion que se ejecutara una vez qu la factura se haya pagado
   limpiarTodo() {
     this.valordebusquedaCliente = '';
