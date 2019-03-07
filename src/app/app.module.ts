@@ -107,7 +107,7 @@ import { TablaHistorialFacturasComponent } from './pages/tablas/tabla-historial-
     RouterModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,

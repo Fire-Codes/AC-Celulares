@@ -10,7 +10,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron-build": "ng build --optimization=true --prod=true --vendor-source-map",
-    "electron": "electron ."
+    "electron": "electron .",
+    "electron-build-windows": "electron-packager ./dist/ACCELULARES --platform win32 --icon ./src/assets/icon.ico --out ./compilacion --overwrite",
+    "electron-package": "ng build --optimization=true --prod=true --vendor-source-map && electron-packager . --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite --icon ./src/assets/icon.ico"
   },
   "private": true,
   "dependencies": {
@@ -51,6 +53,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "electron": "^4.0.4",
+    "electron-packager": "^13.1.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.1",
