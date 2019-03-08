@@ -1,0 +1,64 @@
+<!--Ver Productos Comprados Modal-->
+<ng-template #verProductosComprados let-modal>
+  <app-productos-comprados (cerrarProductosComprados)="modal.close('Close click')" [compra]="productosComprados">
+  </app-productos-comprados>
+</ng-template>
+
+<div class="mb-4 slideInLeft">
+  <div class="container-fluid bg-warning rounded-top p-4">
+    <mat-card-title class="ml-4 mt-4">
+      Compras Realizadas
+    </mat-card-title>
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort class="table-hover shadow-lg">
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="Fecha">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+      <td mat-cell *matCellDef="let compra"> {{compra.Fecha}} </td>
+    </ng-container>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="Hora">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+      <td mat-cell *matCellDef="let compra"> {{compra.Tiempo}} </td>
+    </ng-container>
+
+    <!-- Apellidos Column -->
+    <ng-container matColumnDef="Interes">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Interes </th>
+      <td mat-cell *matCellDef="let compra"> {{compra.Interes}} </td>
+    </ng-container>
+
+    <!-- Tipo Column -->
+    <ng-container matColumnDef="TotalCordoba">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Total C$ </th>
+      <td mat-cell *matCellDef="let compra"> {{compra.TotalCordoba + compra.Interes}} </td>
+    </ng-container>
+
+    <!-- Cedula Column -->
+    <ng-container matColumnDef="TipoPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Pago </th>
+      <td mat-cell *matCellDef="let compra">{{compra.TipoPago}}</td>
+    </ng-container>
+
+    <!--Acciones Column-->
+    <ng-container matColumnDef="Acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let compra">
+        <div class="example-button-row">
+          <button (click)="verProductosCompradoss(verProductosComprados, compra)" mat-icon-button class="text-primary"
+            matTooltip="Ver Artículos Comprados">
+            <mat-icon class="text-primary">assignment</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <!--Aqui comienzan los TH-->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+    <tr mat-row *matRowDef="let compra; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator class="elevated mb-3" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>

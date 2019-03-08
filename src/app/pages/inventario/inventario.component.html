@@ -86,6 +86,21 @@
           </tr>
         </table>
         <div class="row">
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <mat-form-field style="width: 100%;">
+              <mat-select name="proveedor" [(ngModel)]="proveedor" placeholder="Seleccionar Proveedor">
+                <mat-option *ngFor="let proveedors of Proveedores" [value]="proveedors">{{proveedors}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <button mat-icon-button matTooltip="Agregar un nuevo Proveedor" class="text-success mx-auto"
+              (click)='openVerticallyCentered(agregarProveedor, producto)'>
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-12">
             <mat-form-field style="width: 100%;">
               <mat-select placeholder="Categoria" required [(ngModel)]="Categoria" name="Categoria">
@@ -135,6 +150,21 @@
             </td>
           </tr>
         </table>
+        <div class="row">
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <mat-form-field style="width: 100%;">
+              <mat-select name="proveedor" [(ngModel)]="proveedor" placeholder="Seleccionar Proveedor">
+                <mat-option *ngFor="let proveedors of Proveedores" [value]="proveedors">{{proveedors}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <button mat-icon-button matTooltip="Agregar un nuevo Proveedor" class="text-success mx-auto"
+              (click)='openVerticallyCentered(agregarProveedor, producto)'>
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -160,6 +190,26 @@
       <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
       <button type="button" class="btn btn-success"
         (click)="modal.close('Close click'); agregarCategoria()">Agregar</button>
+    </div>
+  </ng-template>
+
+  <!--Agregar Proveedor Modal-->
+  <ng-template #agregarProveedor let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Agregar nuevo Proveedor de Producto</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <mat-form-field style="width: 100%">
+        <input matInput placeholder="Nombre de nuevo Proveedor" [(ngModel)]="nuevoProveedor" name="nuevoProveedor">
+      </mat-form-field>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+      <button type="button" class="btn btn-success"
+        (click)="modal.close('Close click'); agregarProveedores()">Agregar</button>
     </div>
   </ng-template>
 
@@ -312,6 +362,23 @@
               </mat-form-field>
             </td>
           </tr>
+          <tr>
+            <div class="row">
+              <div class="col-10">
+                <mat-form-field style="width: 100%;">
+                  <mat-select name="proveedor" [(ngModel)]="producto.Proveedor" placeholder="Seleccionar Proveedor">
+                    <mat-option *ngFor="let proveedors of Proveedores" [value]="proveedors">{{proveedors}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-2">
+                <button mat-icon-button matTooltip="Agregar un nuevo Proveedor" class="text-success mx-auto"
+                  (click)='openVerticallyCentered(agregarProveedor, producto)'>
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+          </tr>
         </table>
       </form>
     </div>
@@ -336,10 +403,10 @@
           <button (click)='openVerticallyCentered(agregarProducto,producto)' class="elevated text-center bg-info mr-3"
             matTooltip="Agregar Producto" mat-fab><i matListIcon class="fas fa-plus text-dark"></i>
           </button>
-          <button (click)="imprimirInventario()" class="elevated text-center bg-info"
+          <!--<button (click)="imprimirInventario()" class="elevated text-center bg-info"
             matTooltip="Imprimir Inventario o Exportar a PDF" mat-fab *ngIf="hayDatos">
             <mat-icon>print</mat-icon>
-          </button>
+          </button>-->
         </div>
         <mat-form-field class="ml-4" *ngIf="hayDatos">
           <input matInput color="warn" (keyup)="applyFilter()" name="valorBusqueda" [(ngModel)]="valorBusqueda"
@@ -364,6 +431,12 @@
         <ng-container matColumnDef="Modelo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
           <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Modelo}} </td>
+        </ng-container>
+
+        <!-- Proveedor Column -->
+        <ng-container matColumnDef="Proveedor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </th>
+          <td mat-cell *matCellDef="let producto" class="text-center"> {{producto.Proveedor}} </td>
         </ng-container>
 
         <!-- Existencia Column -->
@@ -421,9 +494,9 @@
                 (click)='openVerticallyCentered(reservarProducto, producto)'>
                 <mat-icon>bookmark</mat-icon>
               </button>
-              <button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, producto)'>
+              <!--<button mat-icon-button matTooltip="Venta Rápida" (click)='openVerticallyCentered(ventaRapida, producto)'>
                 <mat-icon style="color: orange;">offline_bolt</mat-icon>
-              </button>
+              </button>-->
             </div>
           </td>
         </ng-container>

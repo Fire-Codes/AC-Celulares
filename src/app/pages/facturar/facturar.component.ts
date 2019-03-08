@@ -290,6 +290,9 @@ export class FacturarComponent implements OnInit {
       const tiempo = new Date();
       let totalCantidadComprasCliente = 0;
       let totalComprasActualesCliente = 0;
+      let totalVentasVendedor = 0;
+      let totalFlasheosVendedor = 0;
+      let totalReparacionesVendedor = 0;
       const totalFacturas = this.totalFacturas + 1;
       const interes = this.tipoPago === 'Efectivo' ? 0 : (this.totalCordoba() * 5) / 100;
       let cliente: Cliente;
@@ -767,13 +770,16 @@ export class FacturarComponent implements OnInit {
       this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).snapshotChanges()
         .subscribe(usuarios => {
           usuario = usuarios.payload.data();
+          totalVentasVendedor = usuarios.payload.data().Ventas + 1;
+          totalFlasheosVendedor = usuarios.payload.data().Flasheos;
+          totalReparacionesVendedor = usuarios.payload.data().Reparaciones;
         });
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
         .set({
-          'Tipo de Pago': this.tipoPago,
-          'Total Cordoba': this.totalCordoba(),
-          'Total Dolar': this.totalDolar(),
+          TipoPago: this.tipoPago,
+          TotalCordoba: this.totalCordoba(),
+          TotalDolar: this.totalDolar(),
           Hora: tiempo.getHours(),
           Minuto: tiempo.getMinutes(),
           Segundo: tiempo.getSeconds(),
@@ -787,6 +793,7 @@ export class FacturarComponent implements OnInit {
           'Articulos Comprados': this.productos,
           Interes: interes
         }).then((res) => {
+          this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).update({ Ventas: totalVentasVendedor });
           this.servicio.facturaImprimir = {
             Productos: this.productos,
             Cliente: cliente,
@@ -807,7 +814,7 @@ export class FacturarComponent implements OnInit {
             Interes: interes,
             TipoPago: this.tipoPago
           };
-          console.log(totalComprasActualesCliente);
+          // console.log(totalComprasActualesCliente);
           this.fs.doc<Factura>(`AC Celulares/Control/Facturas/${this.servicio.tienda}/Historial de Facturas/FAC${totalFacturas}`).set({
             Productos: this.productos,
             Cliente: cliente,
@@ -838,9 +845,9 @@ export class FacturarComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
               .set({
-                'Tipo de Pago': this.tipoPago,
-                'Total Cordoba': this.totalCordoba(),
-                'Total Dolar': this.totalDolar(),
+                TipoPago: this.tipoPago,
+                TotalCordoba: this.totalCordoba(),
+                TotalDolar: this.totalDolar(),
                 Hora: tiempo.getHours(),
                 Minuto: tiempo.getMinutes(),
                 Segundo: tiempo.getSeconds(),
@@ -874,6 +881,11 @@ export class FacturarComponent implements OnInit {
     setTimeout(() => {
       this.servicio.navegar('imprimirFactura');
     }, 2000);
+  }
+
+  // funcion para ver el historial de facturas
+  verHistorualFacturas() {
+    this.servicio.navegar('historialFacturas');
   }
 
   // funcion que se ejecutara una vez qu la factura se haya pagado
@@ -961,9 +973,9 @@ export class FacturarComponent implements OnInit {
     this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`).snapshotChanges()
       .subscribe(product => {
         cantidadAnterior = product.payload.data().Existencia;
-        console.log(product.payload.data().Existencia);
+        // console.log(product.payload.data().Existencia);
       });
-    console.log(cantidadAnterior);
+    // console.log(cantidadAnterior);
     setTimeout(() => {
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });

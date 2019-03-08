@@ -1,9 +1,9 @@
 import { ProductoFactura } from './producto-factura';
 export interface HistorialCompra {
     'Articulos Comprados': ProductoFactura[];
-    'Tipo de Pago': string;
-    'Total Cordoba': number;
-    'Total Dolar': number;
+    TipoPago: string;
+    TotalCordoba: number;
+    TotalDolar: number;
     Hora: number;
     Minuto: number;
     Segundo: number;

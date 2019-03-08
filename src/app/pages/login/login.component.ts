@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
           UID: this.servicio.auth.auth.currentUser.uid,
           'Contraseña': this.password
         }).then((response) => {
-          console.log('Datos Actualizados Correctamente');
+          // console.log('Datos Actualizados Correctamente');
           this.fs.doc(`AC Celulares/Control/Usuarios/${this.servicio.auth.auth.currentUser.email}`)
             .snapshotChanges().subscribe((user: Action<DocumentSnapshot<Usuario>>) => {
               this.nav.nombre = user.payload.data()['Primer Nombre'] + ' ' + user.payload.data()['Primer Apellido'];
@@ -65,14 +65,14 @@ export class LoginComponent implements OnInit {
             });
         }).catch((err) => {
           this.servicio.newToast(0, 'Hubo un error!', err);
-          console.error('Error al actualizar los datos de estado de conexion: ' + err);
+          // console.error('Error al actualizar los datos de estado de conexion: ' + err);
         });
         this.loginCorrecto = true;
         this.servicio.navegar('plataforma');
-        console.warn('Inicio de Sesion Correcto');
+        // console.warn('Inicio de Sesion Correcto');
       }).catch((err) => {
         this.errorLogin = err;
-        console.error(err);
+        // console.error(err);
         let errMensajeToast: string = null;
         switch (err.code) {
           case 'auth/argument-error':

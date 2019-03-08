@@ -55,10 +55,10 @@ export class SignupComponent implements OnInit {
 
   // se crea la funcion para agregar un nuevo usuario
   agregarUsuario() {
-    console.log('Registrando Usuario');
+    // console.log('Registrando Usuario');
     this.servicio.crearUsuario(this.correo, this.contrasena).then(() => {
       this.servicio.newToast(1, 'Usuario Agregado!', `El Usuario ${this.username} ha sido agregado correctamente.`);
-      this.fs.doc(`AC Celulares/Control/Usuarios/${this.correo}`).set({
+      this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.correo}`).set({
         Nombres: this.primerNombre + ' ' + this.segundoNombre,
         Apellidos: this.primerApellido + ' ' + this.segundoApellido,
         Correo: this.correo,
@@ -79,16 +79,21 @@ export class SignupComponent implements OnInit {
         'Primer Apellido': this.primerApellido,
         'Segundo Apellido': this.segundoApellido,
         // tslint:disable-next-line:max-line-length
-        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f'
+        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
+        TotalAcumulado: 0,
+        Contrasena: this.contrasena,
+        Ventas: 0,
+        Flasheos: 0,
+        Reparaciones: 0
       }).then(res => {
         const totalUsuarios = this.totalUsuarios + 1;
-        console.warn('Datos del usuario agregados a firestore correctamente');
+        // console.warn('Datos del usuario agregados a firestore correctamente');
         this.fs.doc<ControlTienda>('AC Celulares/Control').update({ 'Cantidad Total de Usuarios': totalUsuarios }).then(resp => {
           this.db.database.ref('AC Celulares/Control').update({ 'Cantidad Total de Usuarios': totalUsuarios });
         });
         this.reiniciarInputs();
       }).catch(err => {
-        console.error('Hubo un error al agregar los dtos del nuevo usuario a firestore: ' + err);
+        // console.error('Hubo un error al agregar los dtos del nuevo usuario a firestore: ' + err);
       });
 
       // integracion con el realtime database
@@ -115,11 +120,16 @@ export class SignupComponent implements OnInit {
         'Primer Apellido': this.primerApellido,
         'Segundo Apellido': this.segundoApellido,
         // tslint:disable-next-line:max-line-length
-        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f'
+        PhotoURL: this.sexo === 'Masculino' ? 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultMasculino.png?alt=media&token=32df9bdc-edf0-4ab4-a896-8d80959aa642' : 'https://firebasestorage.googleapis.com/v0/b/grupo-ac.appspot.com/o/defaultFemenino.png?alt=media&token=6e35821c-007f-4979-b581-9383a9d79b6f',
+        TotalAcumulado: 0,
+        Contrasena: this.contrasena,
+        Ventas: 0,
+        Flasheos: 0,
+        Reparaciones: 0
       });
     }).catch(err => {
       this.servicio.newToast(0, 'Hubo un Error!', `Error al agregar el usuario ${this.username}: ` + err);
-      console.error('Hubo un eror al registrar al nuevo usuario: ' + err);
+      // console.error('Hubo un eror al registrar al nuevo usuario: ' + err);
     });
   }
 
@@ -130,12 +140,12 @@ export class SignupComponent implements OnInit {
     primeraLetra = primeraLetra.toUpperCase();
     this.username = primeraLetra;
     if (this.primerApellido === null) {
-      console.log(this.username);
+      // console.log(this.username);
       return;
     } else {
       this.username += this.primerApellido;
     }
-    console.log(this.username);
+    // console.log(this.username);
   }
 
   // funcion para reiniciar todos los inputs

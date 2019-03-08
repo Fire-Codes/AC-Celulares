@@ -1,0 +1,224 @@
+<!--Agregar un Nuevo Servicio Modal-->
+<ng-template #agregarServicio let-modal>
+  <div class="modal-header bg-dark">
+    <h4 class="modal-title text-light">Agregar Nuevo Servicio</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="example-form">
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="ID de Servicio" disabled name="idServicio" [(ngModel)]="idServicio">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nombre" required name="nombreServicio" [(ngModel)]="nombreServicio">
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-form-field style="width: 100%;">
+        <mat-select placeholder="Tipo de Servicio" name="tipoServicio" [(ngModel)]="tipoServicio">
+          <mat-option value="Hardware">
+            Hardware: Reparación, Cambio de Partes, Etc.
+          </mat-option>
+          <mat-option value="Software">
+            Software: Flasheo, Liberacion, Formateo, Etc.
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-dark text-light"
+      (click)="modal.close('Close click');agregarServicios()">Agregar</button>
+  </div>
+</ng-template>
+
+<!--Agregar un Nuevo Servicio Modal-->
+<ng-template #eliminarServicio let-modal>
+  <div class="modal-header bg-danger">
+    <h4 class="modal-title text-light">Eliminar Servicio Servicio</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-danger">
+    <div class="text-center text-light">
+      <p>¿Estás seguro que quieres eliminar el Servicio {{servicioVender.Id}}?</p>
+    </div>
+  </div>
+  <div class="modal-footer bg-danger">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-dark text-light" (click)="modal.close('Close click')">Eliminar</button>
+  </div>
+</ng-template>
+
+<!--Vender un Servicio Modal-->
+<ng-template #venderServicio let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-dark">Vender Servicio</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Seleccionar Cliente" aria-label="Cliente" (keyup)="buscarClientes()"
+            [matAutocomplete]="resultadosDeBusquedaCliente" [(ngModel)]="valordebusquedaCliente"
+            name="valordebusquedaCliente">
+          <mat-autocomplete #resultadosDeBusquedaCliente="matAutocomplete">
+            <mat-option *ngFor="let cliente of clientes | async" [value]="cliente.NombreCompleto">
+              <img class="example-option-img" aria-hidden [src]="cliente.PhotoURL" height="25">
+              <span>{{cliente.Nombres}}</span> |
+              <small>{{cliente.Tipo}}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Seleccionar Vendedor" aria-label="Cliente" (keyup)="buscarVendedor()"
+            [matAutocomplete]="resultadosDeBusquedaVendedor" [(ngModel)]="valordebusquedaVendedor"
+            name="valordebusquedaVendedor">
+          <mat-autocomplete #resultadosDeBusquedaVendedor="matAutocomplete">
+            <mat-option *ngFor="let vendedor of vendedores | async" [value]="vendedor.Correo">
+              <img class="example-option-img" aria-hidden [src]="vendedor.PhotoURL" height="25">
+              <span>{{vendedor.Nombres}}</span> |
+              <small>{{vendedor.Tipo}}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <input type="text" matInput placeholder="ID Servicio" disabled name="idServicios"
+            [(ngModel)]="servicioVender.Id">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Nombre del Servicio" disabled type="text" name="nombreServicioss"
+            [(ngModel)]="servicioVender.Nombre">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <input type="text" matInput placeholder="Marca del Dispositivo" name="marcaDispositivo"
+            [(ngModel)]="marcaDispositivo">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <input type="text" matInput placeholder="Modelo" name="modeloDispositivo" [(ngModel)]="modeloDispositivo">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Tipo de Pago" name="tipoPago" [(ngModel)]="tipoPago">
+            <mat-option value="Efectivo">
+              Efectivo
+            </mat-option>
+            <mat-option value="Credito">
+              Tarjeta
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <mat-form-field style="width: 100%;">
+          <span matPrefix>C$ &nbsp;</span>
+          <input type="number" matInput placeholder="Mano de Obra" name="precioFinal" [(ngModel)]="precioFinal">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <mat-form-field style="width: 100%;">
+          <textarea matInput placeholder="Detalle todo lo que se hará." required [(ngModel)]="Descripcion"
+            name="Descripcion"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-dark text-light"
+      (click)="modal.close('Close click');venderServicios()">Vender</button>
+  </div>
+</ng-template>
+
+<div class="container pt-4">
+  <div class="mb-4 slideInLeft">
+    <div class="container-fluid bg-dark rounded-top p-4">
+      <div class="float-right">
+        <button (click)='openVerticallyCentered(agregarServicio,null)' class="elevated text-center bg-dark mr-3"
+          matTooltip="Agregar Servicio" mat-fab><i matListIcon class="fas fa-plus text-light"></i>
+        </button>
+      </div>
+      <mat-card-title class="ml-4 mt-4 text-light">
+        Servicios Registrados
+      </mat-card-title>
+      <mat-form-field class="ml-4">
+        <input class="text-light" matInput color="warn" name="valorBusqueda" [(ngModel)]="valorBusqueda"
+          (keyup)="applyFilter()" placeholder="Buscar">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="table-hover" style="width: 100%;">
+
+      <!-- Clave Column -->
+      <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let servicio" class="text-center"> {{servicio.Id}} </td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let servicio" class="text-center"> {{servicio.Nombre}} </td>
+      </ng-container>
+
+      <!-- Categoria Column -->
+      <ng-container matColumnDef="TipoServicio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Servicio </th>
+        <td mat-cell *matCellDef="let servicio" class="text-center"> {{servicio.TipoServicio}} </td>
+      </ng-container>
+
+      <!-- Acciones Column -->
+      <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+        <td mat-cell *matCellDef="let servicio" class="text-center">
+          <div class="example-button-row">
+            <button mat-icon-button matTooltip="Agregar Existencia" class="text-success"
+              (click)='openVerticallyCentered(venderServicio, servicio)'>
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Eliminar Producto"
+              (click)='openVerticallyCentered(eliminarServicio, servicio)'>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!--Aqui comienzan los TH-->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let servicio; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator lass="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

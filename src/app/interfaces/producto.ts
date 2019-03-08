@@ -9,4 +9,5 @@ export interface Producto {
     PVenta: number;
     Estado: string;
     Descripcion: string;
+    Proveedor: string;
 }

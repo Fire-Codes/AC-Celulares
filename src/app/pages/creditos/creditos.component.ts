@@ -118,7 +118,7 @@ export class CreditosComponent implements OnInit {
   verDetallesCredito(content: string, cliente: UserData) {
     // this.router.navigate(['/detallesCredito'], { queryParams: { cliente: JSON.stringify(cliente) } });
     this.ngbModal.open(content, { centered: true });
-    console.log('Mostrando detalles del credito' + cliente.id);
+    // console.log('Mostrando detalles del credito' + cliente.id);
     this.detallesCliente = cliente;
     this.mostrarDetallesCliente = true;
   }

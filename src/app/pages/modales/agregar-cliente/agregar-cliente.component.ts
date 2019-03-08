@@ -89,7 +89,7 @@ export class AgregarClienteComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     if ((this.primerNombre === '') || (this.segundoNombre === '') || (this.primerApellido === '') || (this.segundoApellido === '') || (this.tipoUsuario === '') || (this.sexo === '') || (this.departamento === '') || (this.municipio === '') || (this.direccion === '')) {
       this.servicio.newToast(0, 'Faltan Datos!', 'Ingrese todos los campos que son requeridos para proceder');
-      console.error('datos incorrectos');
+      // console.error('datos incorrectos');
     } else {
 
       // condicional que verifica que el cliente que se va a agregar no coincida con los datos de otro ya agregado a la base de datos
@@ -98,29 +98,29 @@ export class AgregarClienteComponent implements OnInit {
           if (documento.payload.doc.data().Cedula === this.cedula) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este numero de Cédula.');
             this.contadorErrores = this.contadorErrores + 1;
-            console.error('Error en la cedula=' + this.contadorErrores);
+            // console.error('Error en la cedula=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Correo === this.email) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este coreo eletrónico.');
             this.contadorErrores = this.contadorErrores + 1;
-            console.error('Error en el correo=' + this.contadorErrores);
+            // console.error('Error en el correo=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Id === this.nombreCompleto) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este Id.');
             this.contadorErrores = this.contadorErrores + 1;
-            console.error('Error en el id=' + this.contadorErrores);
+            // console.error('Error en el id=' + this.contadorErrores);
           } else if (documento.payload.doc.data().Telefono === this.celular) {
             this.servicio.newToast(0, 'Error de Insercción', 'Ya hay otro cliente registrado con este número telefónico.');
             this.contadorErrores = this.contadorErrores + 1;
-            console.error('Error en el telefono=' + this.contadorErrores);
+            // console.error('Error en el telefono=' + this.contadorErrores);
           }
         });
       });
       setTimeout(() => {
         // condicional que verifica la cantidad de errores que se produjeron al verificar los datos de otro cliente
         if (this.contadorErrores > 0) {
-          console.error('Hubieron errores en la verificacion');
+          // console.error('Hubieron errores en la verificacion');
           return;
         } else {
-          console.warn('No hubieron errores en la verificacion');
+          // console.warn('No hubieron errores en la verificacion');
           // funcion que se ejecuta a un dado caso que el contador de errores sea igual  0
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.nombreCompleto}`).set({
             Id: this.nombreCompleto,
@@ -180,7 +180,7 @@ export class AgregarClienteComponent implements OnInit {
               'Contador de Clientes': this.cantidadClientes + 1
             });
           }).catch((err) => {
-            console.error('Error al realizar la copia de seguridad al realtime database: ' + err);
+            // console.error('Error al realizar la copia de seguridad al realtime database: ' + err);
           });
 
           // se manda a llamar a la funcion para limpar todos los inputs antes de cerrar el modal
