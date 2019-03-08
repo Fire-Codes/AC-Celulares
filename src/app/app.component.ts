@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     /*window.addEventListener('beforeunload', function (e) {
       const confirmationMessage = '\o/';
-      console.log(e);
+      // console.log(e);
       (e || window.event).returnValue = confirmationMessage; // Gecko + IE
       return confirmationMessage;                            // Webkit, Safari, Chrome
     });*/

@@ -256,7 +256,17 @@ export class VentaRapidaComponent implements OnInit {
       const totalFacturas = this.totalFacturas + 1;
       let cliente: Cliente;
       let usuario: Usuario;
-      console.log('El producto que hay en imprimir es: ' + JSON.stringify(this.factura.facturaImprimir));
+      // se leen las compras actuales del cliente
+      this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
+        .subscribe(clientes => {
+          this.totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'];
+          totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
+          cliente = clientes.payload.data();
+        });
+      this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).snapshotChanges()
+        .subscribe(usuarios => {
+          usuario = usuarios.payload.data();
+        });
       this.productos.forEach(producto => {
         totalCantidadComprasCliente += producto.Cantidad;
         switch (producto.Categoria) {
@@ -720,23 +730,32 @@ export class VentaRapidaComponent implements OnInit {
             break;
         }
       });
-      // se leen las compras actuales del cliente
-      this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).snapshotChanges()
-        .subscribe(clientes => {
-          this.totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'];
-          totalComprasActualesCliente = clientes.payload.data()['Cantidad de Compras'] + totalCantidadComprasCliente;
-          cliente = clientes.payload.data();
-        });
-      this.fs.doc<Usuario>(`AC Celulares/Control/Usuarios/${this.valordebusquedaVendedor}`).snapshotChanges()
-        .subscribe(usuarios => {
-          usuario = usuarios.payload.data();
-        });
+      this.servicio.facturaImprimir = {
+        Productos: this.productos,
+        Cliente: cliente,
+        Vendedor: usuario,
+        Hora: tiempo.getHours(),
+        Minuto: tiempo.getMinutes(),
+        Segundo: tiempo.getSeconds(),
+        Dia: tiempo.getDate(),
+        Mes: tiempo.getMonth(),
+        Ano: tiempo.getFullYear(),
+        Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
+        Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
+        Id: `FAC${totalFacturas}`,
+        NumeroFactura: totalFacturas,
+        TotalCordoba: this.totalCordoba(),
+        TotalDolar: this.totalDolar(),
+        Descuento: this.totalDescuento(),
+        Interes: interes,
+        TipoPago: this.tipoPago
+      };
       // tslint:disable-next-line:max-line-length
       this.fs.doc<HistorialCompra>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
         .set({
-          'Tipo de Pago': 'Efectivo',
-          'Total Cordoba': this.totalCordoba(),
-          'Total Dolar': this.totalDolar(),
+          TipoPago: this.tipoPago,
+          TotalCordoba: this.totalCordoba(),
+          TotalDolar: this.totalDolar(),
           Hora: tiempo.getHours(),
           Minuto: tiempo.getMinutes(),
           Segundo: tiempo.getSeconds(),
@@ -750,27 +769,7 @@ export class VentaRapidaComponent implements OnInit {
           'Articulos Comprados': this.productos,
           Interes: interes
         }).then((res) => {
-          this.servicio.facturaImprimir = {
-            Productos: this.productos,
-            Cliente: cliente,
-            Vendedor: usuario,
-            Hora: tiempo.getHours(),
-            Minuto: tiempo.getMinutes(),
-            Segundo: tiempo.getSeconds(),
-            Dia: tiempo.getDate(),
-            Mes: tiempo.getMonth(),
-            Ano: tiempo.getFullYear(),
-            Fecha: `${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()}`,
-            Tiempo: `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`,
-            Id: `FAC${totalFacturas}`,
-            NumeroFactura: totalFacturas,
-            TotalCordoba: this.totalCordoba(),
-            TotalDolar: this.totalDolar(),
-            Descuento: this.totalDescuento(),
-            Interes: interes,
-            TipoPago: this.tipoPago
-          };
-          console.log(totalComprasActualesCliente);
+          // console.log(totalComprasActualesCliente);
           this.fs.doc<Cliente>(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}`).update({
             'Cantidad de Compras': totalComprasActualesCliente
           }).then(respo => {
@@ -801,9 +800,9 @@ export class VentaRapidaComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             this.db.database.ref(`AC Celulares/Control/Clientes/${this.valordebusquedaCliente}/Historial de Compras/${tiempo.getDate()}-${this.meses[tiempo.getMonth()]}-${tiempo.getFullYear()},${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`)
               .set({
-                'Tipo de Pago': 'Efectivo',
-                'Total Cordoba': this.totalCordoba(),
-                'Total Dolar': this.totalDolar(),
+                TipoPago: this.tipoPago,
+                TotalCordoba: this.totalCordoba(),
+                TotalDolar: this.totalDolar(),
                 Hora: tiempo.getHours(),
                 Minuto: tiempo.getMinutes(),
                 Segundo: tiempo.getSeconds(),
@@ -917,9 +916,9 @@ export class VentaRapidaComponent implements OnInit {
     this.fs.doc<Producto>(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`).snapshotChanges()
       .subscribe(product => {
         cantidadAnterior = product.payload.data().Existencia;
-        console.log(product.payload.data().Existencia);
+        // console.log(product.payload.data().Existencia);
       });
-    console.log(cantidadAnterior);
+    // console.log(cantidadAnterior);
     setTimeout(() => {
       this.db.database.ref(`AC Celulares/Control/Inventario/${this.servicio.tienda}/Productos/${idProducto.Id}`)
         .update({ Existencia: cantidadAnterior + idProducto.Cantidad });

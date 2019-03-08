@@ -20,9 +20,7 @@ export class ImprimirFacturaComponent implements OnInit {
   constructor(
     public servicio: ServicioService,
     public nav: NavsideComponent
-  ) {
-    console.log(JSON.stringify(this.facturaImprimir));
-  }
+  ) { }
 
   ngOnInit() {
     this.nav.mostrarNav = false;

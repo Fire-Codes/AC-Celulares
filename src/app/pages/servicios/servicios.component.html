@@ -108,11 +108,13 @@
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <button mat-stroked-button color="primary" (click)="mostrarModal(seleccionarCliente)">Seleccionar
+                        <button mat-stroked-button color="primary"
+                            (click)="mostrarModal(seleccionarCliente)">Seleccionar
                             Vendedor</button>
                     </div>
                     <div class="col-6">
-                        <button mat-stroked-button color="primary" (click)="mostrarModal(seleccionarCliente)">Seleccionar
+                        <button mat-stroked-button color="primary"
+                            (click)="mostrarModal(seleccionarCliente)">Seleccionar
                             Cliente</button>
                     </div>
 
@@ -143,161 +145,16 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-            <button type="button" class="btn btn-secondary text-light" (click)="modal.close('Close click')">Facturar</button>
+            <button type="button" class="btn btn-secondary text-light"
+                (click)="modal.close('Close click')">Facturar</button>
         </div>
     </ng-template>
     <nav class="navbar navbar-dark bg-dark elevated shake">
         <div class="container slideInLeft">
             <a class="navbar-brand text-light">Servicios Técnicos</a>
-            <form class="form-inline">
-                <button mat-icon-button class="col" matTooltip="Agregar Nuevo Servicio Técnico" (click)="mostrarModal(agregarServicio)">
-                    <mat-icon class="text-white">add</mat-icon>
-                </button>
-            </form>
         </div>
     </nav>
     <div class="container mt-5">
-        <div class="row mt-5">
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button type="button" mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio"
-                                data-toggle="modal" data-target="#exampleModalLong">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 d-flex align-items-center justify-content-center">
-                <div class="card border-secondary mb-3" style="max-width: 18rem; min-width: 1rem;">
-                    <div class="card-header bg-trasnparent bg-primary text-center text-light">Puerto de Carga</div>
-                    <div class="card-body text-secondary">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam veritatis nesciunt placeat
-                        corrupti saepe voluptatum earum possimus quaerat natus repellendus maiores ducimus, odio non
-                        quidem numquam recusandae neque? Molestiae, dolorem!
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary">
-                        <div class="row">
-                            <button mat-icon-button class="col-4" matTooltip="Facturar Servicio" (click)="mostrarModal(facturarServicio)">
-                                <mat-icon class="text-secondary">shopping_cart</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="accent" matTooltip="Editar Detalles de Servicio">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="col-4" color="warn" matTooltip="Eliminar Servicio">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-servicios-tecnicos></app-servicios-tecnicos>
     </div>
 </body>

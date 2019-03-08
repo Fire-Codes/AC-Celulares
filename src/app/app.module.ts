@@ -55,6 +55,14 @@ import { SistemaApartadoComponent } from './pages/tablas/sistema-apartado/sistem
 import { ProductosReservadosComponent } from './pages/productos-reservados/productos-reservados.component';
 import { ImprimirFacturaComponent } from './pages/impresiones/imprimir-factura/imprimir-factura.component';
 import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-inventario/imprimir-inventario.component';
+// tslint:disable-next-line:max-line-length
+import { TablaHistorialComprasClienteComponent } from './pages/tablas/tabla-historial-compras-cliente/tabla-historial-compras-cliente.component';
+import { ProductosCompradosComponent } from './pages/modales/productos-comprados/productos-comprados.component';
+import { DetallesCompraComponent } from './pages/detalles-compra/detalles-compra.component';
+import { ServiciosTecnicosComponent } from './pages/tablas/servicios-tecnicos/servicios-tecnicos.component';
+import { PedidosComponent } from './pages/pedidos/pedidos.component';
+import { HistorialFacturasComponent } from './pages/historial-facturas/historial-facturas.component';
+import { TablaHistorialFacturasComponent } from './pages/tablas/tabla-historial-facturas/tabla-historial-facturas.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +91,14 @@ import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-invent
     SistemaApartadoComponent,
     ProductosReservadosComponent,
     ImprimirFacturaComponent,
-    ImprimirInventarioComponent
+    ImprimirInventarioComponent,
+    TablaHistorialComprasClienteComponent,
+    ProductosCompradosComponent,
+    DetallesCompraComponent,
+    ServiciosTecnicosComponent,
+    PedidosComponent,
+    HistorialFacturasComponent,
+    TablaHistorialFacturasComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +107,7 @@ import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-invent
     RouterModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
@@ -113,7 +128,11 @@ import { ImprimirInventarioComponent } from './pages/impresiones/imprimir-invent
     FacturarComponent,
     SeleccionarProductoComponent,
     VentaRapidaComponent,
-    ImprimirFacturaComponent
+    ImprimirFacturaComponent,
+    TablaClientesComponent,
+    DetallesCompraComponent,
+    ProductosCompradosComponent,
+    TablaHistorialComprasClienteComponent
   ],
   bootstrap: [AppComponent]
 })

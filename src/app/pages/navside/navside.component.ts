@@ -43,7 +43,7 @@ export class NavsideComponent implements OnInit {
     private servicio: ServicioService,
     public fs: AngularFirestore
   ) {
-    console.log(this.router.url);
+    // console.log(this.router.url);
     /*if ((this.router.url === '/') || (this.router.url === '/ingresar') || this.router.url === '/plataforma') {
       this.mostrarNav = false;
     } else if ((this.router.url === 'dashboard')) {
@@ -93,22 +93,22 @@ export class NavsideComponent implements OnInit {
         nombre = user.payload.data()['Primer Nombre'] + ' ' + user.payload.data()['Primer Apellido'];
       });
     this.servicio.logout().then((res) => {
-      console.log('Se ha cerrado sesion correctamente');
+      // console.log('Se ha cerrado sesion correctamente');
       this.fs.doc(`AC Celulares/Control/Usuarios/${email}`).update({
         EstadoConexion: false,
         FechaUltimaConexion: `${dia}, ${mes} de ${ano}`,
         HoraUltimaConexion: `${hora}:${minutos}:${segundos}`
       }).then((response) => {
-        console.log('Estado de conexion actualizado correctamente');
+        // console.log('Estado de conexion actualizado correctamente');
         this.servicio.newToast(1, 'Cerrando Sesion!', `Adios ${nombre}, vuelva pronto!`);
       }).catch((err) => {
         this.servicio.newToast(0, 'Hubo un Error!', err);
-        console.error('Ha habido un error al actualizar los datos del estado de la conexion: ' + err);
+        // console.error('Ha habido un error al actualizar los datos del estado de la conexion: ' + err);
       });
       this.navegar('');
     }).catch((err) => {
       this.servicio.newToast(0, 'Hubo un Error!', err);
-      console.error('Ha habido un problema al cerrar sesion: ' + err);
+      // console.error('Ha habido un problema al cerrar sesion: ' + err);
     });
   }
 }

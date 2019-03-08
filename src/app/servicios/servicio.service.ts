@@ -32,6 +32,9 @@ export class ServicioService {
   // variable que contendra temporalmente el inventario a imprimir
   public inventarioImprimir: Producto[] = [];
 
+  // variable que contendra al cliente al cual se veran sus compras
+  public ClienteVerCompras: Cliente = null;
+
   // variable que contendra el arreglo de usuarios
   Usuarios: AngularFirestoreCollection<Usuario>;
 
@@ -81,7 +84,7 @@ export class ServicioService {
       // Assign the data to the data source for the table to render
       Usuarioss = usuario;
     });
-    console.warn(Usuarioss);
+    // console.warn(Usuarioss);
     return Usuarioss;
   }
 
@@ -119,7 +122,7 @@ export class ServicioService {
       this.auth.auth.createUserWithEmailAndPassword(email, contraseña)
         .then(datosUsuario => resolve(datosUsuario), err => reject(err))
         .catch((err) => {
-          console.error(err);
+          // console.error(err);
         });
     });
   }
@@ -131,7 +134,7 @@ export class ServicioService {
       this.auth.auth.signInWithEmailAndPassword(email, contraseña)
         .then(datosUsuario => resolve(datosUsuario), err => reject(err))
         .catch((err) => {
-          console.error(err);
+          // console.error(err);
         });
     });
   }
@@ -139,11 +142,11 @@ export class ServicioService {
   // funcion para cerrar sesion y redireccionar a la pagina principal
   public logout() {
     return this.auth.auth.signOut().then((response) => {
-      console.warn('Se ha cerrado Sesion');
+      // console.warn('Se ha cerrado Sesion');
       this.tienda = '';
       this.navegar('');
     }).catch((err) => {
-      console.error(err);
+      // console.error(err);
     });
   }
 
@@ -152,10 +155,16 @@ export class ServicioService {
     const usuario = this.auth.auth.currentUser;
 
     usuario.sendEmailVerification().then((response) => {
-      console.log('Mensaje de Verificacion de nuevo usuario enviado correctamente');
+      // console.log('Mensaje de Verificacion de nuevo usuario enviado correctamente');
     }).catch((err) => {
-      console.error(err);
+      // console.error(err);
     });
+  }
+
+  // funcion para extraer el tiempo
+  public extraerTiempo(): string {
+    const tiempo = new Date();
+    return `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`;
   }
 
   // funcion que verifica el estado actual del auth de un usuario
