@@ -1,0 +1,76 @@
+<!--Ver Productos Comprados Modal-->
+<ng-template #verProductosComprados let-modal>
+  <app-productos-comprados (cerrarProductosComprados)="modal.close('Close click')" [productosFactura]="factura"
+    [compra]="null">
+  </app-productos-comprados>
+</ng-template>
+
+<div class="container pt-4">
+  <div class="mb-4 slideInLeft">
+    <div class="container-fluid bg-dark rounded-top p-4">
+      <mat-card-title class="ml-4 mt-4 text-light">
+        Facturas
+      </mat-card-title>
+      <mat-form-field class="ml-4">
+        <input class="text-light" matInput color="warn" name="valorBusqueda" [(ngModel)]="valorBusqueda"
+          (keyup)="applyFilter()" placeholder="Buscar">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="table-hover" style="width: 100%;">
+
+      <!-- Clave Column -->
+      <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let factura" class="text-center"> {{factura.Id}} </td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Fecha">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+        <td mat-cell *matCellDef="let factura" class="text-center"> {{factura.Fecha}} </td>
+      </ng-container>
+
+      <!-- Categoria Column -->
+      <ng-container matColumnDef="Hora">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+        <td mat-cell *matCellDef="let factura" class="text-center"> {{factura.Tiempo}} </td>
+      </ng-container>
+
+      <!-- Clave Column -->
+      <ng-container matColumnDef="Cliente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+        <td mat-cell *matCellDef="let factura" class="text-center"> {{factura.Cliente.Nombres}} </td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Vendedor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendedor </th>
+        <td mat-cell *matCellDef="let factura" class="text-center">{{factura.Vendedor.Nombres}}</td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+        <td mat-cell *matCellDef="let factura" class="text-center">{{factura.TotalCordoba + factura.Interes}}</td>
+      </ng-container>
+
+
+      <!-- Categoria Column -->
+      <ng-container matColumnDef="Descripcion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ver Productos </th>
+        <td mat-cell *matCellDef="let factura" class="text-center">
+          <button mat-icon-button matTooltip="Ver Articulos Comprados"
+            (click)='openVerticallyCentered(verProductosComprados, factura)'>
+            <mat-icon class="text-primary">assignment</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!--Aqui comienzan los TH-->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let factura; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator lass="elevated mb-3" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

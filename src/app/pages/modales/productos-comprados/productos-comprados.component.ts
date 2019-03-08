@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Factura } from './../../../interfaces/factura';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 // se importan las interfaces
 import { HistorialCompra } from './../../../interfaces/historial-compra';
@@ -13,14 +14,28 @@ export class ProductosCompradosComponent implements OnInit {
 
   // variable que se le pasa por tipo input que contendra el id de la compra
   @Input() compra: HistorialCompra = null;
+  @Input() productosFactura: Factura = null;
 
   // variable que contendra el arreglo de todos los articulos comprados
-  articulos: ProductoFactura[];
+  articulos: any[];
+
+  @Output() cerrarProductosComprados = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    this.articulos = this.compra['Articulos Comprados'];
+    if (this.compra === null) {
+      this.articulos = this.productosFactura.Productos;
+    } else {
+      this.articulos = this.compra['Articulos Comprados'];
+    }
+  }
+
+  // funcion para cerra el modal
+  cerrarModal() {
+    this.cerrarProductosComprados.emit();
+    this.compra = null;
+    this.productosFactura = null;
   }
 
 }

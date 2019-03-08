@@ -161,6 +161,12 @@ export class ServicioService {
     });
   }
 
+  // funcion para extraer el tiempo
+  public extraerTiempo(): string {
+    const tiempo = new Date();
+    return `${tiempo.getHours()}:${tiempo.getMinutes()}:${tiempo.getSeconds()}`;
+  }
+
   // funcion que verifica el estado actual del auth de un usuario
   public verificarEstadoUsuario() {
     return this.auth.authState;
