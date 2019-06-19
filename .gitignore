@@ -8,6 +8,9 @@
 /Instaladores
 /public
 
+#environments
+/src/environments
+
 # dependencies
 /node_modules
 
